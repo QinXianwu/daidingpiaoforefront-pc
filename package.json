@@ -3,16 +3,25 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "serve": "vite",
     "build": "vite build",
+    "serve.pre": "cross-env VITE_APP_ENV_ID=pre npm run serve",
+    "serve.prod": "cross-env VITE_APP_ENV_ID=prod npm run serve",
+    "build.pre": "cross-env VITE_APP_ENV_ID=pre npm run build",
+    "build.prod": "cross-env VITE_APP_ENV_ID=prod npm run build",
     "preview": "vite preview",
     "prepare": "husky install",
     "lint": "eslint src --ext .js,.jsx",
     "lint-staged": "lint-staged"
   },
   "dependencies": {
+    "axios": "^0.27.2",
+    "cross-env": "^7.0.3",
+    "echarts": "^5.3.3",
     "vue": "^2.6.6",
-    "vue-template-compiler": "^2.7.10"
+    "vue-router": "^4.1.5",
+    "vue-template-compiler": "^2.7.10",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
@@ -33,6 +42,7 @@
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^28.0.0",
     "stylelint-order": "^5.0.0",
+    "terser": "^5.15.0",
     "vite": "^3.0.7",
     "vite-plugin-vue2": "^2.0.2",
     "vue-eslint-parser": "^9.0.3"
