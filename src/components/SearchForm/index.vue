@@ -85,10 +85,10 @@
           <template
             v-else-if="
               item.type === 'date' ||
-                item.type === 'datetime' ||
-                item.type === 'week' ||
-                item.type === 'month' ||
-                item.type === 'year'
+              item.type === 'datetime' ||
+              item.type === 'week' ||
+              item.type === 'month' ||
+              item.type === 'year'
             "
           >
             <el-date-picker
@@ -403,7 +403,7 @@ export default {
      */
     handlerFormData(isReset = false) {
       this.form = simpleCloneDeep(this.formData);
-      this.form.forEach(element => {
+      this.form.forEach((element) => {
         if (element.type === "textrange" || element.type === "datetimerange") {
           this.$set(element, "value", []);
         }
@@ -416,7 +416,7 @@ export default {
     emitTemp(eventName) {
       if (this.isReturnFormData) {
         let obj = {};
-        this.form.map(item => {
+        this.form.map((item) => {
           if (item.value) {
             obj[item.prop] = item.value;
           }
@@ -425,7 +425,7 @@ export default {
         return;
       }
       var rulesData = [];
-      this.form.map(item => {
+      this.form.map((item) => {
         if (!item.value && item.value !== 0) return;
         if (item.type === "datetimerange" || item.type === "textrange") {
           if (item.value.length) {
@@ -495,7 +495,7 @@ $paddingW: 18px;
   }
   .compose_item {
     display: flex;
-    /deep/.el-input {
+    ::v-deep .el-input {
       margin-right: 10px;
       width: 215px;
     }

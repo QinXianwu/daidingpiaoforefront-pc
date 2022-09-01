@@ -78,8 +78,8 @@
           <div
             v-if="
               item.type === 'image-list' &&
-                scoped.row[item.prop] &&
-                scoped.row[item.prop].length
+              scoped.row[item.prop] &&
+              scoped.row[item.prop].length
             "
           >
             <div class="flex flex-center flex-wrap">
@@ -236,7 +236,7 @@ export default {
   methods: {
     // 排序
     onSortChange(span) {
-      let _index = this.tableData.findIndex(v => v.prop === span.prop);
+      let _index = this.tableData.findIndex((v) => v.prop === span.prop);
       console.log(span);
       // span.sortType = [null, "ascending", "descending"].indexOf(span.order);
       span.order = span.order ? span.order.replace("ending", "") : span.order;
@@ -244,7 +244,7 @@ export default {
 
       if (!span.prop) {
         const targetCol = this.tableHead.find(
-          v => v.label === span.column.label,
+          (v) => v.label === span.column.label
         );
         span.prop = targetCol.prop;
       }
@@ -254,7 +254,7 @@ export default {
     toggleSelection(Bool) {
       // 全选亦或者全部取消
       if (Bool) {
-        this.tableData.forEach(row => {
+        this.tableData.forEach((row) => {
           this.$refs.multipleTable.toggleRowSelection(row, true);
         });
       } else {
@@ -297,18 +297,18 @@ export default {
       margin-left: 16px;
     }
   }
-  /deep/ .el-table .el-table__header th.el-table__cell {
+  ::v-deep .el-table .el-table__header th.el-table__cell {
     background-color: #f7f8fa;
     .cell {
       font-size: 14px;
     }
   }
-  /deep/ .el-table__row {
+  ::v-deep .el-table__row {
     .cell {
       font-size: 14px;
     }
   }
-  /deep/ .el-table__empty-text {
+  ::v-deep .el-table__empty-text {
     font-size: 14px;
   }
   .edit_icon {

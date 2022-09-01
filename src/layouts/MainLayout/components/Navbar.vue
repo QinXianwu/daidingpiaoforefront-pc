@@ -166,13 +166,13 @@ export default {
   }
 }
 .mta_sys_switch {
-  // /deep/ .sys_switch_target {
-  //   padding-right: 13px;
-  //   border-right: 1px solid #d9d9d9;
-  //   .sys_switch_target_img {
-  //     width: 20px;
-  //     height: 20px;
-  //   }
-  // }
+  ::v-deep .sys_switch_target {
+    padding-right: 13px;
+    border-right: 1px solid #d9d9d9;
+    .sys_switch_target_img {
+      width: 20px;
+      height: 20px;
+    }
+  }
 }
 </style>
