@@ -24,6 +24,7 @@
 </template>
 
 <script>
+// import menuItem from "./menuItem.vue";
 import { mapState } from "vuex";
 export default {
   // name: 'mt-menu',
@@ -70,7 +71,9 @@ export default {
       opened: (state) => state.menu.menuSlider.opened,
     }),
   },
-  components: {},
+  components: {
+    // menuItem,
+  },
   methods: {
     //
     onMenusWatch(val) {

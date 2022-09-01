@@ -43,7 +43,10 @@ export const constantRoutes = [
     component: () => import("@/views/ErrorPage/401"),
     hidden: true,
   },
+  ...routerList,
 ];
+
+console.log("constantRoutes", constantRoutes);
 
 /**
  * 根据后台返回的权限列表
@@ -79,5 +82,5 @@ export function resetRouter() {
   const newRouter = createRouter();
   router.matcher = newRouter.matcher; // reset router
 }
-console.log(router);
+
 export default router;

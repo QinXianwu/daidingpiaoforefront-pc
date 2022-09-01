@@ -11,45 +11,7 @@ const state = {
   McatGlobal: window.McatGlobal || {},
 };
 
-const getters = {
-  // 和当前系统同级的前端系统列表
-  FEApplicationList(state) {
-    const AppInfo = state.McatGlobal.AppInfo;
-    // 获取当前系统的 AplicationId
-    const currentApplicationId = AppInfo?.Application?.AplicationId;
-    // 根据当前 ApplicationId 找到对应的 AplicationItem
-    const AplicationItem = AppInfo?.ListAppSys?.find((item) =>
-      item?.SysBaseInfo?.Applications.find(
-        (aItem) => aItem?.AplicationId === currentApplicationId
-      )
-    );
-    // 在当前的 AplicationItem 中的Applications找到前端的系统id
-    const result = (AplicationItem?.SysBaseInfo?.Applications || [])?.filter(
-      (item) => item?.ApplicationBaseInfo?.ClientType === 1
-    );
-    return result.map((item) => ({
-      ...item,
-      AplicationId: String(item.AplicationId),
-    }));
-  },
-  // 当前系统的TenantId、AppId、AppSysId
-  AppSysBaseIDs(state) {
-    const AppInfo = state.McatGlobal.AppInfo;
-    // 当前 AplicationId
-    const currentApplicationId = AppInfo?.Application?.AplicationId;
-    // 当前 ApplicationId 对应的 AplicationItem
-    const AplicationItem = AppInfo?.ListAppSys.find((item) =>
-      item?.SysBaseInfo?.Applications.find(
-        (aItem) => aItem?.AplicationId === currentApplicationId
-      )
-    );
-    return {
-      TenantId: AppInfo?.TenantId,
-      AppId: AppInfo?.AppId,
-      AppSysId: AplicationItem?.AppSysId,
-    };
-  },
-};
+const getters = {};
 
 const mutations = {
   TOGGLE_SIDEBAR: (state) => {

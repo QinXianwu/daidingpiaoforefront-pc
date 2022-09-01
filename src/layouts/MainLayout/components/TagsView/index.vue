@@ -8,20 +8,23 @@
       <router-link
         v-for="tag in visitedViews"
         ref="tag"
+        custom
+        v-slot="{ navigate }"
+        class="tags-view-item"
         :key="tag.path"
         :class="isActive(tag) ? 'active' : ''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-        tag="span"
-        class="tags-view-item"
         @click.middle.native="!isAffix(tag) ? closeSelectedTag(tag) : ''"
         @contextmenu.prevent.native="openMenu(tag, $event)"
       >
-        {{ tag.title }}
-        <span
-          v-if="!isAffix(tag)"
-          class="el-icon-close"
-          @click.prevent.stop="closeSelectedTag(tag)"
-        />
+        <span @click="navigate" @keypress.enter="navigate">
+          {{ tag.title }}
+          <span
+            v-if="!isAffix(tag)"
+            class="el-icon-close"
+            @click.prevent.stop="closeSelectedTag(tag)"
+          />
+        </span>
       </router-link>
     </scroll-pane>
     <ul
@@ -41,6 +44,8 @@
 
 <script>
 import ScrollPane from "./ScrollPane";
+import { constantRoutes } from "@/router";
+
 import path from "path";
 export default {
   components: { ScrollPane },
@@ -58,7 +63,8 @@ export default {
       return this.$store.state.tagsView.visitedViews;
     },
     routes() {
-      return this.$store.state.permission.routes; // 计算权限后的路由
+      return constantRoutes;
+      // return this.$store.state.permission.routes; // 计算权限后的路由
     },
   },
   watch: {

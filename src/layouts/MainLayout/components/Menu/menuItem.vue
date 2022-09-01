@@ -72,7 +72,7 @@
   </div>
 </template>
 
-<script lang="jsx">
+<script>
 import CONST from "@/constants/index";
 export default {
   name: "menu-item",

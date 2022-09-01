@@ -5,10 +5,10 @@
       <ElMenu
         :default-active="activeMenu"
         :collapse="isCollapse"
-        background-color="#304156"
-        text-color="#bfcbd9t"
+        :background-color="'#304156'"
+        :text-color="'#bfcbd9'"
         :unique-opened="false"
-        active-text-color="#409eff"
+        :active-text-color="'#409eff'"
         :collapse-transition="false"
         mode="vertical"
       >
@@ -27,13 +27,15 @@
 import { mapGetters } from "vuex";
 import Logo from "./Logo";
 import SidebarItem from "./SidebarItem";
+import { constantRoutes } from "@/router";
 export default {
-  components: { SidebarItem, Logo },
+  components: { Logo, SidebarItem },
   computed: {
     ...mapGetters(["sidebar"]),
     routesList() {
+      return constantRoutes;
       // return this.$router.options.routes; // 展示使用路由的结构
-      return this.$store.state.permission.routes; // 计算权限后的路由
+      // return this.$store.state.permission.routes; // 计算权限后的路由
     },
     activeMenu() {
       const route = this.$route;

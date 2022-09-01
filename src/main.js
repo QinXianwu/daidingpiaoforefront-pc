@@ -4,6 +4,7 @@ import router from "./router/index";
 import store from "./store/index";
 import "@/plugins/index.js";
 import "./assets/styles/index.scss";
+import "./icons"; // icon
 import CONST from "@/constants/index";
 
 // 公用组件
@@ -22,6 +23,8 @@ Vue.component("MTImage", MTImage);
 Vue.component("DrawerPopup", DrawerPopup);
 Vue.component("PageWrapper", PageWrapper);
 
+console.log("process.env", process.env);
+
 // 注册filter
 import filters from "@/filters/index";
 Object.keys(filters).forEach((k) => Vue.filter(k, filters[k]));
@@ -30,7 +33,8 @@ Vue.prototype.AJAX_CODE = CONST.AJAX_CODE;
 Vue.prototype.$CONST = CONST; // 全局挂载常量
 
 new Vue({
+  el: "#app",
   router,
   store,
   render: (h) => h(App),
-}).$mount("#app");
+});

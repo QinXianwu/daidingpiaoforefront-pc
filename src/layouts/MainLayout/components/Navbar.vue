@@ -2,7 +2,6 @@
   <div class="navbar">
     <Hamburger
       id="hamburger-container"
-      :is-active="sidebar.opened"
       class="hamburger-container"
       @toggleClick="toggleSideBar"
     />
@@ -24,10 +23,7 @@
       <!-- 用户头像 -->
       <ElDropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper hover-effect">
-          <el-image
-            class="user-avatar"
-            :src="tenantInfo.logo + '?imageView2/1/w/80/h/80'"
-          ></el-image>
+          <el-image class="user-avatar" src=""></el-image>
           <i class="el-icon-caret-bottom" />
         </div>
         <ElDropdownMenu slot="dropdown">
@@ -41,7 +37,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 import Screenfull from "@/components/Screenfull";
@@ -56,7 +52,6 @@ export default {
     CopyButton,
   },
   computed: {
-    ...mapGetters(["sidebar", "tenantInfo"]),
     mainAccountId() {
       const id = this.$store.state.app.McatGlobal?.UserAccount?.UserId;
       return id ? String(id) : "";

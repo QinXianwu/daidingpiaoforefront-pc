@@ -8,7 +8,7 @@ export default {
   redirect: "/Home/BasicFacts",
   meta: {
     title: "首页",
-    icon: "survey",
+    icon: "el-icon-s-help",
     affix: true,
     // PermissionId: PERMISSION_ID.Home,
   },

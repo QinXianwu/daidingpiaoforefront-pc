@@ -1,6 +1,8 @@
 require("./env.config/index"); // 再次处理 process.env 变量
 import { defineConfig, loadEnv } from "vite";
 import { createVuePlugin } from "vite-plugin-vue2";
+// import vue from "@vitejs/plugin-vue";
+// import pathResolve from "vite-plugin-path-resolve";
 import { viteCommonjs } from "@originjs/vite-plugin-commonjs";
 import ViteRequireContext from "@originjs/vite-plugin-require-context";
 import { resolve } from "path";
@@ -14,11 +16,16 @@ export default defineConfig(({ mode }) => {
       createVuePlugin({
         jsx: true,
       }),
+      // vue(),
+      // pathResolve(),
       viteCommonjs(),
       ViteRequireContext(),
     ], // 配置需要使用的插件列表
     base: "./", // 在生产中服务时的基本公共路径
     publicDir: "public", // 静态资源服务的文件夹, 默认"public"
+    define: {
+      "process.env": process.env,
+    },
     resolve: {
       alias: {
         "@": resolve(__dirname, "./src"),
