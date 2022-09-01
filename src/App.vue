@@ -1,23 +1,18 @@
 <template>
-  <div>
-    <div class="main">Hello Worde</div>
-    <el-button>默认按钮</el-button>
+  <div id="app">
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  components: {},
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {},
   mounted() {
-    console.log(123);
+    // 设置应用title
+    document.title = "代订票系统";
   },
 };
 </script>
+
 <style lang="scss">
 // 主题样式
 #app {
@@ -31,6 +26,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
 .el-popover {
   min-width: 80px !important;
 }

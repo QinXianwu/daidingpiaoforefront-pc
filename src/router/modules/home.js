@@ -1,6 +1,6 @@
 import MainLayout from "@/layouts/MainLayout/index";
 import BasicFacts from "@/views/Home/views/BasicFacts/index.vue";
-import PERMISSION_ID from "@/permission/PERMISSION_ID";
+// import PERMISSION_ID from "@/permission/PERMISSION_ID";
 
 export default {
   path: "/Home",
@@ -10,7 +10,7 @@ export default {
     title: "首页",
     icon: "survey",
     affix: true,
-    PermissionId: PERMISSION_ID.Home,
+    // PermissionId: PERMISSION_ID.Home,
   },
   children: [
     {
@@ -19,7 +19,7 @@ export default {
       name: "BasicFacts",
       meta: {
         title: "概况",
-        PermissionId: PERMISSION_ID.Home,
+        // PermissionId: PERMISSION_ID.Home,
       },
     },
   ],

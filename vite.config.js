@@ -10,7 +10,13 @@ export default defineConfig(({ mode }) => {
   // const idDev = mode !== "production";
   // console.log(mode, env.VITE_APP_MCAT_ENVIRONMENT);
   return {
-    plugins: [createVuePlugin(), viteCommonjs(), ViteRequireContext()], // 配置需要使用的插件列表
+    plugins: [
+      createVuePlugin({
+        jsx: true,
+      }),
+      viteCommonjs(),
+      ViteRequireContext(),
+    ], // 配置需要使用的插件列表
     base: "./", // 在生产中服务时的基本公共路径
     publicDir: "public", // 静态资源服务的文件夹, 默认"public"
     resolve: {
@@ -36,6 +42,7 @@ export default defineConfig(({ mode }) => {
     optimizeDeps: {
       include: ["echarts", "axios"],
     },
+    lintOnSave: false,
     // 打包配置
     build: {
       target: "modules", // 设置最终构建的浏览器兼容目标。modules:支持原生 ES 模块的浏览器

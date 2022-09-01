@@ -1,4 +1,3 @@
-import CONST from "@/constants";
 // async 方法的处理
 export const createCatchAsyncFun = (errorHandle) => {
   return async (fn) => {
@@ -104,22 +103,6 @@ export function getQueryObj(url) {
   }
   return query;
 }
-
-// 等级显示判断
-export function showLevelName(data, client = [], channel = []) {
-  let name = "";
-  if (data.type === CONST.GRADE_KEY.CLIENT) {
-    let Index = client.findIndex((item) => item.level_id === data.level);
-    name = `会员/${client[Index]?.name || "-"}`;
-  } else if (data.type === CONST.GRADE_KEY.CHANNEL) {
-    let Index = channel.findIndex(
-      (item) => item.channel_level_id === data.level
-    );
-    name = `经销商/${channel[Index]?.name || "-"}`;
-  }
-  return name || "-";
-}
-
 // options的生成方法
 export const getOptionsByText = (textHash) => {
   return Object.keys(textHash).map((key) => ({

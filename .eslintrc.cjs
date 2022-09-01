@@ -6,6 +6,7 @@ module.exports = {
     es6: true,
   },
   rules: {
+    "vue/multi-word-component-names": "off",
     // "no-console": process.env.NODE_ENV === "production" ? "error" : "off", // 禁止使用 console 对象方法
     // "no-console": "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off", // 禁用 debugger
