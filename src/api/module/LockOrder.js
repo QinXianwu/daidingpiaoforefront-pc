@@ -3,9 +3,9 @@ import { createCatchAsyncFun } from "@/utils/index";
 // async 方法的处理
 const catchAsyncFun = createCatchAsyncFun((error) => {
   // 错误日志上报 todo
-  console.warn("客户相关接口网络请求出错", error);
+  console.warn("锁单相关接口网络请求出错", error);
 });
-// 客户
+// 锁单
 export default {
   // 客户添加add
   AddUser(params) {

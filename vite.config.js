@@ -17,7 +17,6 @@ export default defineConfig(({ mode }) => {
         jsx: true,
       }),
       // vue(),
-      // pathResolve(),
       viteCommonjs(),
       ViteRequireContext(),
       createSvgIconsPlugin({
@@ -59,9 +58,12 @@ export default defineConfig(({ mode }) => {
     lintOnSave: false,
     // 打包配置
     build: {
-      target: "modules", // 设置最终构建的浏览器兼容目标。modules:支持原生 ES 模块的浏览器
+      target: "es2015", // 浏览器兼容性
+      cssTarget: "chrome79", // 此选项允许用户为 CSS 的压缩设置一个不同的浏览器 target
+      chunkSizeWarningLimit: 2000, // chunk 大小警告的限制（以 kbs 为单位）。
       outDir: "dist", // 指定输出路径
-      assetsDir: "assets", // 指定生成静态资源的存放路径
+      assetsDir: "static", // 指定生成静态资源的存放路径（相对于 build.outDir）。
+      manifest: false, // 当设置为 true，构建后将会生成 manifest.json 文件，包含了没有被 hash 的资源文件名和 hash 后版本的映射。可以为一些服务器框架渲染时提供正确的资源引入链接。
       assetsInlineLimit: "4096", // 小于此阈值的导入或引用资源将内联为base64编码，设置为0可禁用此项。默认4096（4kb）
       cssCodeSplit: true, // 启用/禁用CSS代码拆分，如果禁用，整个项目的所有CSS将被提取到一个CSS文件中,默认true
       sourcemap: false, // 构建后是否生成 source map 文件

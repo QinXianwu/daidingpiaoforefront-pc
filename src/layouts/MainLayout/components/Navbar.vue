@@ -23,7 +23,7 @@
       <!-- 用户头像 -->
       <ElDropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper hover-effect">
-          <el-image class="user-avatar" src=""></el-image>
+          <el-image class="user-avatar" :src="defaultUserAvatar"></el-image>
           <i class="el-icon-caret-bottom" />
         </div>
         <ElDropdownMenu slot="dropdown">
@@ -55,6 +55,9 @@ export default {
     mainAccountId() {
       const id = this.$store.state.app.McatGlobal?.UserAccount?.UserId;
       return id ? String(id) : "";
+    },
+    defaultUserAvatar() {
+      return require("assets/images/user_avatar.png");
     },
   },
   methods: {
