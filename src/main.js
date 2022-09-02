@@ -7,6 +7,7 @@ import "@/plugins/index.js";
 import "./assets/styles/index.scss";
 import "./icons"; // icon
 import "virtual:svg-icons-register";
+
 import CONST from "@/constants/index";
 import Clipboard from "v-clipboard"; //复制到剪贴板功能
 Vue.use(Clipboard);

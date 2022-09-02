@@ -27,18 +27,13 @@
 import { mapGetters } from "vuex";
 import Logo from "./Logo";
 import SidebarItem from "./SidebarItem";
-import { constantRoutes } from "@/router";
+import { asyncRoutes } from "@/router";
 export default {
   components: { Logo, SidebarItem },
-  watch: {
-    isCollapse(val) {
-      console.log(val);
-    },
-  },
   computed: {
     ...mapGetters(["sidebar"]),
     routesList() {
-      return constantRoutes;
+      return asyncRoutes;
       // return this.$router.options.routes; // 展示使用路由的结构
       // return this.$store.state.permission.routes; // 计算权限后的路由
     },

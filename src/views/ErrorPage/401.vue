@@ -28,7 +28,7 @@ export default {
       if (!document.cookie.includes("user_sessino")) {
         this.$store.dispatch("user/LoginAsync");
       } else {
-        this.$router.push({ name: "BasicFacts" }); // 跳转首页
+        this.$router.replace({ name: "BasicFacts" }); // 跳转首页
         // this.$router.go(-1);
       }
     },

@@ -10,7 +10,7 @@ let requestNum = 0, // 累计请求数
 // lastMsg = ""; //上一条消息 用来判断是否重复消息
 const service = axios.create({
   // baseURL: `/${window.McatGlobal?.AppInfo?.Application?.ApplicationBaseInfo?.Route}`, // 后端服务渲染，根据中台配置而来，需要和后端沟通约定
-  baseURL: "",
+  baseURL: process.env.BASE_API,
   timeout: 60000,
   withCredentials: true, // 是否允许带cookie这些
   headers: {
@@ -219,4 +219,4 @@ export function jsonp(url, params) {
 }
 
 // 接口前缀
-export const apiPrefix = process.env.VUE_APP_API_PREFIX;
+export const apiPrefix = process.env.VITE_APP_API_PREFIX;

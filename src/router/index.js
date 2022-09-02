@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-import MainLayout from "@/layouts/MainLayout/index";
 import routerList from "./modules/index";
+import beforeEachFun from "./beforeEachFun";
+import MainLayout from "@/layouts/MainLayout/index";
 import startPageIntro from "@/pagesIntro/index";
 
 // 读取 module 文件夹的路由js
@@ -21,6 +22,13 @@ Router.prototype.push = function push(location) {
  * 所有角色都可以访问
  */
 export const constantRoutes = [
+  {
+    path: "/",
+    alias: "/Authorization/Login",
+    meta: { auth: false },
+    component: () => import("@/views/Authorization/views/Login"),
+    hidden: true,
+  },
   // redirect 框架的重定向页面，刷新的时候会跳转到这个页面再跳回去
   {
     path: "/redirect",
@@ -35,14 +43,17 @@ export const constantRoutes = [
   },
   {
     path: "/404",
+    meta: { auth: false },
     component: () => import("@/views/ErrorPage/404"),
     hidden: true,
   },
   {
     path: "/401",
+    meta: { auth: false },
     component: () => import("@/views/ErrorPage/401"),
     hidden: true,
   },
+  { path: "*", redirect: "/404", hidden: true },
   ...routerList,
 ];
 
@@ -80,5 +91,6 @@ export function resetRouter() {
   const newRouter = createRouter();
   router.matcher = newRouter.matcher; // reset router
 }
+router.beforeEach(beforeEachFun);
 
 export default router;
