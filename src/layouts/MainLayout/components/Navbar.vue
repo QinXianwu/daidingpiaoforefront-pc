@@ -23,7 +23,7 @@
       <!-- 用户头像 -->
       <ElDropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper hover-effect">
-          <el-image class="user-avatar" :src="defaultUserAvatar"></el-image>
+          <el-image class="user-avatar" :src="userAvatar"></el-image>
           <i class="el-icon-caret-bottom" />
         </div>
         <ElDropdownMenu slot="dropdown">
@@ -38,12 +38,12 @@
 
 <script>
 import { mapActions } from "vuex";
+import defaultUserAvatar from "assets/images/user_avatar.png";
 import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 import Screenfull from "@/components/Screenfull";
 // import SearchUser from "@/components/SearchUser";
 import CopyButton from "@/components/CopyButton/index";
-import defaultUserAvatar from "assets/images/user_avatar.png";
 export default {
   components: {
     Breadcrumb,
@@ -57,9 +57,9 @@ export default {
       const id = this.$store.state.app.McatGlobal?.UserAccount?.UserId;
       return id ? String(id) : "";
     },
-  },
-  data() {
-    return { defaultUserAvatar };
+    userAvatar() {
+      return defaultUserAvatar;
+    },
   },
   methods: {
     ...mapActions({
