@@ -8,9 +8,8 @@ import ViteRequireContext from "@originjs/vite-plugin-require-context";
 import { resolve } from "path";
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, "./", "");
+  const env = loadEnv(mode, process.cwd(), "");
   // const idDev = mode !== "production";
-  console.log(env);
   console.log(env.VITE_APP_API_PREFIX, mode);
   return {
     plugins: [
@@ -23,7 +22,7 @@ export default defineConfig(({ mode }) => {
       ViteRequireContext(),
       createSvgIconsPlugin({
         // 指定要缓存的图标文件夹
-        iconDirs: [resolve("./", "src/icons/svg")],
+        iconDirs: [resolve(process.cwd(), "src/icons/svg")],
         // 执行icon name的格式
         // symbolId: "icon-[dir]-[name]",
         symbolId: "icon-[name]",
@@ -32,7 +31,8 @@ export default defineConfig(({ mode }) => {
     base: mode === "production" ? "./" : "/", // 在生产中服务时的基本公共路径
     publicDir: "public", // 静态资源服务的文件夹, 默认"public"
     define: {
-      "process.env": {},
+      // "process.env": env, // 打包之后运行项目会报错
+      process: { env },
     },
     esbuild: {
       jsxFactory: "h",
@@ -64,6 +64,7 @@ export default defineConfig(({ mode }) => {
     lintOnSave: false,
     // 打包配置
     build: {
+      publicPath: "./",
       target: "es2015", // 浏览器兼容性
       cssTarget: "chrome79", // 此选项允许用户为 CSS 的压缩设置一个不同的浏览器 target
       chunkSizeWarningLimit: 2000, // chunk 大小警告的限制（以 kbs 为单位）。

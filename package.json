@@ -9,7 +9,7 @@
     "serve.prod": "vite --mode prod",
     "build.pre": "vite build --mode pre",
     "build.prod": "vite build --mode prod",
-    "preview": "vite preview",
+    "preview": "vite preview --mode development",
     "prepare": "husky install",
     "lint": "eslint src --ext .js,.jsx",
     "lint-staged": "lint-staged"

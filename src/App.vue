@@ -10,6 +10,7 @@ export default {
     // 设置应用title
     // document.title = "代订票系统";
     document.title = this.$store.state.app.McatGlobal?.AppInfo?.AppTitle || "";
+    console.log(import.meta.env);
   },
 };
 </script>
