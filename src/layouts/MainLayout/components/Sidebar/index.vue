@@ -30,6 +30,11 @@ import SidebarItem from "./SidebarItem";
 import { constantRoutes } from "@/router";
 export default {
   components: { Logo, SidebarItem },
+  watch: {
+    isCollapse(val) {
+      console.log(val);
+    },
+  },
   computed: {
     ...mapGetters(["sidebar"]),
     routesList() {

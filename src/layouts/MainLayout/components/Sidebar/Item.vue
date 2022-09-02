@@ -2,14 +2,12 @@
   <div>
     <i :class="`${icon} sub-el-icon`" v-if="icon && icon.includes('el-icon')" />
     <svg-icon :icon-class="icon" v-else-if="icon" />
-    <span slot="title" v-show="title || isCollapse">{{ title }}</span>
+    <span slot="title">{{ title }}</span>
   </div>
 </template>
 
 <!-- <script> -->
 <script lang="jsx">
-import { mapGetters } from "vuex";
-
 export default {
   name: "MenuItem",
   // functional: true,
@@ -21,12 +19,6 @@ export default {
     title: {
       type: String,
       default: "",
-    },
-  },
-  computed: {
-    ...mapGetters(["sidebar"]),
-    isCollapse() {
-      return !this.sidebar.opened;
     },
   },
   // render(h, context) {

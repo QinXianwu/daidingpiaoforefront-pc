@@ -2,10 +2,14 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/index";
 import store from "./store/index";
+import api from "@/api/module";
 import "@/plugins/index.js";
 import "./assets/styles/index.scss";
 import "./icons"; // icon
+import "virtual:svg-icons-register";
 import CONST from "@/constants/index";
+import Clipboard from "v-clipboard"; //复制到剪贴板功能
+Vue.use(Clipboard);
 
 // 公用组件
 import SearchForm from "@/components/SearchForm"; //搜索栏
@@ -29,7 +33,9 @@ console.log("process.env", process.env);
 import filters from "@/filters/index";
 Object.keys(filters).forEach((k) => Vue.filter(k, filters[k]));
 
+Vue.config.productionTip = false;
 Vue.prototype.AJAX_CODE = CONST.AJAX_CODE;
+Vue.prototype.$http = api;
 Vue.prototype.$CONST = CONST; // 全局挂载常量
 
 new Vue({

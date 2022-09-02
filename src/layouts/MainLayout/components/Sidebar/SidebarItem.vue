@@ -16,10 +16,16 @@
           :index="resolvePath(onlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
-          <Item
+          <!-- <Item
             :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
             :title="onlyOneChild.meta.title"
+          /> -->
+          <i
+            :class="`${icon} sub-el-icon`"
+            v-if="icon && icon.includes('el-icon')"
           />
+          <svg-icon :icon-class="icon" v-else-if="icon" />
+          <span slot="title">{{ onlyOneChild.meta.title }}</span>
         </ElMenuItem>
       </AppLink>
     </template>
@@ -31,11 +37,17 @@
       popper-append-to-body
     >
       <template slot="title">
-        <Item
+        <!-- <Item
           v-if="item.meta"
           :icon="item.meta && item.meta.icon"
           :title="item.meta.title"
+        /> -->
+        <i
+          :class="`${icon} sub-el-icon`"
+          v-if="item.meta && icon && icon.includes('el-icon')"
         />
+        <svg-icon :icon-class="icon" v-else-if="item.meta && icon" />
+        <span slot="title" v-if="item.meta">{{ onlyOneChild.meta.title }}</span>
       </template>
       <SidebarItem
         v-for="child in item.children"
@@ -52,13 +64,16 @@
 <script>
 import path from "path";
 import { isExternal } from "@/utils/validate";
-import Item from "./Item";
+// import Item from "./Item";
 import AppLink from "./Link";
 import FixiOSBug from "./FixiOSBug";
 
 export default {
   name: "SidebarItem",
-  components: { Item, AppLink },
+  components: {
+    // Item,
+    AppLink,
+  },
   mixins: [FixiOSBug],
   props: {
     // route object
@@ -116,5 +131,18 @@ export default {
       return path.resolve(this.basePath, routePath);
     },
   },
+  computed: {
+    icon({ onlyOneChild, item }) {
+      return onlyOneChild.meta.icon || (item.meta && item.meta.icon);
+    },
+  },
 };
 </script>
+
+<style scoped>
+.sub-el-icon {
+  color: currentColor;
+  width: 1em;
+  height: 1em;
+}
+</style>

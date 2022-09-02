@@ -7,7 +7,7 @@ export default {
   redirect: "/Client/ClientList",
   meta: {
     title: "会员管理",
-    icon: "huiyuan_o",
+    icon: "el-icon-user-solid",
     affix: true,
     // 添加权限ID，如果不添加的话，默认所有角色都可以访问
   },

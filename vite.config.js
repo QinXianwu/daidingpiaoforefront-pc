@@ -2,7 +2,7 @@ require("./env.config/index"); // 再次处理 process.env 变量
 import { defineConfig, loadEnv } from "vite";
 import { createVuePlugin } from "vite-plugin-vue2";
 // import vue from "@vitejs/plugin-vue";
-// import pathResolve from "vite-plugin-path-resolve";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { viteCommonjs } from "@originjs/vite-plugin-commonjs";
 import ViteRequireContext from "@originjs/vite-plugin-require-context";
 import { resolve } from "path";
@@ -20,6 +20,13 @@ export default defineConfig(({ mode }) => {
       // pathResolve(),
       viteCommonjs(),
       ViteRequireContext(),
+      createSvgIconsPlugin({
+        // 指定要缓存的图标文件夹
+        iconDirs: [resolve(process.cwd(), "src/icons/svg")],
+        // 执行icon name的格式
+        // symbolId: "icon-[dir]-[name]",
+        symbolId: "icon-[name]",
+      }),
     ], // 配置需要使用的插件列表
     base: "./", // 在生产中服务时的基本公共路径
     publicDir: "public", // 静态资源服务的文件夹, 默认"public"

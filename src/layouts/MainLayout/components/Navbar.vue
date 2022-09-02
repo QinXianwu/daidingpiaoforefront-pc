@@ -17,7 +17,7 @@
         </CopyButton>
       </span>
 
-      <SearchUser />
+      <!-- <SearchUser /> -->
       <Screenfull id="screenfull" class="right-menu-item hover-effect" />
 
       <!-- 用户头像 -->
@@ -41,14 +41,14 @@ import { mapActions } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 import Screenfull from "@/components/Screenfull";
-import SearchUser from "@/components/SearchUser";
+// import SearchUser from "@/components/SearchUser";
 import CopyButton from "@/components/CopyButton/index";
 export default {
   components: {
     Breadcrumb,
     Hamburger,
     Screenfull,
-    SearchUser,
+    // SearchUser,
     CopyButton,
   },
   computed: {
