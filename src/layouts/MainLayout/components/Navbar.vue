@@ -43,6 +43,7 @@ import Hamburger from "@/components/Hamburger";
 import Screenfull from "@/components/Screenfull";
 // import SearchUser from "@/components/SearchUser";
 import CopyButton from "@/components/CopyButton/index";
+import defaultUserAvatar from "assets/images/user_avatar.png";
 export default {
   components: {
     Breadcrumb,
@@ -56,9 +57,9 @@ export default {
       const id = this.$store.state.app.McatGlobal?.UserAccount?.UserId;
       return id ? String(id) : "";
     },
-    defaultUserAvatar() {
-      return require("assets/images/user_avatar.png");
-    },
+  },
+  data() {
+    return { defaultUserAvatar };
   },
   methods: {
     ...mapActions({

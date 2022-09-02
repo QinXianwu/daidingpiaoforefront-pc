@@ -34,10 +34,6 @@ export default defineConfig(({ mode }) => {
       // "process.env": env, // 打包之后运行项目会报错
       process: { env },
     },
-    esbuild: {
-      jsxFactory: "h",
-      jsxFragment: "Fragment",
-    },
     resolve: {
       alias: {
         "@": resolve(__dirname, "./src"),
@@ -64,7 +60,6 @@ export default defineConfig(({ mode }) => {
     lintOnSave: false,
     // 打包配置
     build: {
-      publicPath: "./",
       target: "es2015", // 浏览器兼容性
       cssTarget: "chrome79", // 此选项允许用户为 CSS 的压缩设置一个不同的浏览器 target
       chunkSizeWarningLimit: 2000, // chunk 大小警告的限制（以 kbs 为单位）。
