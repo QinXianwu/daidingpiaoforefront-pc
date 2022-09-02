@@ -46,8 +46,6 @@ export const constantRoutes = [
   ...routerList,
 ];
 
-console.log("constantRoutes", constantRoutes);
-
 /**
  * 根据后台返回的权限列表
  * 异步加载的的路由

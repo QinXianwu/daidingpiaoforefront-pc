@@ -26,9 +26,6 @@ export default {
       default: "",
     },
   },
-  created() {
-    console.log(this.styleExternalIcon);
-  },
   computed: {
     isExternal() {
       return isExternal(this.iconClass);
