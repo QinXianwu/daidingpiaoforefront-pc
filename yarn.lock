@@ -797,6 +797,11 @@
   resolved "https://registry.npmmirror.com/@types/node/-/node-14.18.26.tgz"
   integrity sha512-0b+utRBSYj8L7XAp0d+DX7lI4cSmowNaaTkk6/1SKzbKkG+doLuPusB9EOvzLJ8ahJSk03bTLIL6cWaEd4dBKA==
 
+"@types/node@^10.3.6":
+  version "10.17.60"
+  resolved "https://registry.npmmirror.com/@types/node/-/node-10.17.60.tgz#35f3d6213daed95da7f0f73e75bcc6980e90597b"
+  integrity sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==
+
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
   resolved "https://registry.npmmirror.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz"
@@ -1695,14 +1700,7 @@ create-require@^1.1.0:
   resolved "https://registry.npmmirror.com/create-require/-/create-require-1.1.1.tgz"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
 
-cross-env@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.npmmirror.com/cross-env/-/cross-env-7.0.3.tgz"
-  integrity sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==
-  dependencies:
-    cross-spawn "^7.0.1"
-
-cross-spawn@^7.0.1, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
+cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.npmmirror.com/cross-spawn/-/cross-spawn-7.0.3.tgz"
   integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
@@ -4418,6 +4416,11 @@ process@^0.11.1:
   resolved "https://registry.npmmirror.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==
 
+progress@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.npmmirror.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
+  integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
+
 pseudomap@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmmirror.com/pseudomap/-/pseudomap-1.0.2.tgz"
@@ -4460,6 +4463,13 @@ quick-lru@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npmmirror.com/quick-lru/-/quick-lru-4.0.1.tgz"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
+
+rd@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmmirror.com/rd/-/rd-2.0.1.tgz#e18a8af5b2f7440c0db1523ca04c6e0f9660003f"
+  integrity sha512-/XdKU4UazUZTXFmI0dpABt8jSXPWcEyaGdk340KdHnsEOdkTctlX23aAK7ChQDn39YGNlAJr1M5uvaKt4QnpNw==
+  dependencies:
+    "@types/node" "^10.3.6"
 
 react-is@^17.0.1:
   version "17.0.2"
@@ -5726,6 +5736,15 @@ vfile@^3.0.0:
     replace-ext "1.0.0"
     unist-util-stringify-position "^1.0.0"
     vfile-message "^1.0.0"
+
+vite-plugin-progress@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.npmmirror.com/vite-plugin-progress/-/vite-plugin-progress-0.0.3.tgz#0cb2f3b2fd32b68eb030b2d505d14270b12a1aba"
+  integrity sha512-MrWYs5oJTlr4j6djJEMmW3PX4VVH+mTiJo13xPvGDYdRgUPi/rykYlj2cAB1dj6CDSbc2HMNiOvsxml0vhQhrw==
+  dependencies:
+    picocolors "^1.0.0"
+    progress "^2.0.3"
+    rd "^2.0.1"
 
 vite-plugin-svg-icons@^2.0.1:
   version "2.0.1"

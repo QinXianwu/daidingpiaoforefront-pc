@@ -1,36 +1,42 @@
-require("./env.config/index"); // 再次处理 process.env 变量
 import { defineConfig, loadEnv } from "vite";
 import { createVuePlugin } from "vite-plugin-vue2";
 // import vue from "@vitejs/plugin-vue";
+import progress from "vite-plugin-progress";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { viteCommonjs } from "@originjs/vite-plugin-commonjs";
 import ViteRequireContext from "@originjs/vite-plugin-require-context";
 import { resolve } from "path";
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), "");
+  const env = loadEnv(mode, "./", "");
   // const idDev = mode !== "production";
-  // console.log(mode, env.VITE_APP_MCAT_ENVIRONMENT);
+  console.log(env);
+  console.log(env.VITE_APP_API_PREFIX, mode);
   return {
     plugins: [
       createVuePlugin({
         jsx: true,
       }),
       // vue(),
+      progress(),
       viteCommonjs(),
       ViteRequireContext(),
       createSvgIconsPlugin({
         // 指定要缓存的图标文件夹
-        iconDirs: [resolve(process.cwd(), "src/icons/svg")],
+        iconDirs: [resolve("./", "src/icons/svg")],
         // 执行icon name的格式
         // symbolId: "icon-[dir]-[name]",
         symbolId: "icon-[name]",
       }),
     ], // 配置需要使用的插件列表
-    base: "./", // 在生产中服务时的基本公共路径
+    base: mode === "production" ? "./" : "/", // 在生产中服务时的基本公共路径
     publicDir: "public", // 静态资源服务的文件夹, 默认"public"
     define: {
-      "process.env": process.env,
+      "process.env": {},
+    },
+    esbuild: {
+      jsxFactory: "h",
+      jsxFragment: "Fragment",
     },
     resolve: {
       alias: {
@@ -68,6 +74,13 @@ export default defineConfig(({ mode }) => {
       cssCodeSplit: true, // 启用/禁用CSS代码拆分，如果禁用，整个项目的所有CSS将被提取到一个CSS文件中,默认true
       sourcemap: false, // 构建后是否生成 source map 文件
       minify: "terser", // 混淆器，terser构建后文件体积更小
+      rollupOptions: {
+        output: {
+          chunkFileNames: "js/[name]-[hash].js",
+          entryFileNames: "js/[name]-[hash].js",
+          assetFileNames: "[ext]/[name]-[hash].[ext]",
+        },
+      },
       terserOptions: {
         compress: {
           drop_console: true,

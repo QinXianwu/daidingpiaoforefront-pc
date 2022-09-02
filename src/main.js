@@ -28,9 +28,6 @@ Vue.component("MTImage", MTImage);
 Vue.component("DrawerPopup", DrawerPopup);
 Vue.component("PageWrapper", PageWrapper);
 
-// 打包需隐藏
-// console.log("process.env", process.env);
-
 // 注册filter
 import filters from "@/filters/index";
 Object.keys(filters).forEach((k) => Vue.filter(k, filters[k]));
