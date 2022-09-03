@@ -96,11 +96,17 @@ export default defineConfig(({ mode }) => {
         "Access-Control-Allow-Origin": "*",
       },
       proxy: {
-        "/api": {
+        [env.VITE_APP_API_PREFIX]: {
           target: env.VITE_APP_BASE_API_URL, //代理接口
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ""),
+          rewrite: (path) =>
+            path.replace(env.VITE_APP_API_PREFIX, env.VITE_APP_API_PREFIX),
         },
+        // "/api": {
+        //   target: env.VITE_APP_BASE_API_URL, //代理接口
+        //   changeOrigin: true,
+        //   rewrite: (path) => path.replace(/^\/api/, "/api"),
+        // },
       },
     },
   };

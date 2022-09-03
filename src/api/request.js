@@ -3,15 +3,14 @@ import ELEMENT from "element-ui";
 const { Loading, Message } = ELEMENT;
 import CONST from "@/constants/index";
 import store from "@/store/index";
-import { isField } from "@/utils";
+// import { isField } from "@/utils";
 let requestNum = 0, // 累计请求数
   loadingInstance = null, // loading实例
   un_login = false; // 是否未登陆，用于判断提示登陆的次数
 // lastMsg = ""; //上一条消息 用来判断是否重复消息
 const service = axios.create({
   // baseURL: `/${window.McatGlobal?.AppInfo?.Application?.ApplicationBaseInfo?.Route}`, // 后端服务渲染，根据中台配置而来，需要和后端沟通约定
-  // baseURL: process.env.BASE_API,
-  baseURL: import.meta.env.VITE_BASE_API,
+  baseURL: import.meta.env.VITE_APP_BASE_API_URL,
   timeout: 60000,
   withCredentials: true, // 是否允许带cookie这些
   headers: {
@@ -40,22 +39,24 @@ service.interceptors.response.use(
     const { data, config } = response;
     // 判断此接口是否需要完整返回后端返回的数据
     if (config.isReturnAll) return data;
+    console.log(data);
 
     // 对本地环境以及线上环境返回不一样字段名进行处理
     if (data) {
-      if (!isField(data, "Code") && isField(data, "id")) data.Code = data.id;
-      if (!isField(data, "Message") && isField(data, "messages"))
-        data.Message = data.messages;
-      if (!isField(data, "Data") && isField(data, "data"))
-        data.Data = data.data;
-      if (!data.Message && data?.Code !== CONST.AJAX_CODE.SUCCESS)
-        data.Message = "未知错误";
+      // if (!isField(data, "retCode") && isField(data, "id"))
+      //   data.retCode = data.id;
+      // // if (!isField(data, "Message") && isField(data, "message"))
+      // //   data.Message = data.message;
+      // if (!isField(data, "Data") && isField(data, "bodyInfo"))
+      //   data.Data = data.bodyInfo; // 封装响应体
+      if (!data.message && data?.retCode !== CONST.AJAX_CODE.SUCCESS)
+        data.message = "未知错误";
     }
 
     // 判断是否返回正确的业务编码，返回正确的时候则直接返回主体
-    if (data?.Code === CONST.AJAX_CODE.SUCCESS) return data.Data || true;
+    if (data?.retCode === CONST.AJAX_CODE.SUCCESS) return data.bodyInfo || true;
 
-    config.isErrorTips && Message({ type: "error", message: data?.Message });
+    config.isErrorTips && Message.error(data?.message);
     return Promise.reject(data);
   },
 
@@ -127,7 +128,7 @@ service.interceptors.response.use(
         un_login = true;
       }
     } else {
-      Message({ type: "error", message: error.message });
+      Message.error(error.message);
     }
     return Promise.reject(error.message);
   }
@@ -221,4 +222,3 @@ export function jsonp(url, params) {
 
 // 接口前缀
 export const apiPrefix = import.meta.env.VITE_APP_API_PREFIX;
-// export const apiPrefix = process.env.VITE_APP_API_PREFIX;

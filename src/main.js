@@ -3,9 +3,10 @@ import App from "./App.vue";
 import router from "./router/index";
 import store from "./store/index";
 import api from "@/api/module";
-import "@/plugins/index.js";
+import "@/plugins/index";
 import "./assets/styles/index.scss";
 import "./icons"; // icon
+// import { i18n } from "@/lang/index"; // 多语言
 import "virtual:svg-icons-register";
 
 import CONST from "@/constants/index";
@@ -41,5 +42,6 @@ new Vue({
   el: "#app",
   router,
   store,
+  // i18n,
   render: (h) => h(App),
 });
