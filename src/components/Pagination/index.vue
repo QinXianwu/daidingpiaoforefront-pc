@@ -14,6 +14,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
+      :page-sizes="pageSizes"
       :page-size="pageSize"
       :layout="layout"
       :total="total"
