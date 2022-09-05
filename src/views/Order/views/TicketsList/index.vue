@@ -57,6 +57,9 @@ export default {
     };
   },
   computed: {},
+  created() {
+    console.log(this.$route.query);
+  },
   methods: {
     handleSizeChange(val) {
       this.page.rows = val;
