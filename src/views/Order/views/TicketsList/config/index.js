@@ -18,33 +18,37 @@ export const formData = [
 // 表格头
 export const column = [
   {
-    label: "经销商信息",
-    prop: "client",
+    label: "订单号",
+    prop: "order_code",
     width: 200,
   },
   {
-    label: "手机号",
-    prop: "mobile",
+    label: "发车时间",
+    prop: "departure_time",
     width: 120,
   },
   {
-    label: "渠道",
-    prop: "channel",
+    label: "车次",
+    prop: "trips_number",
   },
   {
-    label: "资产",
-    prop: "account",
-    type: "custom",
-    width: 150,
+    label: "发/到站",
+    prop: "start_end_station",
   },
   {
-    label: "授权区域",
-    prop: "region_award",
-    type: "custom",
-    width: 160,
+    label: "订单标记",
+    prop: "order_mark",
   },
   {
-    label: "编辑",
+    label: "处理倒计时",
+    prop: "process_countdown",
+  },
+  {
+    label: "订单时间",
+    prop: "order_time",
+  },
+  {
+    label: "操作",
     prop: "action",
     type: "custom",
     fixed: "right",
