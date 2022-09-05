@@ -51,5 +51,6 @@ input[type="number"] {
 }
 .view-container {
   padding: 20px;
+  margin: 20px;
 }
 </style>

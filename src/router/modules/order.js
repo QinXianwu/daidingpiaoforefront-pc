@@ -1,12 +1,12 @@
 import MainLayout from "@/layouts/MainLayout/index";
-import Tickets from "@/views/Order/views/Tickets/index.vue";
+import TicketsList from "@/views/Order/views/TicketsList/index.vue";
 import AfterSales from "@/views/Order/views/AfterSales/index.vue";
 import AfterSalesLogistics from "@/views/Order/views/AfterSalesLogistics/index.vue";
 
 export default {
   path: "/Order",
   component: MainLayout,
-  redirect: "/Order/Tickets",
+  redirect: "/Order/TicketsList",
   meta: {
     title: "订单出票",
     icon: "el-icon-s-help",
@@ -14,9 +14,9 @@ export default {
   },
   children: [
     {
-      path: "Tickets",
-      component: Tickets,
-      name: "Tickets",
+      path: "TicketsList",
+      component: TicketsList,
+      name: "TicketsList",
       meta: {
         title: "打票及回填",
       },

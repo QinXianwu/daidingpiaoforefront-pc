@@ -23,7 +23,7 @@
       <!-- 用户头像 -->
       <ElDropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper hover-effect">
-          <el-image class="user-avatar" :src="userAvatar"></el-image>
+          <el-image class="user-avatar" :src="userAvatar" />
           <i class="el-icon-caret-bottom" />
         </div>
         <ElDropdownMenu slot="dropdown">
