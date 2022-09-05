@@ -1,9 +1,10 @@
 <template>
-  <div class="Level">会员等级</div>
+  <div class="view-container">AfterSalesLogistics</div>
 </template>
 
 <script>
 export default {
+  name: "AfterSalesLogistics",
   components: {},
   data() {
     return {};
@@ -12,8 +13,4 @@ export default {
   methods: {},
 };
 </script>
-<style lang="scss" scoped>
-.Level {
-  padding: 20px;
-}
-</style>
+<style lang="scss" scoped></style>

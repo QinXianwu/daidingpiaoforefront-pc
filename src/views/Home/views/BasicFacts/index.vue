@@ -1,5 +1,5 @@
 <template>
-  <div class="BasicFacts">
+  <div class="view-container">
     <div>home</div>
     <el-button type="primary" @click="setLockOrder">锁单</el-button>
   </div>
@@ -18,9 +18,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.BasicFacts {
-  padding: 20px;
-}
 .orderTotal {
   display: flex;
   justify-content: space-between;

@@ -49,4 +49,7 @@ input[type="number"] {
   border-top: $--table-border;
   padding: 10px 20px;
 }
+.view-container {
+  padding: 20px;
+}
 </style>

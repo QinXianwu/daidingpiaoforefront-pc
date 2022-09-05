@@ -47,7 +47,7 @@
           v-if="item.meta && icon && icon.includes('el-icon')"
         />
         <svg-icon :icon-class="icon" v-else-if="item.meta && icon" />
-        <span slot="title" v-if="item.meta">{{ onlyOneChild.meta.title }}</span>
+        <span slot="title" v-if="item.meta">{{ item.meta.title }}</span>
       </template>
       <SidebarItem
         v-for="child in item.children"

@@ -27,7 +27,7 @@
 // import menuItem from "./menuItem.vue";
 import { mapState } from "vuex";
 export default {
-  // name: 'mt-menu',
+  name: "mt-menu",
   props: {
     title: {
       type: String,

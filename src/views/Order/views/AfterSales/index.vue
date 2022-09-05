@@ -1,9 +1,10 @@
 <template>
-  <div class="ClientList">会员列表</div>
+  <div class="view-container">AfterSales</div>
 </template>
 
 <script>
 export default {
+  name: "AfterSales",
   components: {},
   data() {
     return {};
@@ -12,8 +13,4 @@ export default {
   methods: {},
 };
 </script>
-<style lang="scss" scoped>
-.ClientList {
-  padding: 20px;
-}
-</style>
+<style lang="scss" scoped></style>
