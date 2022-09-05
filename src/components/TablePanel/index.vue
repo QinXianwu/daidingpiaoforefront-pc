@@ -297,7 +297,10 @@ export default {
       margin-left: 16px;
     }
   }
-  ::v-deep .el-table .el-table__header th.el-table__cell {
+  // 该element版本的表格 没有el-table__cell类名
+  ::v-deep .el-table .el-table__header th {
+    // ::v-deep .el-table .el-table__header th.el-table__cell {
+
     background-color: #f7f8fa;
     .cell {
       font-size: 14px;
