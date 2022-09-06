@@ -42,6 +42,7 @@ export const column = [
   {
     label: "处理倒计时",
     prop: "process_countdown",
+    type: "custom",
   },
   {
     label: "订单时间",

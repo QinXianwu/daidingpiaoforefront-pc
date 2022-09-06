@@ -110,3 +110,60 @@ export const getOptionsByText = (textHash) => {
     value: /^\d+$/.test(key) ? Number(key) : key, // 如果是全数字字符串转为数字类型
   }));
 };
+
+/**
+ * @desc 函数节流
+ * @param func 函数
+ * @param wait 延迟执行毫秒数
+ * @param type 1 使用表时间戳，在时间段开始的时候触发 2 使用表定时器，在时间段结束的时候触发
+ */
+export function throttle(func, wait = 1000, type = 1) {
+  let previous = 0;
+  let timeout;
+  return function () {
+    let context = this;
+    let args = arguments;
+    if (type === 1) {
+      let now = Date.now();
+
+      if (now - previous > wait) {
+        func.apply(context, args);
+        previous = now;
+      }
+    } else if (type === 2) {
+      if (!timeout) {
+        timeout = setTimeout(() => {
+          timeout = null;
+          func.apply(context, args);
+        }, wait);
+      }
+    }
+  };
+}
+
+/**
+ * @desc 函数防抖
+ * @param func 函数
+ * @param wait 延迟执行毫秒数
+ * @param immediate true 表立即执行，false 表非立即执行
+ */
+export function debounce(func, wait, immediate = false) {
+  let timerId;
+  return function () {
+    let context = this;
+    let args = arguments;
+
+    if (timerId) clearTimeout(timerId);
+    if (immediate) {
+      let callNow = !timerId;
+      timerId = setTimeout(function () {
+        timerId = null;
+      }, wait);
+      if (callNow) func.apply(context, args);
+    } else {
+      timerId = setTimeout(() => {
+        func.apply(context, args);
+      }, wait);
+    }
+  };
+}
