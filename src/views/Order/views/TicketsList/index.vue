@@ -58,7 +58,6 @@ export default {
     return {
       column, //表格头
       list: [],
-      order: "user_id desc",
       page: {
         rows: 10,
         page: 1,
