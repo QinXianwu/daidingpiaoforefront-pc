@@ -17,7 +17,7 @@ Vue.use(Clipboard);
 import SearchForm from "@/components/SearchForm"; //搜索栏
 import TablePanel from "@/components/TablePanel"; //表格
 import Pagination from "@/components/Pagination"; //分页
-import MTImage from "@/components/MTImage"; //图片
+import ImageView from "@/components/ImageView"; //图片
 import DrawerPopup from "@/components/DrawerPopup"; //抽屉弹窗
 import PageWrapper from "@/components/PageWrapper"; //基础的布局组件
 
@@ -25,7 +25,7 @@ import PageWrapper from "@/components/PageWrapper"; //基础的布局组件
 Vue.component("SearchForm", SearchForm);
 Vue.component("TablePanel", TablePanel);
 Vue.component("Pagination", Pagination);
-Vue.component("MTImage", MTImage);
+Vue.component("ImageView", ImageView);
 Vue.component("DrawerPopup", DrawerPopup);
 Vue.component("PageWrapper", PageWrapper);
 

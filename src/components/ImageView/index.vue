@@ -1,6 +1,6 @@
 <template>
   <el-image
-    class="MTImage"
+    class="ImageView"
     :class="customClass"
     :src="src"
     :fit="fit"
@@ -15,7 +15,7 @@
 </template>
 <script>
 export default {
-  name: "MTImage",
+  name: "ImageView",
   props: {
     src: {
       type: String,
@@ -56,7 +56,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.MTImage {
+.ImageView {
   flex-shrink: 0;
 }
 .image-slot {

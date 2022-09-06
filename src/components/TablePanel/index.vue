@@ -69,7 +69,7 @@
         <template slot-scope="scoped">
           <!-- 图片 -->
           <div v-if="item.type === 'image'">
-            <MTImage
+            <ImageView
               v-if="scoped.row[item.prop]"
               customClass="table-img"
               :src="scoped.row[item.prop]"
@@ -85,7 +85,7 @@
             "
           >
             <div class="flex flex-center flex-wrap">
-              <MTImage
+              <ImageView
                 v-for="(img, i) in scoped.row[item.prop]"
                 :key="i"
                 :src="img"
