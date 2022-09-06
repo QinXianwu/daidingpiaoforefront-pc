@@ -4582,6 +4582,11 @@ vite-plugin-progress@^0.0.3:
     progress "^2.0.3"
     rd "^2.0.1"
 
+vite-plugin-resolve-externals@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.npmmirror.com/vite-plugin-resolve-externals/-/vite-plugin-resolve-externals-0.2.2.tgz#5fadfa702b14044eddf464b5e7253a4189b37103"
+  integrity sha512-RHwCA5z+oGwxlqVSJq43qjphpImq8N44NwqjUVqK3aH13R1C4JJM7ApRtOmkfU2x/paN7kdSwf252VVfKEVsQw==
+
 vite-plugin-svg-icons@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmmirror.com/vite-plugin-svg-icons/-/vite-plugin-svg-icons-2.0.1.tgz#7269a0962593509f371b9e2bb344d469db2c6df9"
@@ -4661,10 +4666,10 @@ vue-i18n@8.26.7:
   resolved "https://registry.npmmirror.com/vue-i18n/-/vue-i18n-8.26.7.tgz#adfd48373449fe31438c48e3b3bd43044dc3a681"
   integrity sha512-7apa5PvRg1YCLoraE3lOgpCG8hJGupLCtywQWedWsgBbvF0TOgFvhitqK9xRH0PBGG1G8aiJz9oklyNDFfDxLg==
 
-vue-router@^3.0.1:
-  version "3.6.4"
-  resolved "https://registry.npmmirror.com/vue-router/-/vue-router-3.6.4.tgz#46b77eca93cd69f6840c4730b13976a130144ecc"
-  integrity sha512-QSJs5aKKPiwBH++gelVbnq0ZFbUZXjlsjAklUM+F8dtd49YY72QsD1uGpBk/cqLK1bkZ8HiqPjS8NkhaGtpqHw==
+vue-router@3.4.9:
+  version "3.4.9"
+  resolved "https://registry.npmmirror.com/vue-router/-/vue-router-3.4.9.tgz#c016f42030ae2932f14e4748b39a1d9a0e250e66"
+  integrity sha512-CGAKWN44RqXW06oC+u4mPgHLQQi2t6vLD/JbGRDAXm0YpMv0bgpKuU5bBd7AvMgfTz9kXVRIWKHqRwGEb8xFkA==
 
 vue-template-babel-compiler@^1.2.0:
   version "1.2.0"

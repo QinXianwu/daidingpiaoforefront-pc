@@ -1,11 +1,12 @@
 import { defineConfig, loadEnv } from "vite";
+import { resolve } from "path";
 import { createVuePlugin } from "vite-plugin-vue2";
 // import vue from "@vitejs/plugin-vue";
 import progress from "vite-plugin-progress";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { viteCommonjs } from "@originjs/vite-plugin-commonjs";
+// import resolveExternalsPlugin from "vite-plugin-resolve-externals";
 import ViteRequireContext from "@originjs/vite-plugin-require-context";
-import { resolve } from "path";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -27,6 +28,15 @@ export default defineConfig(({ mode }) => {
         // symbolId: "icon-[dir]-[name]",
         symbolId: "icon-[name]",
       }),
+      // resolveExternalsPlugin({
+      //   // 配置cdn导入的包文件 可以直接打印window
+      //   Vue: "Vue",
+      //   Vuex: "Vuex",
+      //   "Vue-Router": "VueRouter",
+      //   "Element-ui": "ElementUI",
+      //   Echarts: "echarts",
+      //   Axios: "axios",
+      // }),
     ], // 配置需要使用的插件列表
     base: mode === "production" ? "./" : "/", // 在生产中服务时的基本公共路径
     publicDir: "public", // 静态资源服务的文件夹, 默认"public"

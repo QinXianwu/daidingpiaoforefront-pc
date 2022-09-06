@@ -3,24 +3,35 @@
     <transition name="sidebarLogoFade">
       <router-link
         v-if="collapse"
+        to="/Home"
         key="collapse"
+        v-slot="{ navigate }"
         class="sidebar-logo-link"
-        to="/"
       >
-        <img
-          v-if="tenantInfo.logo"
-          :src="tenantInfo.logo"
-          class="sidebar-logo"
-        />
-        <h1 v-else class="sidebar-title">{{ tenantInfo.name }}</h1>
+        <span @click="navigate" @keypress.enter="navigate">
+          <img
+            v-if="tenantInfo.logo"
+            :src="tenantInfo.logo"
+            class="sidebar-logo"
+          />
+          <h1 v-else class="sidebar-title">{{ tenantInfo.name }}</h1>
+        </span>
       </router-link>
-      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img
-          v-if="tenantInfo.logo"
-          :src="tenantInfo.logo"
-          class="sidebar-logo"
-        />
-        <h1 class="sidebar-title">{{ tenantInfo.name }}</h1>
+      <router-link
+        v-else
+        to="/Home"
+        key="expand"
+        v-slot="{ navigate }"
+        class="sidebar-logo-link"
+      >
+        <span @click="navigate" @keypress.enter="navigate">
+          <img
+            v-if="tenantInfo.logo"
+            :src="tenantInfo.logo"
+            class="sidebar-logo"
+          />
+          <h1 class="sidebar-title">{{ tenantInfo.name }}</h1>
+        </span>
       </router-link>
     </transition>
   </div>
@@ -62,6 +73,7 @@ export default {
   background: #2b2f3a;
   text-align: center;
   overflow: hidden;
+  cursor: pointer;
 
   & .sidebar-logo-link {
     height: 100%;
