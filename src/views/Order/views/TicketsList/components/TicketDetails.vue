@@ -78,18 +78,20 @@ export default {
   }
   .content {
     display: flex;
-    padding: 20px;
+    flex-wrap: wrap;
+    padding: 20px 20px 10px;
     .item {
       display: flex;
-      margin-right: 20px;
       align-items: center;
+      margin-right: 20px;
+      margin-bottom: 10px;
     }
     .item-label {
       color: $sub-font-color;
       font-size: 14px;
     }
     .item-value {
-      padding: 6px 15px;
+      padding: 5px 20px;
       border-radius: 40px;
       font-weight: bold;
     }
