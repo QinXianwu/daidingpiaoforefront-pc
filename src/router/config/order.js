@@ -1,4 +1,4 @@
-import MultilayerRouter from "@/views/MultilayerRouter/index";
+import ChildrenView from "@/layouts/ChildrenView/index";
 import TicketsList from "@/views/Order/views/TicketsList/index.vue";
 import AfterSales from "@/views/Order/views/AfterSales/index.vue";
 import AfterSalesLogistics from "@/views/Order/views/AfterSalesLogistics/index.vue";
@@ -22,7 +22,7 @@ export default siteList.map((item, index) => {
   return {
     path: item?.path || `site-${index}`,
     name: item?.name || `site-${index}`,
-    component: MultilayerRouter,
+    component: ChildrenView,
     redirect: "/404",
     meta: {
       title: item?.title || `站点-${index}`,
