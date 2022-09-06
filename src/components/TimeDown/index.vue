@@ -120,7 +120,7 @@ export default {
     div {
       width: 20px;
       height: 20px;
-      line-height: 22px;
+      line-height: 20px;
       display: flex;
       justify-content: center;
       margin: 0 5px;
