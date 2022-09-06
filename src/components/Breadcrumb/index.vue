@@ -14,7 +14,8 @@
 </template>
 
 <script>
-import { pathToRegexp } from "path-to-regexp";
+// import { pathToRegexp } from "path-to-regexp";
+import * as pathToRegexp from "path-to-regexp";
 
 export default {
   data() {
@@ -69,6 +70,8 @@ export default {
     },
     handleLink(item) {
       const { redirect, path } = item;
+      console.log(path);
+
       if (redirect) {
         this.$router.push(redirect);
         return;
