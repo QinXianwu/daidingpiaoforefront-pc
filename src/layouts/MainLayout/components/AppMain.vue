@@ -1,5 +1,6 @@
 <template>
   <section class="app-main">
+    <!-- 主视图 -->
     <transition name="fadeLeft">
       <keep-alive :include="watchViews">
         <router-view :key="key" />
