@@ -23,6 +23,7 @@ export default siteList.map((item, index) => {
     path: item?.path || `site-${index}`,
     name: item?.name || `site-${index}`,
     component: MultilayerRouter,
+    redirect: "/404",
     meta: {
       title: item?.title || `站点-${index}`,
     },

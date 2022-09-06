@@ -4,7 +4,7 @@ import MainLayout from "@/layouts/MainLayout/index";
 export default {
   path: "/Order",
   component: MainLayout,
-  redirect: "/Order/TicketsList",
+  redirect: "/404",
   meta: {
     title: "订单出票",
     icon: "el-icon-s-help",
