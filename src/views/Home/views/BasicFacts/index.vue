@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
     <div>home</div>
-    <el-button type="primary" @click="setLockOrder">锁单</el-button>
+    <!-- <el-button type="primary" @click="setLockOrder">锁单</el-button> -->
   </div>
 </template>
 
