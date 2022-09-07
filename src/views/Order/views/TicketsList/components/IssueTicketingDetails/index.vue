@@ -234,7 +234,7 @@ export default {
   align-items: baseline;
 }
 .info-item {
-  margin-left: 40px;
+  margin-left: 35px;
 
   &-main {
     padding: 0 0 30px;
