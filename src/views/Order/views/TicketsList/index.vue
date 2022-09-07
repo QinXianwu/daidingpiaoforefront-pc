@@ -50,7 +50,7 @@ import { column } from "./config";
 import TimeDown from "@/components/TimeDown/index";
 import HeadContent from "./components/HeadContent.vue";
 import TicketDetails from "./components/TicketDetails.vue";
-import IssueTicketingDetails from "./components/IssueTicketingDetails.vue";
+import IssueTicketingDetails from "./components/IssueTicketingDetails/index";
 export default {
   name: "TicketsList",
   components: { HeadContent, TicketDetails, TimeDown, IssueTicketingDetails },
