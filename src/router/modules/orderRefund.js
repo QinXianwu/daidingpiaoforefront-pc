@@ -9,7 +9,7 @@ export default {
   redirect: "/OrderRefund/ReadyMoney",
   meta: {
     title: "订单退票",
-    icon: "el-icon-s-help",
+    icon: "refund",
     affix: true,
     // PermissionId: PERMISSION_ID.Home,
   },
