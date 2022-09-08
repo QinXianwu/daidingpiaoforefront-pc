@@ -7,7 +7,7 @@ export default {
   redirect: "/404",
   meta: {
     title: "订单出票",
-    icon: "dingdan_o",
+    icon: "order",
     affix: true,
   },
   children: orderRouterChildren,
