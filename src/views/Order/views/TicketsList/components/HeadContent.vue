@@ -1,6 +1,6 @@
 <template>
   <div class="head">
-    <div class="head-title">打票及回填</div>
+    <!-- <div class="head-title"></div> -->
     <div class="head-content">
       <div class="item">
         <span class="item-label mr-10">是否开启接单:</span>

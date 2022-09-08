@@ -1,6 +1,6 @@
 <template>
   <div class="ticketDetails" v-if="ticketInfoArr && ticketInfoArr.length">
-    <div class="title">票款明细</div>
+    <div class="title">退票费总计</div>
     <div class="content">
       <div class="item" v-for="(item, index) in ticketInfoArr" :key="index">
         <span class="item-label mr-10">{{ item && item.label }}:</span>
@@ -9,6 +9,7 @@
           :class="{
             is: item && item.value,
             dazzling: item && item.isDazzling && item.value,
+            info: item && item.isInfo && item.value,
           }"
           >{{ (item && item.value) || "-" }}</span
         >
@@ -31,33 +32,18 @@ export default {
       console.log(ticketInfo);
       return [
         {
-          label: "订单数",
-          // value: ticketInfo?.order_num,
-          value: 1,
-        },
-        {
-          label: "票数",
+          label: "支付对应笔数",
           value: ticketInfo?.ticket_num,
         },
         {
-          label: "票款",
+          label: "总退款金额",
           value: "33.2",
           isDazzling: true, // 是否高亮
         },
         {
-          label: "代购费",
-          value: "",
-          isDazzling: true,
-        },
-        {
-          label: "服务费",
-          value: "",
-          isDazzling: true,
-        },
-        {
-          label: "订单总金额",
-          value: "",
-          isDazzling: true,
+          label: "拦截金额",
+          value: "0",
+          isInfo: true,
         },
       ];
     },

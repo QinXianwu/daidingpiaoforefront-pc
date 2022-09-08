@@ -1,22 +1,16 @@
+import CONST from "@/constants/index";
 import ChildrenView from "@/layouts/ChildrenView/index";
 import TicketsList from "@/views/Order/views/TicketsList/index.vue";
 import AfterSales from "@/views/Order/views/AfterSales/index.vue";
 import AfterSalesLogistics from "@/views/Order/views/AfterSalesLogistics/index.vue";
 
-const siteList = [
-  {
-    id: "00321",
-    title: "广州南站",
-  },
-  {
-    id: "00322",
-    title: "广州南站2",
-  },
-  {
-    id: "00323",
-    title: "广州南站3",
-  },
-];
+const siteList = CONST.SITE_OPTIONS()
+  .map((item) => {
+    if (item.label !== "全部") {
+      return { id: item.value, title: item.label };
+    }
+  })
+  .filter((item) => item && item.id);
 
 export default siteList.map((item, index) => {
   return {

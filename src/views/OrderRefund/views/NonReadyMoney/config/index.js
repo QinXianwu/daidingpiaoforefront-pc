@@ -1,20 +1,6 @@
 // 搜索选项
 export const formData = [
   {
-    label: "身份证",
-    prop: "order_code",
-    type: "text",
-    value: "",
-    placeholder: "请输入身份证",
-  },
-  {
-    label: "车次",
-    prop: "ticket_number",
-    type: "text",
-    value: "",
-    placeholder: "请输入车次",
-  },
-  {
     label: "姓名",
     prop: "name",
     type: "text",
@@ -34,6 +20,20 @@ export const formData = [
     type: "text",
     value: "",
     placeholder: "请输入到达站",
+  },
+  {
+    label: "车次",
+    prop: "ticket_number",
+    type: "text",
+    value: "",
+    placeholder: "请输入车次",
+  },
+  {
+    label: "身份证",
+    prop: "order_code",
+    type: "text",
+    value: "",
+    placeholder: "请输入身份证",
   },
   {
     label: "车票日期",
