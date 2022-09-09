@@ -14,8 +14,8 @@ const siteList = CONST.SITE_OPTIONS()
 
 export default siteList.map((item, index) => {
   return {
-    path: item?.path || `site-${index}`,
-    name: item?.name || `site-${index}`,
+    path: item?.path || `Site-${index}`,
+    name: item?.name || `Site-${index}`,
     component: ChildrenView,
     redirect: "/404",
     meta: {
@@ -23,28 +23,28 @@ export default siteList.map((item, index) => {
     },
     children: [
       {
-        path: "TicketsList",
+        path: `TicketsList/${item.id}`,
         component: TicketsList,
-        query: { id: item.id },
         name: `TicketsList-${item.id}`,
+        siteId: item.id,
         meta: {
           title: "打票及回填",
         },
       },
       {
-        path: "AfterSales",
+        path: `AfterSales/${item.id}`,
         component: AfterSales,
-        query: { id: item.id },
         name: `AfterSales-${item.id}`,
+        siteId: item.id,
         meta: {
           title: "取车票报销凭证",
         },
       },
       {
-        path: "AfterSalesLogistics",
+        path: `AfterSalesLogistics/${item.id}`,
         component: AfterSalesLogistics,
-        query: { id: item.id },
         name: `AfterSalesLogistics-${item.id}`,
+        siteId: item.id,
         meta: {
           title: "取报销凭证快递",
         },

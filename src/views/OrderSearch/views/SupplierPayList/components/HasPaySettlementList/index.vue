@@ -1,5 +1,6 @@
 <template>
   <div class="view-container">
+    <div class="title">已打款结算记录</div>
     <div class="content">
       <SearchForm
         isReturnFormData
@@ -30,7 +31,7 @@
 <script>
 import { column, formData } from "./config";
 export default {
-  name: "DaySalePointSettlement",
+  name: "HasPaySettlementList",
   components: {},
   data() {
     return {
@@ -80,5 +81,13 @@ export default {
 }
 .batch {
   padding: 10px 0;
+}
+.title {
+  height: 20px;
+  margin: 0 20px 10px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #282828;
+  line-height: 20px;
 }
 </style>

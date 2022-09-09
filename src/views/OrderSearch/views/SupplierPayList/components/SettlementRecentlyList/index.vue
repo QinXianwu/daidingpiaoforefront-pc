@@ -1,12 +1,7 @@
 <template>
   <div class="view-container">
+    <div class="title">最近结算时间点记录</div>
     <div class="content">
-      <SearchForm
-        isReturnFormData
-        :formData="formData"
-        :isShowExportList="false"
-        @on-search="onSearch"
-      />
       <TablePanel :tableData="list" :tableHead="column">
         <!-- 操作 -->
         <template #action="{}">
@@ -28,13 +23,12 @@
 </template>
 
 <script>
-import { column, formData } from "./config";
+import { column } from "./config";
 export default {
-  name: "DaySalePointSettlement",
+  name: "SettlementRecentlyList",
   components: {},
   data() {
     return {
-      formData,
       column, //表格头
       list: [],
       page: {
@@ -42,7 +36,6 @@ export default {
         page: 1,
       },
       total: 0,
-      rules: [], //过滤规则
     };
   },
   computed: {},
@@ -56,17 +49,11 @@ export default {
       this.page.page = val;
       // this.getList(false);
     },
-    onSearch(data) {
-      console.log(data);
-      this.rules = {};
-      // this.getList(true);
-    },
     async getList(isClear) {
       if (isClear) this.page.page = 1;
     },
   },
   mounted() {
-    console.log(this.$route.query);
     this.getList();
   },
 };
@@ -80,5 +67,13 @@ export default {
 }
 .batch {
   padding: 10px 0;
+}
+.title {
+  height: 20px;
+  margin: 0 20px 10px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #282828;
+  line-height: 20px;
 }
 </style>

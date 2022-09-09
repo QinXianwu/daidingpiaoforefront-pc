@@ -73,7 +73,7 @@ export default {
       component: SupplierPayList,
       name: "SupplierPayList",
       meta: {
-        title: "分时代售点结算查询",
+        title: "供应商合并打款记录",
       },
     },
     {
@@ -81,7 +81,7 @@ export default {
       component: BackCommissionSettlement,
       name: "BackCommissionSettlement",
       meta: {
-        title: "分时代售点结算查询",
+        title: "返佣结算查询",
       },
     },
     {

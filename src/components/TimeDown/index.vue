@@ -57,7 +57,6 @@ export default {
   },
   created() {
     this.getTimeDiff();
-    console.log("11111");
   },
   methods: {
     // 进行倒计时

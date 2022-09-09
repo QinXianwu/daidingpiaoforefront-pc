@@ -38,7 +38,7 @@
 import { column, formData } from "./config";
 import TicketDetails from "./components/TicketDetails.vue";
 export default {
-  name: "Refund",
+  name: "RefundDetails",
   components: { TicketDetails },
   data() {
     return {

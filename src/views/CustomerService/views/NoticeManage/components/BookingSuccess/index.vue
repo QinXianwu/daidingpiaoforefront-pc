@@ -30,7 +30,7 @@
 <script>
 import { column, formData } from "./config";
 export default {
-  name: "DaySalePointSettlement",
+  name: "BookingSuccess",
   components: {},
   data() {
     return {

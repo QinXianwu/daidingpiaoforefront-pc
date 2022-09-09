@@ -124,6 +124,7 @@ export default {
   },
   mounted() {
     console.log(this.$route.query);
+    console.log(this.$route);
     this.getList();
   },
 };

@@ -1,4 +1,4 @@
-import orderRouterChildren from "../config/order";
+import OrderRouterChildren from "../config/order";
 import MainLayout from "@/layouts/MainLayout/index";
 
 export default {
@@ -10,5 +10,5 @@ export default {
     icon: "order",
     affix: true,
   },
-  children: orderRouterChildren,
+  children: OrderRouterChildren,
 };

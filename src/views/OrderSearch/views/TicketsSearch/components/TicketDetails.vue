@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     ticketInfoArr({ ticketInfo }) {
-      console.log(ticketInfo);
+      // console.log(ticketInfo);
       return [
         {
           label: "订单数",

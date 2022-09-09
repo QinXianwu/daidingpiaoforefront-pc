@@ -1,32 +1,14 @@
 import MainLayout from "@/layouts/MainLayout/index";
-import TicketsSearch from "@/views/OrderSearch/views/TicketsSearch/index.vue";
+import CustomerServiceChildren from "../config/customerService";
 
 export default {
-  path: "/customerService",
+  path: "/CustomerService",
   component: MainLayout,
-  redirect: "/customerService",
+  redirect: "/404",
   meta: {
     title: "联系客服",
     icon: "customer_service",
     affix: true,
-    // PermissionId: PERMISSION_ID.Home,
   },
-  children: [
-    {
-      path: "TicketsSearch",
-      component: TicketsSearch,
-      name: "TicketsSearch1",
-      meta: {
-        title: "出票查询&回填信息修改",
-      },
-    },
-    {
-      path: "TicketsSearch2",
-      component: TicketsSearch,
-      name: "TicketsSearch2",
-      meta: {
-        title: "出票查询&回填信息修改",
-      },
-    },
-  ],
+  children: CustomerServiceChildren,
 };
