@@ -3,14 +3,14 @@ import ELEMENT from "element-ui";
 const { Loading, Message } = ELEMENT;
 import CONST from "@/constants/index";
 import store from "@/store/index";
-// import { isField } from "@/utils";
+import { isField } from "@/utils";
 let requestNum = 0, // 累计请求数
   loadingInstance = null, // loading实例
   un_login = false; // 是否未登陆，用于判断提示登陆的次数
 // lastMsg = ""; //上一条消息 用来判断是否重复消息
 const service = axios.create({
-  // baseURL: `/${window.McatGlobal?.AppInfo?.Application?.ApplicationBaseInfo?.Route}`, // 后端服务渲染，根据中台配置而来，需要和后端沟通约定
-  baseURL: import.meta.env.VITE_APP_BASE_API_URL,
+  // baseURL: import.meta.env.VITE_APP_BASE_API_URL,
+  baseURL: import.meta.env.VITE_APP_API_PREFIX, // 本地开发
   timeout: 60000,
   withCredentials: true, // 是否允许带cookie这些
   headers: {
@@ -24,7 +24,6 @@ service.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log(error);
     return Promise.reject(error);
   }
 );
@@ -32,6 +31,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     requestNum--;
+    console.log(response);
     if (requestNum <= 0) {
       loadingInstance && loadingInstance.close();
       loadingInstance = null;
@@ -39,28 +39,27 @@ service.interceptors.response.use(
     const { data, config } = response;
     // 判断此接口是否需要完整返回后端返回的数据
     if (config.isReturnAll) return data;
-    console.log(data);
 
     // 对本地环境以及线上环境返回不一样字段名进行处理
     if (data) {
-      // if (!isField(data, "retCode") && isField(data, "id"))
-      //   data.retCode = data.id;
-      // // if (!isField(data, "Message") && isField(data, "message"))
-      // //   data.Message = data.message;
-      // if (!isField(data, "Data") && isField(data, "bodyInfo"))
-      //   data.Data = data.bodyInfo; // 封装响应体
-      if (!data.message && data?.retCode !== CONST.AJAX_CODE.SUCCESS)
+      if (!isField(data, "code") && isField(data, "id")) data.code = data.id;
+      if (!isField(data, "Message") && isField(data, "message"))
+        data.Message = data.message;
+      if (!isField(data, "Data") && isField(data, "data"))
+        data.Data = data.data; // 封装响应体
+      if (!data.message && data?.code !== CONST.AJAX_CODE.SUCCESS)
         data.message = "未知错误";
     }
 
     // 判断是否返回正确的业务编码，返回正确的时候则直接返回主体
-    if (data?.retCode === CONST.AJAX_CODE.SUCCESS) return data.bodyInfo || true;
+    if (data?.code === CONST.AJAX_CODE.SUCCESS) return data.data || true;
 
     config.isErrorTips && Message.error(data?.message);
     return Promise.reject(data);
   },
 
   (error) => {
+    console.log(error);
     requestNum--;
     if (requestNum <= 0) {
       loadingInstance.close();

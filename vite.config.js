@@ -96,7 +96,7 @@ export default defineConfig(({ mode }) => {
     },
     // 本地运行配置，及反向代理配置
     server: {
-      host: "localhost",
+      host: "0.0.0.0", // localhost 局域网访问不了
       port: 3000,
       open: false,
       https: false,
@@ -109,14 +109,16 @@ export default defineConfig(({ mode }) => {
         [env.VITE_APP_API_PREFIX]: {
           target: env.VITE_APP_BASE_API_URL, //代理接口
           changeOrigin: true,
+          ws: true,
           rewrite: (path) =>
             path.replace(env.VITE_APP_API_PREFIX, env.VITE_APP_API_PREFIX),
         },
-        // "/api": {
-        //   target: env.VITE_APP_BASE_API_URL, //代理接口
-        //   changeOrigin: true,
-        //   rewrite: (path) => path.replace(/^\/api/, "/api"),
-        // },
+        "/dsp": {
+          target: "http://192.168.101.104:9999/", //代理接口
+          changeOrigin: true,
+          ws: true,
+          rewrite: (path) => path.replace(/^\/dsp/, "/dsp"),
+        },
       },
     },
   };

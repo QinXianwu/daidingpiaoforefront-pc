@@ -1,4 +1,5 @@
 import Vue from "vue";
+import api from "@/api/module";
 import ELEMENT from "element-ui";
 import router, { resetRouter } from "@/router/index";
 
@@ -33,19 +34,20 @@ const actions = {
     ELEMENT.MessageBox.alert(
       "没有授权或者授权过期了，点击确定跳转到登录页"
     ).then(() => {
-      // location.href = "/Authorization/Login";
       router.push({ path: "/Authorization/Login" });
     });
   },
   // 登录
   async Login({ commit }, userInfo) {
     const { username, password } = userInfo;
-    console.log(username, password);
-    // const res = await api.login
-    const res = {};
-    const data = res;
+    const res = await api.Authorization.Login({
+      account: username,
+      password: password,
+      subAccount: "",
+    });
+    console.log(res);
     const isTrue = username === "admin" && password === "123456";
-    if (data && isTrue) {
+    if (res && isTrue) {
       const toKen = "suahwe1231aa-sdasd";
       //登录成功后将token存储在cookie之中
       sessionStorage.setItem("user_sessino", JSON.stringify(toKen));

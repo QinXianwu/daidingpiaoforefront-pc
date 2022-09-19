@@ -1,19 +1,13 @@
 <template>
   <div class="view-container">
     <div>home</div>
-    <!-- <el-button type="primary" @click="setLockOrder">锁单</el-button> -->
   </div>
 </template>
 
 <script>
 export default {
   components: {},
-  methods: {
-    async setLockOrder() {
-      const res = await this.$http.LockOrder.LockOrder();
-      console.log(res);
-    },
-  },
+  methods: {},
 };
 </script>
 
