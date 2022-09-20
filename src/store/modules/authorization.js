@@ -28,14 +28,17 @@ const actions = {
     location.href = "/";
   },
   // 去登录
-  LoginAsync() {
+  LoginAsync({ commit }) {
+    resetRouter();
+    router.push({ path: "/401" });
+    commit("SET_USER_SIGNOUT");
     setTimeout(() => {
       window.introduction && window.introduction.exit();
     });
     ELEMENT.MessageBox.alert(
       "没有授权或者授权过期了，点击确定跳转到登录页"
     ).then(() => {
-      router.push({ path: "/Authorization/Login" });
+      location.href = "/";
     });
   },
   // 登录

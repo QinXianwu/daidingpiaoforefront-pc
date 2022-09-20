@@ -4,6 +4,7 @@ const { Loading, Message } = ELEMENT;
 import CONST from "@/constants/index";
 import store from "@/store/index";
 import { isField } from "@/utils";
+import CookieStore from "@/utils/common";
 let requestNum = 0, // 累计请求数
   loadingInstance = null, // loading实例
   un_login = false; // 是否未登陆，用于判断提示登陆的次数
@@ -12,9 +13,10 @@ const service = axios.create({
   // baseURL: import.meta.env.VITE_APP_BASE_API_URL,
   baseURL: "/", // 本地局域网开发
   timeout: 60000,
-  withCredentials: true, // 是否允许带cookie这些
+  withCredentials: false, // 是否允许带cookie这些
   headers: {
     "Content-Type": "application/json",
+    authorization: CookieStore.getCookie("user_sessino") || "",
   },
 });
 
@@ -55,6 +57,17 @@ service.interceptors.response.use(
     if (data?.res_code === CONST.AJAX_CODE.SUCCESS) return data.data || true;
 
     config.isErrorTips && Message.error(data?.message);
+    if (
+      data?.res_code === CONST.AJAX_CODE.AUTH_EXPIRE ||
+      data?.res_code === 401
+    ) {
+      if (!un_login) {
+        // 只需提示一次
+        // 授权过期
+        store.dispatch("authorization/LoginAsync");
+        un_login = true;
+      }
+    }
     return Promise.reject(data);
   },
 

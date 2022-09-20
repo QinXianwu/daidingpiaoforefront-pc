@@ -37,8 +37,8 @@
       <Pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :page-size="page.rows"
-        :current-page="page.page"
+        :page-size="page.size"
+        :current-page="page.current"
         :total="total"
       />
     </div>
@@ -59,8 +59,8 @@ export default {
       column, //表格头
       list: [],
       page: {
-        rows: 10,
-        page: 1,
+        size: 10,
+        current: 1,
       },
       total: 0,
       alipayAccount: "", // 支付宝账号
@@ -74,13 +74,13 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      this.page.rows = val;
-      this.page.page = 1;
-      // this.getList(true);
+      this.page.size = val;
+      this.page.current = 1;
+      this.getList(true);
     },
     handleCurrentChange(val) {
-      this.page.page = val;
-      // this.getList(false);
+      this.page.current = val;
+      this.getList(false);
     },
     sendMessage() {
       console.log("sendMessage");
@@ -89,42 +89,39 @@ export default {
       console.log("onCountdownOver", val);
     },
     async getList(isClear) {
-      if (isClear) this.page.page = 1;
-      // let query = {
-      //   ...this.page,
-      //   order: this.order || "user_id desc",
-      // };
-      // if (this.rules.length) query.filters = { rules: this.rules };
-      // const [, res] = await this.$http.Agent.GetList(query);
-      // console.log(res.users);
+      if (isClear) this.page.current = 1;
+      let query = {
+        ...this.page,
+      };
+      if (this.rules.length) query.filters = { rules: this.rules };
+      const [, res] = await this.$http.Order.GetOrderWaitList(query);
+      console.log(res);
       // this.list = res?.users || [];
-      this.list = [
-        {
-          order_code: "todo 1",
-          departure_time: "todo",
-          trips_number: "todo",
-          start_end_station: "todo",
-          order_mark: "todo",
-          process_countdown: Date.now() + 1000 * 5,
-          order_time: "todo",
-        },
-        {
-          order_code: "todo 2",
-          departure_time: "todo",
-          trips_number: "todo",
-          start_end_station: "todo",
-          order_mark: "todo",
-          process_countdown: Date.now() + 1000 * 60 * 10,
-          order_time: "todo",
-        },
-      ];
+      // this.list = [
+      //   {
+      //     order_code: "todo 1",
+      //     departure_time: "todo",
+      //     trips_number: "todo",
+      //     start_end_station: "todo",
+      //     order_mark: "todo",
+      //     process_countdown: Date.now() + 1000 * 5,
+      //     order_time: "todo",
+      //   },
+      //   {
+      //     order_code: "todo 2",
+      //     departure_time: "todo",
+      //     trips_number: "todo",
+      //     start_end_station: "todo",
+      //     order_mark: "todo",
+      //     process_countdown: Date.now() + 1000 * 60 * 10,
+      //     order_time: "todo",
+      //   },
+      // ];
       // this.total = res.Attr.RecordCount;
       // this.config_moneys = res.config_moneys;
     },
   },
   mounted() {
-    console.log(this.$route.query);
-    console.log(this.$route);
     this.getList();
   },
 };

@@ -59,7 +59,6 @@ export default {
     }),
     mainAccountId({ userInfo, McatGlobal }) {
       const id = userInfo?.id || McatGlobal?.UserAccount?.UserId;
-      console.log(id);
       return id ? String(id) : "";
     },
     userAvatar() {
