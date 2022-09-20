@@ -10,6 +10,7 @@ import "./icons"; // icon
 import "virtual:svg-icons-register";
 
 import CONST from "@/constants/index";
+import CookieStore from "@/utils/common";
 import Clipboard from "v-clipboard"; //复制到剪贴板功能
 Vue.use(Clipboard);
 
@@ -37,6 +38,7 @@ Vue.config.productionTip = false;
 Vue.prototype.AJAX_CODE = CONST.AJAX_CODE;
 Vue.prototype.$http = api;
 Vue.prototype.$CONST = CONST; // 全局挂载常量
+Vue.prototype.$CookieStore = CookieStore;
 
 new Vue({
   el: "#app",

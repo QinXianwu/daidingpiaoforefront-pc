@@ -10,7 +10,7 @@ let requestNum = 0, // 累计请求数
 // lastMsg = ""; //上一条消息 用来判断是否重复消息
 const service = axios.create({
   // baseURL: import.meta.env.VITE_APP_BASE_API_URL,
-  baseURL: import.meta.env.VITE_APP_API_PREFIX, // 本地开发
+  baseURL: "/", // 本地局域网开发
   timeout: 60000,
   withCredentials: true, // 是否允许带cookie这些
   headers: {
@@ -31,7 +31,6 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     requestNum--;
-    console.log(response);
     if (requestNum <= 0) {
       loadingInstance && loadingInstance.close();
       loadingInstance = null;
@@ -42,24 +41,24 @@ service.interceptors.response.use(
 
     // 对本地环境以及线上环境返回不一样字段名进行处理
     if (data) {
-      if (!isField(data, "code") && isField(data, "id")) data.code = data.id;
-      if (!isField(data, "Message") && isField(data, "message"))
-        data.Message = data.message;
-      if (!isField(data, "Data") && isField(data, "data"))
-        data.Data = data.data; // 封装响应体
-      if (!data.message && data?.code !== CONST.AJAX_CODE.SUCCESS)
+      if (!isField(data, "res_code") && isField(data, "code"))
+        data.res_code = Number(data.code);
+      // if (!isField(data, "Message") && isField(data, "message"))
+      //   data.Message = data.message;
+      // if (!isField(data, "Data") && isField(data, "data"))
+      //   data.Data = data.data; // 封装响应体
+      if (!data.message && data?.res_code !== CONST.AJAX_CODE.SUCCESS)
         data.message = "未知错误";
     }
 
     // 判断是否返回正确的业务编码，返回正确的时候则直接返回主体
-    if (data?.code === CONST.AJAX_CODE.SUCCESS) return data.data || true;
+    if (data?.res_code === CONST.AJAX_CODE.SUCCESS) return data.data || true;
 
     config.isErrorTips && Message.error(data?.message);
     return Promise.reject(data);
   },
 
   (error) => {
-    console.log(error);
     requestNum--;
     if (requestNum <= 0) {
       loadingInstance.close();
@@ -67,9 +66,10 @@ service.interceptors.response.use(
     }
     // 错误的请求结果处理，这里的代码根据后台的状态码来决定错误的输出信息
     var state;
-    if (error?.response?.data?.Message) {
-      state = error.response.data.Code;
-      error.message = error.response.data.Message;
+    if (error?.response?.data?.message) {
+      // state = error.response.data.code;
+      state = Number(error.response.data.code);
+      error.message = error.response.data.message;
     } else if (error && error.response) {
       switch (error.response.status) {
         case 400:
@@ -123,7 +123,7 @@ service.interceptors.response.use(
       if (!un_login) {
         // 只需提示一次
         // 授权过期
-        store.dispatch("user/LoginAsync");
+        store.dispatch("authorization/LoginAsync");
         un_login = true;
       }
     } else {

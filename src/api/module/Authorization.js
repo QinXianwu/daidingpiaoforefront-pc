@@ -13,6 +13,7 @@ export default {
         url: apiPrefix + "/rbac/login/login",
         params,
         isQueryAll: true,
+        isReturnAll: true,
       })
     );
   },

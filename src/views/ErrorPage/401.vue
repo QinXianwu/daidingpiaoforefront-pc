@@ -21,12 +21,12 @@ export default {
   },
   methods: {
     ...mapActions({
-      LogoutAsync: "user/LogoutAsync",
+      LogoutAsync: "authorization/LogoutAsync",
     }),
     back() {
       // 没有cookie，则登录
       if (!document.cookie.includes("user_sessino")) {
-        this.$store.dispatch("user/LoginAsync");
+        this.$store.dispatch("authorization/LoginAsync");
       } else {
         this.$router.replace({ name: "BasicFacts" }); // 跳转首页
         // this.$router.go(-1);

@@ -57,7 +57,7 @@ export default {
     };
   },
   created() {
-    if (this.$store.state.user.state) {
+    if (this.$store.state.authorization.state) {
       this.$router.push("/Home/BasicFacts");
     }
   },
@@ -72,7 +72,7 @@ export default {
         console.log(error);
         return;
       }
-      this.$store.dispatch("user/Login", this.formData);
+      this.$store.dispatch("authorization/Login", this.formData);
     },
   },
 };

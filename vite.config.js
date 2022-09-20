@@ -113,12 +113,12 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) =>
             path.replace(env.VITE_APP_API_PREFIX, env.VITE_APP_API_PREFIX),
         },
-        "/dsp": {
-          target: "http://192.168.101.104:9999/", //代理接口
-          changeOrigin: true,
-          ws: true,
-          rewrite: (path) => path.replace(/^\/dsp/, "/dsp"),
-        },
+        // "/dsp": {
+        //   target: "http://192.168.101.104:9999/", //代理接口
+        //   changeOrigin: true,
+        //   ws: true,
+        //   rewrite: (path) => path.replace(/^\/dsp/, "dsp"),
+        // },
       },
     },
   };

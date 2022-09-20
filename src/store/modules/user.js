@@ -1,65 +1,14 @@
-import Vue from "vue";
-import api from "@/api/module";
-import ELEMENT from "element-ui";
-import router, { resetRouter } from "@/router/index";
-
 const state = {
-  state: JSON.parse(sessionStorage.getItem("user_sessino")) || null,
+  userInfo: {},
 };
 
 const mutations = {
-  SET_USER_SIGNIN(state, user) {
-    sessionStorage.setItem("user_sessino", JSON.stringify(user));
-    Object.assign(state, user);
-  },
-  SET_USER_SIGNOUT(state) {
-    sessionStorage.removeItem("user_sessino");
-    Object.keys(state).forEach((k) => Vue.delete(state, k));
+  SET_USER_INFO(state, data) {
+    state.userInfo = data;
   },
 };
 
-const actions = {
-  // 退出登录
-  LogoutAsync({ commit }) {
-    resetRouter(); // 重置路由
-    commit("SET_USER_SIGNOUT");
-    location.href = "/";
-    router.push({ path: "/" });
-  },
-  // 去登录
-  LoginAsync() {
-    setTimeout(() => {
-      window.introduction && window.introduction.exit();
-    });
-    ELEMENT.MessageBox.alert(
-      "没有授权或者授权过期了，点击确定跳转到登录页"
-    ).then(() => {
-      router.push({ path: "/Authorization/Login" });
-    });
-  },
-  // 登录
-  async Login({ commit }, userInfo) {
-    const { username, password } = userInfo;
-    const res = await api.Authorization.Login({
-      account: username,
-      password: password,
-      subAccount: "",
-    });
-    console.log(res);
-    const isTrue = username === "admin" && password === "123456";
-    if (res && isTrue) {
-      const toKen = "suahwe1231aa-sdasd";
-      //登录成功后将token存储在cookie之中
-      sessionStorage.setItem("user_sessino", JSON.stringify(toKen));
-      commit("SET_USER_SIGNIN", toKen);
-      // router.addRoutes(asyncRoutes); // 动态添加可访问路由表
-      // console.log(router);
-      location.href = "/"; //登录成功之后重定向到首页
-    } else {
-      ELEMENT.Message.error("账号密码有误,请重试");
-    }
-  },
-};
+const actions = {};
 
 export default {
   namespaced: true,

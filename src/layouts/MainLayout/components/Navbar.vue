@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 import defaultUserAvatar from "assets/images/user_avatar.png";
 import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
@@ -53,8 +53,13 @@ export default {
     CopyButton,
   },
   computed: {
-    mainAccountId() {
-      const id = this.$store.state.app.McatGlobal?.UserAccount?.UserId;
+    ...mapState({
+      userInfo: (state) => state.user.userInfo,
+      McatGlobal: (state) => state.app.McatGlobal,
+    }),
+    mainAccountId({ userInfo, McatGlobal }) {
+      const id = userInfo?.id || McatGlobal?.UserAccount?.UserId;
+      console.log(id);
       return id ? String(id) : "";
     },
     userAvatar() {
@@ -63,7 +68,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      LogoutAsync: "user/LogoutAsync",
+      LogoutAsync: "authorization/LogoutAsync",
     }),
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
@@ -158,6 +163,7 @@ export default {
       font-weight: bold;
       margin: 0 20px;
       &-text {
+        font-size: 14px;
         margin-right: 10px;
         color: $main-font-color;
       }
