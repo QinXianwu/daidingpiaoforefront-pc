@@ -306,11 +306,13 @@ export default {
     background-color: #f7f8fa;
     .cell {
       font-size: 14px;
+      color: $main-font-color;
     }
   }
   ::v-deep .el-table__row {
     .cell {
       font-size: 14px;
+      color: $sub-font-color;
     }
   }
   ::v-deep .el-table__empty-text {

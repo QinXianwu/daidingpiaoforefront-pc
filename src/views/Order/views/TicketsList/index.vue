@@ -94,29 +94,29 @@ export default {
         ...this.page,
       };
       if (this.rules.length) query.filters = { rules: this.rules };
-      const [, res] = await this.$http.Order.GetOrderWaitList(query);
-      console.log(res);
+      // const [, res] = await this.$http.Order.GetOrderWaitList(query);
+      // console.log(res);
       // this.list = res?.users || [];
-      // this.list = [
-      //   {
-      //     order_code: "todo 1",
-      //     departure_time: "todo",
-      //     trips_number: "todo",
-      //     start_end_station: "todo",
-      //     order_mark: "todo",
-      //     process_countdown: Date.now() + 1000 * 5,
-      //     order_time: "todo",
-      //   },
-      //   {
-      //     order_code: "todo 2",
-      //     departure_time: "todo",
-      //     trips_number: "todo",
-      //     start_end_station: "todo",
-      //     order_mark: "todo",
-      //     process_countdown: Date.now() + 1000 * 60 * 10,
-      //     order_time: "todo",
-      //   },
-      // ];
+      this.list = [
+        {
+          order_code: "todo 1",
+          departure_time: "todo",
+          trips_number: "todo",
+          start_end_station: "todo",
+          order_mark: "todo",
+          process_countdown: Date.now() + 1000 * 5,
+          order_time: "todo",
+        },
+        {
+          order_code: "todo 2",
+          departure_time: "todo",
+          trips_number: "todo",
+          start_end_station: "todo",
+          order_mark: "todo",
+          process_countdown: Date.now() + 1000 * 60 * 10,
+          order_time: "todo",
+        },
+      ];
       // this.total = res.Attr.RecordCount;
       // this.config_moneys = res.config_moneys;
     },
