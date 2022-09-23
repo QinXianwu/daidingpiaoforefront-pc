@@ -1,23 +1,20 @@
 <template>
   <div class="view-container">
     <div>home</div>
+    <TicketingEcharts />
   </div>
 </template>
 
 <script>
+import TicketingEcharts from "./components/TicketingEcharts.vue";
 export default {
-  components: {},
+  components: { TicketingEcharts },
+  data() {
+    return {};
+  },
+  computed: {},
   methods: {},
 };
 </script>
 
-<style lang="scss" scoped>
-.orderTotal {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  > div {
-    width: 47.6%;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
