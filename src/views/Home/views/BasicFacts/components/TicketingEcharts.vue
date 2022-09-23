@@ -19,7 +19,6 @@ export default {
         "未及格人数3",
         "未及格人数4",
         "未及格人数5",
-        "未及格人数6",
       ],
       opinionData: [
         { value: 12, name: "及格人数" },
@@ -29,7 +28,6 @@ export default {
         { value: 18, name: "未及格人数3" },
         { value: 18, name: "未及格人数4" },
         { value: 18, name: "未及格人数5" },
-        { value: 18, name: "未及格人数6" },
       ],
     };
   },
