@@ -4,7 +4,7 @@ import Page404 from "@/views/ErrorPage/404";
 export default {
   path: "/error",
   component: MainLayout,
-  redirect: "noRedirect",
+  redirect: "/noRedirect",
   name: "ErrorPages",
   hidden: true,
   meta: {

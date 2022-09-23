@@ -56,7 +56,7 @@ const actions = {
       location.href = "/";
       ELEMENT.Message.success("登录成功");
     } else {
-      ELEMENT.Message.error("账号密码有误,请重试");
+      ELEMENT.Message.error(res?.message || "账号密码有误,请重试");
     }
   },
 };
