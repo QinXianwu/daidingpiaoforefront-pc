@@ -32,22 +32,22 @@
       </div>
 
       <!-- 编辑/新增角色 -->
-      <DrawerPopup v-model="isUpdateRoleList">
+      <!-- <DrawerPopup v-model="isUpdateRoleList">
         <UpdateRole
           :roleId="roleInfo && roleInfo.VirtualRoleId"
           @close="close"
         />
-      </DrawerPopup>
+      </DrawerPopup> -->
     </div>
   </div>
 </template>
 
 <script>
-import UpdateRole from "./components/UpdateRole.vue";
+// import UpdateRole from "./components/UpdateRole.vue";
 
 export default {
   name: "RoleManage",
-  components: { UpdateRole },
+  // components: { UpdateRole },
   data() {
     return {
       tableHead: [
