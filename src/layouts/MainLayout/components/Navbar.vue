@@ -7,18 +7,19 @@
     />
 
     <Breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
-
     <div class="right-menu">
+      <!-- 系统消息 -->
+      <SystemMessage />
+
+      <Screenfull id="screenfull" class="right-menu-item hover-effect" />
+
       <!-- 平台选择组件-内部组件 -->
       <span class="account-id">
         <CopyButton :copyString="mainAccountId" v-if="mainAccountId">
-          <span class="account-id-text">账号ID：{{ mainAccountId }}</span>
+          <span class="account-id-text">ID：{{ mainAccountId }}</span>
           <i class="el-icon-copy-document express-info-click" />
         </CopyButton>
       </span>
-
-      <!-- <SearchUser /> -->
-      <Screenfull id="screenfull" class="right-menu-item hover-effect" />
 
       <!-- 用户头像 -->
       <ElDropdown class="avatar-container right-menu-item" trigger="click">
@@ -42,15 +43,15 @@ import defaultUserAvatar from "assets/images/user_avatar.png";
 import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 import Screenfull from "@/components/Screenfull";
-// import SearchUser from "@/components/SearchUser";
 import CopyButton from "@/components/CopyButton/index";
+import SystemMessage from "@/components/SystemMessage/index";
 export default {
   components: {
     Breadcrumb,
     Hamburger,
     Screenfull,
-    // SearchUser,
     CopyButton,
+    SystemMessage,
   },
   computed: {
     ...mapState({
@@ -160,7 +161,7 @@ export default {
     }
     .account-id {
       font-weight: bold;
-      margin: 0 20px;
+      margin: 0 10px;
       &-text {
         font-size: 14px;
         margin-right: 10px;

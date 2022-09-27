@@ -61,6 +61,9 @@ export default {
       this.rules = {};
       // this.getList(true);
     },
+    customerService() {
+      console.log("客服");
+    },
     async getList(isClear) {
       if (isClear) this.page.page = 1;
     },

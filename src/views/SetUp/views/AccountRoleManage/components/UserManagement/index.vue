@@ -30,7 +30,7 @@
 <script>
 import { column, formData } from "./config";
 export default {
-  name: "BookingSuccess",
+  name: "UserManagement",
   components: {},
   data() {
     return {
@@ -60,6 +60,9 @@ export default {
       console.log(data);
       this.rules = {};
       // this.getList(true);
+    },
+    customerService() {
+      console.log("客服");
     },
     async getList(isClear) {
       if (isClear) this.page.page = 1;

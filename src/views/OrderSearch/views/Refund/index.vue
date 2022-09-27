@@ -64,7 +64,8 @@ export default {
       console.log(data);
       this.rules = {};
       // this.getList(true);
-    }, // 导出
+    },
+    // 导出
     async onExport() {
       if (this.isExporting) return false;
       this.isExporting = true;
@@ -88,6 +89,9 @@ export default {
           e;
         }
       }
+    },
+    customerService() {
+      console.log("客服");
     },
     async getList(isClear) {
       if (isClear) this.page.page = 1;
