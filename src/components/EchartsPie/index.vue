@@ -1,8 +1,8 @@
 <template>
-  <div class="TicketingEcharts">
+  <div class="EchartsPie">
     <div
-      i="pieReport"
-      ref="pieReport"
+      i="chartsReport"
+      :ref="refName"
       :style="{
         width: `${width ? width : ''}px`,
         height: `${height ? height : ''}px`,
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "TicketingEcharts",
+  name: "EchartsPie",
   props: {
     width: {
       type: Number,
@@ -51,7 +51,7 @@ export default {
       default: () => [],
     },
     // 饼状图数据
-    pieData: {
+    chartsData: {
       type: Array,
       default: () => [],
     },
@@ -59,33 +59,31 @@ export default {
   data() {
     return {
       charts: "",
+      refName: `chartsReport-${new Date().getTime()}`,
     };
   },
   computed: {
-    opinion({ opinionKey, pieData }) {
-      if (!pieData?.length) return [];
-      return pieData.map((item) => item[opinionKey || "name"]);
+    opinion({ opinionKey, chartsData }) {
+      if (!chartsData?.length) return [];
+      return chartsData.map((item) => item[opinionKey || "name"]);
     },
   },
   methods: {
     initEcharts() {
-      this.charts = this.$echarts.init(this.$refs.pieReport);
+      this.charts = this.$echarts.init(this.$refs[this.refName]);
       this.drawCharts();
     },
     drawCharts() {
       const series = {
         // 系列名称，用于tooltip的显示，legend 的图例筛选
-        name: this.seriesName,
         type: "pie",
         avoidLabelOverlap: false,
         itemStyle: {
-          emphasis: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: "rgba(0, 0, 0, 0.5)",
-          },
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: "rgba(0, 0, 0, 0.5)",
         },
-        data: this.pieData,
+        data: this.chartsData,
       };
       if (this.seriesName) series.name = this.seriesName;
       if (this.colorList?.length) {
@@ -106,15 +104,15 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.initEcharts("pieReport");
+      this.initEcharts();
     });
   },
 };
 </script>
 <style lang="scss" scoped>
-.TicketingEcharts {
+.EchartsPie {
   width: 600px;
-  [i="pieReport"] {
+  [i="chartsReport"] {
     width: 650px;
     height: 220px;
   }

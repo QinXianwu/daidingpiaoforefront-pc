@@ -1,7 +1,7 @@
-# Echarts 饼状图
+# Echarts 折线图
 
 ```js
-<EchartsPie :width="350" :chartsData="chartsData" />
+<EchartLine :width="350" :chartsData="chartsData" />
 
 chartsData:[{
   value: 88,
