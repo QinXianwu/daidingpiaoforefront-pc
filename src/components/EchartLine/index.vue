@@ -1,114 +1,130 @@
 <template>
-  <div id="main" style="width: 100%; height: 600px" ref="main"></div>
+  <div class="EchartLine">
+    <div
+      i="chartsReport"
+      :ref="refName"
+      :style="{
+        width: `${width ? width : ''}px`,
+        height: `${height ? height : ''}px`,
+      }"
+    ></div>
+  </div>
 </template>
 
 <script>
-// import axios from "axios";
 export default {
-  name: "homePage",
-  mounted() {
-    this.test();
+  name: "EchartLine",
+  props: {
+    width: {
+      type: Number,
+      default: 800,
+    },
+    height: {
+      type: Number,
+      default: 420,
+    },
+    chartTitle: {
+      type: String,
+      default: "",
+    },
+    chartsData: {
+      type: Array,
+      default: () => [],
+    },
+    chartsXAxisData: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  data() {
+    return {
+      charts: "",
+      refName: `echartLine-${new Date().getTime()}`,
+    };
+  },
+  computed: {
+    xAxisData({ chartsXAxisData }) {
+      if (!chartsXAxisData?.length) return [];
+      return chartsXAxisData;
+    },
   },
   methods: {
-    test() {
-      // 官方示例 var myChart = echarts.init(document.getElementById('main'));
-      const myChart = this.$echarts.init(this.$refs.main); // 我们可以这样写
-      //配置项，可以去查一下官方文档
-      let options = {
-        title: {
-          text: "动态",
-          textStyle: {
-            color: "black",
-          },
-        },
+    initEcharts() {
+      this.charts = this.$echarts.init(this.$refs[this.refName]);
+    },
+    drawCharts() {
+      const { series } = this.getChartsData();
+      this.charts.setOption({
+        title: { text: this.chartTitle, textStyle: {} },
         tooltip: {
           trigger: "axis",
+          // 坐标轴指示器是指示坐标轴当前刻度的工具
           axisPointer: {
             type: "cross",
-            label: {
-              backgroundColor: "#283b56",
-            },
+            label: { backgroundColor: "#ff4949" },
           },
         },
         legend: {},
-        xAxis: {
-          type: "category",
-          data: [
-            "2021-10-1",
-            "2021-10-2",
-            "2021-10-3",
-            "2021-10-4",
-            "2021-10-5",
-          ], // 把时间组成的数组接过来，放在x轴上
-          boundaryGap: true,
-        },
-        yAxis: {
-          type: "value",
-        },
-        series: [
-          {
-            data: [200, 100, 500, 600, 400],
-            type: "line",
-            name: "测试一",
-            markPoint: {
-              data: [
-                { type: "max", name: "最大值" },
-                { type: "min", name: "最小值" },
-              ],
-            },
-            markLine: {
-              data: [{ type: "average", name: "平均值" }],
-            },
-          },
-          {
-            data: [110, 300, 550, 400, 800],
-            name: "测试二",
-            type: "line",
-            markPoint: {
-              data: [
-                { type: "max", name: "最大值" },
-                { type: "min", name: "最小值" },
-              ],
-            },
-            markLine: {
-              data: [{ type: "average", name: "平均值" }],
-            },
-          },
+        xAxis: { type: "category", data: this.xAxisData, boundaryGap: true },
+        yAxis: {},
+        series: series,
+      });
+    },
+    getChartsData() {
+      if (!this.chartsData?.length) return [];
+      // X轴
+      const markPoint = {
+        data: [
+          { type: "max", name: "最大值" },
+          { type: "min", name: "最小值" },
         ],
       };
-      // setInterval(function () {
-      //   let nowTime = new Date().toLocaleTimeString().replace(/^\D*/, "");
-      //   time.shift();
-      //   time.push(nowTime);
-      //   dataOne.shift();
-      //   dataOne.push(Math.round(Math.random() * 1000));
-      //   dataTwo.shift();
-      //   dataTwo.push(Math.round(Math.random() * 1000));
-      //   console.log(dataOne);
-      //   //很多朋友可能要接后端接口,把数据替换下来既可以了
-      //   // axios.get('你的url').then(res => {
-      //   //   console.log(res)
-      //   // })
-      //   myChart.setOption({
-      //     xAxis: [
-      //       {
-      //         data: time,
-      //       },
-      //     ],
-      //     series: [
-      //       {
-      //         data: dataOne,
-      //       },
-      //       {
-      //         data: dataTwo,
-      //       },
-      //     ],
-      //   });
-      // }, 2000);
-      myChart.setOption(options);
+      // Y轴
+      const markLine = {
+        data: [{ type: "average", name: "平均值" }],
+      };
+      const series = this.chartsData.map((item) => {
+        const seriesItem = {
+          data: item.data || [],
+          type: "line",
+          name: item.name || "",
+          markPoint,
+          markLine,
+        };
+        if (!item?.showXMarkPoint && typeof item?.showXMarkPoint === "boolean")
+          delete seriesItem.markPoint;
+        if (!item?.showYMarkLine && typeof item?.showYMarkLine === "boolean")
+          delete seriesItem.markLine;
+        if (item?.isSmooth) seriesItem.smooth = true; // 是否平滑曲线
+        return seriesItem;
+      });
+
+      return { series };
     },
+    // 动态设置图表数据
+    setChartsDate({ xAxis = [], chartsDataList = [] }) {
+      if (!xAxis?.length || !chartsDataList?.length) return;
+      const series = chartsDataList.map((item) => ({ data: item }));
+      this.charts.setOption({
+        xAxis: [{ data: xAxis }],
+        series: series,
+      });
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.initEcharts();
+      this.drawCharts();
+    });
   },
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.EchartLine {
+  [i="chartsReport"] {
+    width: 800px;
+    height: 420px;
+  }
+}
+</style>

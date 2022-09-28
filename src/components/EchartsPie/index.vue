@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       charts: "",
-      refName: `chartsReport-${new Date().getTime()}`,
+      refName: `echartsPie-${new Date().getTime()}`,
     };
   },
   computed: {
@@ -71,9 +71,22 @@ export default {
   methods: {
     initEcharts() {
       this.charts = this.$echarts.init(this.$refs[this.refName]);
-      this.drawCharts();
     },
     drawCharts() {
+      const { series } = this.getChartsData();
+      this.charts.setOption({
+        tooltip: {
+          trigger: "item", // 数据项图形触发
+          formatter: this.tooltipFormatter,
+        },
+        legend: {
+          data: this.opinion,
+          ...this.legend,
+        },
+        series: [series],
+      });
+    },
+    getChartsData() {
       const series = {
         // 系列名称，用于tooltip的显示，legend 的图例筛选
         type: "pie",
@@ -89,22 +102,13 @@ export default {
       if (this.colorList?.length) {
         series.itemStyle.color = (params) => this.colorList[params.dataIndex];
       }
-      this.charts.setOption({
-        tooltip: {
-          trigger: "item", // 数据项图形触发
-          formatter: this.tooltipFormatter,
-        },
-        legend: {
-          data: this.opinion,
-          ...this.legend,
-        },
-        series: [series],
-      });
+      return { series };
     },
   },
   mounted() {
     this.$nextTick(() => {
       this.initEcharts();
+      this.drawCharts();
     });
   },
 };
