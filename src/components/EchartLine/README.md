@@ -54,10 +54,4 @@ set() {
   }, 2000);
 }
 
-mounted() {
-  this.$nextTick(() => {
-    this.initEcharts();
-    this.drawCharts();
-  });
-}
 ```

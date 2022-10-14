@@ -43,23 +43,23 @@ service.interceptors.response.use(
 
     // 对本地环境以及线上环境返回不一样字段名进行处理
     if (data) {
-      if (!isField(data, "res_code") && isField(data, "code"))
-        data.res_code = Number(data.code);
+      if (!isField(data, "resCode") && isField(data, "code"))
+        data.resCode = Number(data.code);
       // if (!isField(data, "Message") && isField(data, "message"))
       //   data.Message = data.message;
       // if (!isField(data, "Data") && isField(data, "data"))
       //   data.Data = data.data; // 封装响应体
-      if (!data.message && data?.res_code !== CONST.AJAX_CODE.SUCCESS)
+      if (!data.message && data?.resCode !== CONST.AJAX_CODE.SUCCESS)
         data.message = "未知错误";
     }
 
     // 判断是否返回正确的业务编码，返回正确的时候则直接返回主体
-    if (data?.res_code === CONST.AJAX_CODE.SUCCESS) return data.data || true;
+    if (data?.resCode === CONST.AJAX_CODE.SUCCESS) return data.data || true;
 
     config.isErrorTips && Message.error(data?.message);
     if (
-      data?.res_code === CONST.AJAX_CODE.AUTH_EXPIRE ||
-      data?.res_code === 401
+      data?.resCode === CONST.AJAX_CODE.AUTH_EXPIRE ||
+      data?.resCode === 401
     ) {
       if (!un_login) {
         // 只需提示一次
