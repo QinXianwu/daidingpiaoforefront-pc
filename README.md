@@ -1,6 +1,6 @@
-# daidingpiaoforefront-pc
+# ocean-spray-pc
 
-## 代订票后台管理系统
+## 后台管理系统
 
 **开发前** 请开发人员查看项目代码规范 [docs/项目代码规范.md](./docs/项目代码规范.md)
 
