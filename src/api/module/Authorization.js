@@ -17,4 +17,15 @@ export default {
       })
     );
   },
+  // 注销登录
+  OutLogin(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/rbac/login/out-login",
+        params,
+        isQueryAll: true,
+        isReturnAll: true,
+      })
+    );
+  },
 };

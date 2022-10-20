@@ -23,6 +23,7 @@ const mutations = {
 const actions = {
   // 退出登录
   LogoutAsync({ commit }) {
+    api.Authorization.OutLogin();
     resetRouter(); // 重置路由
     commit("SET_USER_SIGNOUT");
     location.href = "/";
