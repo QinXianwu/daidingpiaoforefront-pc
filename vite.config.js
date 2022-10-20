@@ -9,7 +9,7 @@ import ViteRequireContext from "@originjs/vite-plugin-require-context";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   // const idDev = mode !== "production";
-  console.log(env.VITE_APP_API_PREFIX, mode);
+  console.log(env.VITE_APP_BASE_API_URL, mode);
   return {
     plugins: [
       createVuePlugin({

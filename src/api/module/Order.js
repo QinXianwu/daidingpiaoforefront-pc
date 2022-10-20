@@ -14,7 +14,7 @@ export default {
         url: apiPrefix + "/order/waiting/list",
         params,
         isQueryAll: true,
-        method: "get",
+        method: "post",
       })
     );
   },

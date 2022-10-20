@@ -16,7 +16,7 @@
           <template #process_countdown="{ scope }">
             <TimeDown
               :showH="false"
-              :targerTime="scope.process_countdown"
+              :targerTime="scope.expireTime"
               @on-change="onCountdownOver(scope)"
             />
           </template>
@@ -62,9 +62,12 @@ export default {
         size: 10,
         current: 1,
       },
+      query: {
+        agentCode: "000001064",
+        lastId: "",
+      },
       total: 0,
       alipayAccount: "", // 支付宝账号
-      rules: [], //过滤规则
     };
   },
   watch: {
@@ -92,31 +95,34 @@ export default {
       if (isClear) this.page.current = 1;
       let query = {
         ...this.page,
+        paramData: { ...this.query },
       };
-      if (this.rules.length) query.filters = { rules: this.rules };
-      // const [, res] = await this.$http.Order.GetOrderWaitList(query);
-      // console.log(res);
-      // this.list = res?.users || [];
-      this.list = [
-        {
-          order_code: "todo 1",
-          departure_time: "todo",
-          trips_number: "todo",
-          start_end_station: "todo",
-          order_mark: "todo",
-          process_countdown: Date.now() + 1000 * 5,
-          order_time: "todo",
-        },
-        {
-          order_code: "todo 2",
-          departure_time: "todo",
-          trips_number: "todo",
-          start_end_station: "todo",
-          order_mark: "todo",
-          process_countdown: Date.now() + 1000 * 60 * 10,
-          order_time: "todo",
-        },
-      ];
+      const [error, res] = await this.$http.Order.GetOrderWaitList(query);
+      console.log(error);
+      if (!res?.list?.length) return;
+      this.list = res.list;
+      this.total = res?.total || 0;
+      console.log(res);
+      // this.list = [
+      //   {
+      //     order_code: "todo 1",
+      //     departure_time: "todo",
+      //     trips_number: "todo",
+      //     start_end_station: "todo",
+      //     order_mark: "todo",
+      //     process_countdown: Date.now() + 1000 * 5,
+      //     order_time: "todo",
+      //   },
+      //   {
+      //     order_code: "todo 2",
+      //     departure_time: "todo",
+      //     trips_number: "todo",
+      //     start_end_station: "todo",
+      //     order_mark: "todo",
+      //     process_countdown: Date.now() + 1000 * 60 * 10,
+      //     order_time: "todo",
+      //   },
+      // ];
       // this.total = res.Attr.RecordCount;
       // this.config_moneys = res.config_moneys;
     },

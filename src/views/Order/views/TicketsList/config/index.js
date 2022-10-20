@@ -1,26 +1,10 @@
 // 搜索选项
-export const formData = [
-  {
-    label: "手机号",
-    prop: "mobile",
-    type: "text",
-    value: "",
-    placeholder: "手机号",
-  },
-  {
-    label: "授权姓名",
-    prop: "agent.real_name",
-    type: "text",
-    value: "",
-    placeholder: "姓名",
-  },
-];
+export const formData = [];
 // 表格头
 export const column = [
   {
     label: "订单号",
-    prop: "order_code",
-    width: 200,
+    prop: "partnerOrderId",
   },
   {
     label: "发车时间",

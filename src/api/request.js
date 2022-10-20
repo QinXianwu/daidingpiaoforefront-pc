@@ -38,6 +38,7 @@ service.interceptors.response.use(
       loadingInstance = null;
     }
     const { data, config } = response;
+
     // 判断此接口是否需要完整返回后端返回的数据
     if (config.isReturnAll) return data;
 
@@ -56,7 +57,7 @@ service.interceptors.response.use(
     // 判断是否返回正确的业务编码，返回正确的时候则直接返回主体
     if (data?.resCode === CONST.AJAX_CODE.SUCCESS) return data.data || true;
 
-    config.isErrorTips && Message.error(data?.message);
+    config.isErrorTips && Message.error(data?.message || "未知错误");
     if (
       data?.resCode === CONST.AJAX_CODE.AUTH_EXPIRE ||
       data?.resCode === 401
@@ -68,10 +69,11 @@ service.interceptors.response.use(
         un_login = true;
       }
     }
-    return Promise.reject(data);
+    return Promise.reject(data || { message: "未知错误" });
   },
 
   (error) => {
+    console.log("123213", error);
     requestNum--;
     if (requestNum <= 0) {
       loadingInstance.close();
