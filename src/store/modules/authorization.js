@@ -1,6 +1,6 @@
 import Vue from "vue";
-import api from "@/api/module";
-import CONST from "@/constants/index";
+// import api from "@/api/module";
+// import CONST from "@/constants/index";
 import CookieStore from "@/utils/common";
 import ELEMENT from "element-ui";
 import router, { resetRouter } from "@/router/index";
@@ -44,19 +44,28 @@ const actions = {
   // 登录
   async Login({ commit }, userInfo) {
     const { username, password } = userInfo;
-    const [, res] = await api.Authorization.Login({
-      account: username,
-      password: password,
-      subAccount: "",
-    });
-    if (Number(res?.code) === CONST.AJAX_CODE.SUCCESS && res?.data) {
-      const token = res.data?.token;
+    // const [, res] = await api.Authorization.Login({
+    //   account: username,
+    //   password: password,
+    //   subAccount: "",
+    // });
+    // if (Number(res?.code) === CONST.AJAX_CODE.SUCCESS && res?.data) {
+    //   const token = res.data?.token;
+    //   CookieStore.setCookie("user_sessino", token, 1);
+    //   commit("SET_USER_SIGNIN", token);
+    //   location.href = "/";
+    //   ELEMENT.Message.success("登录成功");
+    // } else {
+    //   ELEMENT.Message.error(res?.message || "账号密码有误,请重试");
+    // }
+    const token = "token";
+    if (username === "admin" && password === "123456") {
       CookieStore.setCookie("user_sessino", token, 1);
       commit("SET_USER_SIGNIN", token);
       location.href = "/";
       ELEMENT.Message.success("登录成功");
     } else {
-      ELEMENT.Message.error(res?.message || "账号密码有误,请重试");
+      ELEMENT.Message.error("账号密码有误,请重试");
     }
   },
 };

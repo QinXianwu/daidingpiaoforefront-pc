@@ -32,12 +32,13 @@
       </div>
 
       <!-- 编辑/新增角色 -->
-      <!-- <DrawerPopup v-model="isUpdateRoleList">
-        <UpdateRole
+      <DrawerPopup v-model="isUpdateRoleList">
+        <div>新增</div>
+        <!-- <UpdateRole
           :roleId="roleInfo && roleInfo.VirtualRoleId"
           @close="close"
-        />
-      </DrawerPopup> -->
+        /> -->
+      </DrawerPopup>
     </div>
   </div>
 </template>
