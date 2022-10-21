@@ -18,6 +18,7 @@
       :show-header="showHeader"
       :row-class-name="rowClassName"
       :row-key="rowKey"
+      :default-expand-all="isExpandAll"
       @sort-change="onSortChange"
       @selection-change="selectionChange"
       @select="onSelect"
@@ -225,6 +226,11 @@ export default {
     },
     // 是否开始数据更新时保留之前选中的数据（需指定 row-key），作用场景，拥有分页功能并且多选数据切换分页时保留原先数据
     reserveSelection: {
+      type: Boolean,
+      default: false,
+    },
+    // 显示默认展开所有展开行
+    isExpandAll: {
       type: Boolean,
       default: false,
     },

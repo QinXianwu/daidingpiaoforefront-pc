@@ -9,19 +9,23 @@ export const column = [
   {
     label: "发车时间",
     prop: "departure_time",
-    width: 120,
+    width: 160,
+    type: "custom",
   },
   {
     label: "车次",
     prop: "trips_number",
+    type: "custom",
   },
   {
     label: "发/到站",
     prop: "start_end_station",
+    type: "custom",
   },
   {
     label: "订单标记",
     prop: "order_mark",
+    type: "custom",
   },
   {
     label: "处理倒计时",
@@ -31,7 +35,8 @@ export const column = [
   },
   {
     label: "订单时间",
-    prop: "order_time",
+    prop: "currentTime",
+    width: 160,
   },
   {
     label: "操作",

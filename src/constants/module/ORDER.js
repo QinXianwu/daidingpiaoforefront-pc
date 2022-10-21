@@ -185,3 +185,61 @@ export const SESSION_STATE_OPTIONS = () => [
     value: SESSION_STATE.HANDLE_SUCCESS,
   },
 ];
+
+// 订单标记
+export const ORDER_FLAG = {
+  GENERAL_ORDER: 0, // 一般订单
+  BUCKLE_ORDER: 2, // 扣位订单
+};
+
+export const ORDER_FLAG_TEXT = {
+  [ORDER_FLAG.GENERAL_ORDER]: "一般订单",
+  [ORDER_FLAG.BUCKLE_ORDER]: "扣位订单",
+};
+
+// 订单出票类型
+export const ORDER_TICKET_TYPE = {
+  ONE_WAY_TICKETS: 0, // 单程票
+  CONNECTING_TICKET: 1, // 联程票
+};
+
+// 行程类型
+export const TICKET_TYPE = {
+  FIRST_RIDE: 1, // 第一程
+  SECOND_TRIP: 2, // 第二程
+};
+
+export const TICKET_TYPE_TEXT = {
+  [TICKET_TYPE.FIRST_RIDE]: "单程",
+  [TICKET_TYPE.SECOND_TRIP]: "联程",
+};
+
+// 证件类型
+export const PASSPORT_TYPE = {
+  IDENTITY_CARD: 1, // 身份证
+  PASSPORT: 2, // 护照
+  HONG_KONG_AND_MACAO_MAINLAND_PASS: 7, // 回乡证(港澳居民来往内地通行证)
+  TAIWAN_COMPATRIOT_CERTIFICATE: 8, // 台胞证
+  HONG_KONG_AND_MACAU_PASS: 10, // 港澳通行证
+  TAIWAN_PASS: 22, // 台湾通行证
+};
+
+export const PASSPORT_TYPE_TEXT = {
+  [PASSPORT_TYPE.IDENTITY_CARD]: "身份证",
+  [PASSPORT_TYPE.PASSPORT]: "护照",
+  [PASSPORT_TYPE.HONG_KONG_AND_MACAO_MAINLAND_PASS]: "回乡证",
+  [PASSPORT_TYPE.TAIWAN_COMPATRIOT_CERTIFICATE]: "台胞证",
+  [PASSPORT_TYPE.HONG_KONG_AND_MACAU_PASS]: "港澳通行证",
+  [PASSPORT_TYPE.TAIWAN_PASS]: "台湾通行证",
+};
+
+// 乘客类型
+export const PASSENGER_TYPE = {
+  ADULT_TICKET: 1, // 成人票
+  CHILD_TICKET: 2, // 儿童票
+};
+
+export const PASSENGER_TYPE_TEXT = {
+  [PASSENGER_TYPE.ADULT_TICKET]: "成人票",
+  [PASSENGER_TYPE.CHILD_TICKET]: "儿童票",
+};

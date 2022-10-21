@@ -11,7 +11,32 @@
             >[允许出票证件包括：港内、台内、外留、二代、护照]</span
           >
         </div>
-        <TablePanel :tableData="list" :tableHead="column" expand>
+        <TablePanel :tableData="list" :tableHead="column" expand isExpandAll>
+          <!-- 发车时间 -->
+          <template #departure_time="{ scope }">
+            <p v-for="(item, index) in scope.ticketList || [{}]" :key="index">
+              <span>{{ item["departTime"] || "-" }}</span>
+            </p>
+          </template>
+          <!-- 车次 -->
+          <template #trips_number="{ scope }">
+            <p v-for="(item, index) in scope.ticketList || [{}]" :key="index">
+              <span>{{ item["trainNumber"] || "-" }}</span>
+            </p>
+          </template>
+          <!-- 发/到站 -->
+          <template #start_end_station="{ scope }">
+            <p v-for="(item, index) in scope.ticketList || [{}]" :key="index">
+              <span> {{ item["fromStationName"] || "-" }} </span>
+              <span>{{ " - " }}</span>
+              <span> {{ item["toStationName"] || "-" }} </span>
+            </p>
+          </template>
+          <!-- 订单标记 -->
+          <template #order_mark="{ scope }">
+            {{ $CONST.ORDER_FLAG_TEXT[scope.orderFlag] || "无" }}
+          </template>
+
           <!-- 处理时间倒计时 -->
           <template #process_countdown="{ scope }">
             <TimeDown
@@ -22,7 +47,11 @@
           </template>
           <!-- 展开行-出票详情 -->
           <template #expand="{ scope }">
-            <IssueTicketingDetails :orderInfo="scope" />
+            <IssueTicketingDetails
+              :ticketingList="scope.ticketList"
+              v-if="scope.ticketList && scope.ticketList.length"
+            />
+            <div class="nothing-ticketing">暂无数据</div>
           </template>
           <!-- 操作 -->
           <template #action="{}">
@@ -39,6 +68,7 @@
         @current-change="handleCurrentChange"
         :page-size="page.size"
         :current-page="page.current"
+        :pageSizes="[page.size, 10, 20, 50, 100]"
         :total="total"
       />
     </div>
@@ -59,8 +89,8 @@ export default {
       column, //表格头
       list: [],
       page: {
-        size: 10,
-        current: 1,
+        size: 2,
+        current: 20,
       },
       query: {
         agentCode: "000001064",
@@ -97,34 +127,15 @@ export default {
         ...this.page,
         paramData: { ...this.query },
       };
-      const [error, res] = await this.$http.Order.GetOrderWaitList(query);
-      console.log(error);
+      const [, res] = await this.$http.Order.GetOrderWaitList(query);
       if (!res?.list?.length) return;
       this.list = res.list;
       this.total = res?.total || 0;
-      console.log(res);
-      // this.list = [
-      //   {
-      //     order_code: "todo 1",
-      //     departure_time: "todo",
-      //     trips_number: "todo",
-      //     start_end_station: "todo",
-      //     order_mark: "todo",
-      //     process_countdown: Date.now() + 1000 * 5,
-      //     order_time: "todo",
-      //   },
-      //   {
-      //     order_code: "todo 2",
-      //     departure_time: "todo",
-      //     trips_number: "todo",
-      //     start_end_station: "todo",
-      //     order_mark: "todo",
-      //     process_countdown: Date.now() + 1000 * 60 * 10,
-      //     order_time: "todo",
-      //   },
-      // ];
-      // this.total = res.Attr.RecordCount;
-      // this.config_moneys = res.config_moneys;
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.list.push(this.list[0]);
+        }, 5000);
+      });
     },
   },
   mounted() {
@@ -148,6 +159,11 @@ export default {
     .tip {
       color: $--color-success;
     }
+  }
+  .nothing-ticketing {
+    padding: 10px 0;
+    text-align: center;
+    color: $tip-font-color;
   }
 }
 </style>

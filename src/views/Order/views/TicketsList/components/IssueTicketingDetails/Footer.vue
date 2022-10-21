@@ -3,7 +3,7 @@
     <div class="item">
       <div class="mobile-phone">
         <CopyButton :copyString="mobilePhone || ''">
-          <span class="phone">{{ mobilePhone || "---" }}</span>
+          <span class="phone">{{ mobilePhone | formatMobile }}</span>
           <span class="copy">复制</span>
         </CopyButton>
       </div>
@@ -14,7 +14,7 @@
     </div>
     <div class="item">
       <div class="emit">
-        <span class="label mr-10">电子邮箱：E</span>
+        <span class="label mr-10">电子订单号：{{ "E" }}</span>
         <el-input
           type="emit"
           v-model="emit"

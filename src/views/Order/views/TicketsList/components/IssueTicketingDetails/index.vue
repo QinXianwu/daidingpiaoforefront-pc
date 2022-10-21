@@ -9,23 +9,33 @@
         v-for="(ticketing, key) in ticketingList"
         :key="key"
       >
-        <span class="item-title">{{ ticketing.title }}</span>
+        <span class="item-title">
+          {{ $CONST.TICKET_TYPE_TEXT[ticketing.ticketType] }}
+        </span>
         <div class="ticketing-item-content">
-          <!-- 出票头部信息 读 -->
-          <HeadView />
+          <!-- 出票头部信息 -->
+          <HeadView :info="ticketing" />
           <div class="content-info">
             <div class="remark">
-              <span>可接受席位：必须03车，最好F座，不接受</span>
+              <span>可接受席位：{{ ticketing.acceptSeatRemark || "空" }}</span>
             </div>
-            <div class="info">
+            <div
+              class="info"
+              :key="index"
+              v-for="(item, index) in ticketing.passengerList"
+            >
               <div class="credential-type">
-                <span>1.DE 二代</span>
+                <span
+                  >{{ index + 1 }}.{{
+                    $CONST.PASSPORT_TYPE_TEXT[item.passportType]
+                  }}</span
+                >
               </div>
               <div class="info-content">
                 <div class="info-item">
                   <div class="info-item-main">
-                    <CopyButton copyString="张三" v-if="'张三'">
-                      <span>张三</span>
+                    <CopyButton :copyString="item.passengerName || '-'">
+                      <span>{{ item.passengerName || "-" }}</span>
                       <span class="copy">复制</span>
                     </CopyButton>
                   </div>
@@ -45,24 +55,28 @@
                 </div>
                 <div class="info-item">
                   <div class="info-item-main">
-                    <CopyButton copyString="360121 1995 0504 052" v-if="'张三'">
-                      <span>360121 1995 0504 052</span>
+                    <CopyButton :copyString="item.passportNumber">
+                      <span>{{ item.passportNumber || "-" }}</span>
                       <span class="copy">复制</span>
                     </CopyButton>
                   </div>
                   <div class="info-footer">
-                    <span class="label mr-10">成人票</span>
+                    <span class="label mr-10">{{
+                      $CONST.PASSENGER_TYPE_TEXT[item.passengerType]
+                    }}</span>
                     <div class="value">
                       <el-radio-group
                         class="info-radiogroup"
                         v-model="seatClass"
                       >
                         <el-radio
-                          :key="index"
-                          :label="item.value"
+                          :key="i"
+                          :label="ele.value"
                           class="info-radiogroup-item"
-                          v-for="(item, index) in seatClassOptions"
-                          >{{ item.label }}</el-radio
+                          v-for="(ele, i) in getSeatClassOptions(
+                            ticketing.acceptSeatName
+                          )"
+                          >{{ ele.label }}</el-radio
                         >
                       </el-radio-group>
                     </div>
@@ -100,7 +114,7 @@
           </div>
         </div>
       </div>
-      <FooterView :mobilePhone="'150 7909 3005'" @onSubmit="onSubmit" />
+      <FooterView :mobilePhone="'13579093005'" @onSubmit="onSubmit" />
     </div>
   </div>
 </template>
@@ -113,6 +127,12 @@ import CopyButton from "@/components/CopyButton/index";
 export default {
   name: "IssueTicketingDetails",
   components: { HeadView, CopyButton, FooterView },
+  props: {
+    ticketingList: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       info: {
@@ -122,22 +142,10 @@ export default {
       },
       issueTicketingName: "",
       seatClass: 2,
-      ticketingList: [{ title: "去程" }, { title: "联程" }],
-      seatClassOptions: [
-        {
-          label: "一等座",
-          value: 1,
-        },
-        {
-          label: "二等座",
-          value: 2,
-        },
-        {
-          label: "卧代二等座",
-          value: 3,
-        },
-      ],
     };
+  },
+  created() {
+    console.log("出票详情");
   },
   computed: {
     otherData({ info }) {
@@ -159,6 +167,14 @@ export default {
     },
   },
   methods: {
+    // 获取
+    getSeatClassOptions(arrJson) {
+      const arr = typeof arrJson === "string" ? JSON.parse(arrJson) : [];
+      return arr.map((item, index) => ({
+        label: item,
+        value: index,
+      }));
+    },
     onSubmit(res) {
       if (res) {
         this.$message.success("有票");
@@ -209,6 +225,7 @@ export default {
     background-color: #fff;
     .remark {
       padding: 9px 12px;
+      line-height: 22px;
       font-size: 16px;
       font-weight: 700;
       color: $--color-danger;
@@ -217,7 +234,7 @@ export default {
     .info {
       display: flex;
       align-items: baseline;
-      padding: 30px 0 0;
+      padding: 10px 0 0;
     }
     .credential-type {
       min-width: fit-content;
