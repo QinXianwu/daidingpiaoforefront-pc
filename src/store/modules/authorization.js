@@ -11,7 +11,7 @@ const state = {
 
 const mutations = {
   SET_USER_SIGNIN(state, data) {
-    CookieStore.setCookie("user_sessino", data);
+    CookieStore.setCookie("user_sessino", data?.token, data?.date || 1);
     Object.assign(state, data);
   },
   SET_USER_SIGNOUT(state) {
@@ -52,8 +52,7 @@ const actions = {
     });
     if (Number(res?.code) === CONST.AJAX_CODE.SUCCESS && res?.data) {
       const token = res.data?.token;
-      CookieStore.setCookie("user_sessino", token, 1);
-      commit("SET_USER_SIGNIN", token);
+      commit("SET_USER_SIGNIN", { token, date: 1 });
       location.href = "/";
       ELEMENT.Message.success("登录成功");
     } else {
