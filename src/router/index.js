@@ -3,7 +3,7 @@ import Router from "vue-router";
 import routerList from "./modules/index";
 import beforeEachFun from "./beforeEachFun";
 import MainLayout from "@/layouts/MainLayout/index";
-import startPageIntro from "@/pagesIntro/index";
+// import startPageIntro from "@/pagesIntro/index";
 
 // 读取 module 文件夹的路由js
 
@@ -70,7 +70,8 @@ const createRouter = () => {
     scrollBehavior: () => ({ y: 0 }),
     routes: constantRoutes,
   });
-  r.afterEach((route) => {
+  r.afterEach(() => {
+    // r.afterEach((route) => {
     let loadings = document.querySelectorAll(".el-loading-mask");
     if (loadings) {
       for (let i = loadings.length - 1; i >= 0; i--) {
@@ -79,7 +80,7 @@ const createRouter = () => {
     }
     Vue.nextTick(() => {
       // 触发页面指示
-      startPageIntro(route.name);
+      // startPageIntro(route.name);
     });
   });
   return r;
