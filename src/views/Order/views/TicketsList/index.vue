@@ -36,7 +36,6 @@
           <template #order_mark="{ scope }">
             {{ $CONST.ORDER_FLAG_TEXT[scope.orderFlag] || "无" }}
           </template>
-
           <!-- 处理时间倒计时 -->
           <template #process_countdown="{ scope }">
             <TimeDown
@@ -48,6 +47,7 @@
           <!-- 展开行-出票详情 -->
           <template #expand="{ scope }">
             <IssueTicketingDetails
+              :orderInfo="scope"
               :ticketingList="scope.ticketList"
               v-if="scope.ticketList && scope.ticketList.length"
             />

@@ -31,90 +31,17 @@
                   }}</span
                 >
               </div>
-              <div class="info-content">
-                <div class="info-item">
-                  <div class="info-item-main">
-                    <CopyButton :copyString="item.passengerName || '-'">
-                      <span>{{ item.passengerName || "-" }}</span>
-                      <span class="copy">复制</span>
-                    </CopyButton>
-                  </div>
-                  <div class="info-footer">
-                    <span class="label mr-10">出票姓名</span>
-                    <div class="value">
-                      <el-input
-                        class="name-input"
-                        v-model="issueTicketingName"
-                        placeholder="请输入出票姓名"
-                      />
-                      <span class="form-tip"
-                        >（同音不同字时填写票机展示姓名）</span
-                      >
-                    </div>
-                  </div>
-                </div>
-                <div class="info-item">
-                  <div class="info-item-main">
-                    <CopyButton :copyString="item.passportNumber">
-                      <span>{{ item.passportNumber || "-" }}</span>
-                      <span class="copy">复制</span>
-                    </CopyButton>
-                  </div>
-                  <div class="info-footer">
-                    <span class="label mr-10">{{
-                      $CONST.PASSENGER_TYPE_TEXT[item.passengerType]
-                    }}</span>
-                    <div class="value">
-                      <el-radio-group
-                        class="info-radiogroup"
-                        v-model="seatClass"
-                      >
-                        <el-radio
-                          :key="i"
-                          :label="ele.value"
-                          class="info-radiogroup-item"
-                          v-for="(ele, i) in getSeatClassOptions(
-                            ticketing.acceptSeatName
-                          )"
-                          >{{ ele.label }}</el-radio
-                        >
-                      </el-radio-group>
-                    </div>
-                  </div>
-                </div>
-                <div class="info-item">
-                  <div class="info-item-main">
-                    <div></div>
-                  </div>
-                  <div class="info-footer">
-                    <div
-                      class="otherData"
-                      v-for="(item, index) in otherData"
-                      :key="index"
-                    >
-                      <div class="value">
-                        <el-input
-                          class="min-input"
-                          v-model="info[item.prop]"
-                          :disabled="item.disabled"
-                          @input="(e) => item.callback(e, item.prop)"
-                          placeholder="请输入"
-                        />
-                      </div>
-                      <span
-                        class="label ml-10 mr-10"
-                        :class="{ 'amount-label': item.prop === 'amount' }"
-                        >{{ item.label }}</span
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <PassengerInfo
+                :key="index"
+                :passengerInfo="item"
+                :ref="`PassengerInfo-${item.id}`"
+                :seatTypeOptions="getSeatTypeOptions(ticketing.acceptSeatName)"
+              />
             </div>
           </div>
         </div>
       </div>
-      <FooterView :mobilePhone="'13579093005'" @onSubmit="onSubmit" />
+      <FooterView :mobilePhone="orderInfo.contactMobile" @onSubmit="onSubmit" />
     </div>
   </div>
 </template>
@@ -122,12 +49,16 @@
 <script>
 import HeadView from "./Head.vue";
 import FooterView from "./Footer.vue";
-import CopyButton from "@/components/CopyButton/index";
+import PassengerInfo from "./PassengerInfo.vue";
 
 export default {
   name: "IssueTicketingDetails",
-  components: { HeadView, CopyButton, FooterView },
+  components: { HeadView, PassengerInfo, FooterView },
   props: {
+    orderInfo: {
+      type: Object,
+      default: () => ({}),
+    },
     ticketingList: {
       type: Array,
       default: () => [],
@@ -135,57 +66,56 @@ export default {
   },
   data() {
     return {
-      info: {
-        carCompartment: "",
-        seatNum: "",
-        amount: "",
-      },
-      issueTicketingName: "",
-      seatClass: 2,
+      fromDataMap: {}, // 乘客表单map
+      validationMethodsList: [], // 校验方法列表
     };
   },
   created() {
-    console.log("出票详情");
+    // console.log("出票详情");
   },
-  computed: {
-    otherData({ info }) {
-      return [
-        {
-          prop: "carCompartment",
-          label: "车厢",
-        },
-        {
-          prop: "seatNum",
-          label: "座号",
-        },
-        {
-          prop: "amount",
-          label: info?.amount || 0,
-          callback: this.inputAmount,
-        },
-      ];
-    },
-  },
+  computed: {},
   methods: {
-    // 获取
-    getSeatClassOptions(arrJson) {
+    // 获取座位类型
+    getSeatTypeOptions(arrJson) {
       const arr = typeof arrJson === "string" ? JSON.parse(arrJson) : [];
       return arr.map((item, index) => ({
         label: item,
         value: index,
       }));
     },
-    onSubmit(res) {
-      if (res) {
+    // 处理 PassengerInfo 数据
+    handlePassengerInfo() {
+      if (!this.ticketingList?.length) return;
+      this.ticketingList.map((ticketing) => {
+        const passengerList = ticketing?.passengerList || [];
+        passengerList.forEach(async (item) => {
+          // dom中使用for -> PassengerInfo组件只有一个
+          const index = 0;
+          const PassengerInfo = this.$refs[`PassengerInfo-${item.id}`][index];
+          // 存储校验方法
+          this.validationMethodsList.push(PassengerInfo.formValidation);
+          this.fromDataMap[item.id] = PassengerInfo.fromData;
+        });
+      });
+    },
+    async onSubmit(result) {
+      this.handlePassengerInfo();
+      if (!this.validationMethodsList?.length) return;
+      for (const index in this.validationMethodsList) {
+        try {
+          const validation = await this.validationMethodsList[index]();
+          if (!validation) throw new Error(validation);
+        } catch (error) {
+          console.error(error);
+          return error;
+        }
+      }
+      console.log(this.fromDataMap);
+      if (result) {
         this.$message.success("有票");
       } else {
         this.$message.error("无票");
       }
-    },
-    inputAmount(value, key) {
-      this.$nextTick(() => {
-        this.info[key] = value;
-      });
     },
   },
 };
@@ -244,72 +174,5 @@ export default {
       margin-top: 15px;
     }
   }
-}
-.info-content {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-}
-.info-item {
-  margin-left: 35px;
-
-  &-main {
-    padding: 0 0 30px;
-    span {
-      font-size: 22px;
-      font-weight: 500;
-      color: $main-font-color;
-    }
-  }
-  .copy {
-    font-size: 12px;
-    font-weight: 400;
-    color: #666666;
-    margin: 0 10px;
-    padding: 2px 10px;
-    background: #eee;
-  }
-}
-.info-footer {
-  display: flex;
-  align-items: baseline;
-  padding: 0 5px;
-  .otherData {
-    display: flex;
-    align-items: baseline;
-  }
-  .label {
-    font-size: 14px;
-    font-weight: 400;
-    color: $sub-font-color;
-  }
-  .label.amount-label {
-    display: flex;
-    padding: 4px 8px;
-    background-color: $--color-danger;
-    font-weight: 700;
-    color: #ffffff;
-    border-radius: 20px;
-    &::after {
-      content: "元";
-      display: block;
-    }
-  }
-  .value {
-    display: flex;
-    flex-direction: column;
-  }
-  .info-radiogroup {
-    max-width: 250px;
-    &-item {
-      margin: 0 10px 10px;
-    }
-  }
-}
-.name-input {
-  width: 150px;
-}
-.min-input {
-  width: 100px;
 }
 </style>
