@@ -68,7 +68,7 @@
         @current-change="handleCurrentChange"
         :page-size="page.size"
         :current-page="page.current"
-        :pageSizes="[page.size, 10, 20, 50, 100]"
+        :pageSizes="[upperTotal, 10, 20, 50, 100]"
         :total="total"
       />
     </div>
@@ -103,6 +103,11 @@ export default {
   watch: {
     alipayAccount(val) {
       console.log(val);
+    },
+  },
+  computed: {
+    upperTotal() {
+      return 2;
     },
   },
   methods: {

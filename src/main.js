@@ -6,6 +6,7 @@ import api from "@/api/module";
 import "@/plugins/index";
 import "./assets/styles/index.scss";
 import "./icons"; // icon
+// import "./permission/index"; // 权限控制相关
 // import { i18n } from "@/lang/index"; // 多语言
 import "virtual:svg-icons-register";
 

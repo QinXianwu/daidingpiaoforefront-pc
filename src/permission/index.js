@@ -4,7 +4,6 @@ import router from "@/router";
 import store from "@/store";
 import hasPermission from "./hasPermission";
 import { clearNum } from "@/api/request";
-
 router.beforeEach(async (to, from, next) => {
   const { permissionHash } = store.state.permission;
   // 清除loading
@@ -13,9 +12,13 @@ router.beforeEach(async (to, from, next) => {
   if (permissionHash) {
     next();
   } else {
-    const accessRoutes = await store.dispatch("permission/generateRoutes");
-    accessRoutes.forEach((r) => router.addRoute(r));
-    next({ ...to, replace: true });
+    console.log(router);
+    const accessRoutes = await store.dispatch("permission/GenerateRoutes");
+    console.log("accessRoutes", accessRoutes);
+    // accessRoutes.forEach((r) => router.addRoute(r));
+    // router.addRoutes(accessRoutes);
+    // next({ path: "/Authorization/Login", replace: true });
+    // next({ ...to, replace: true });
   }
 });
 

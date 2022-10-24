@@ -13,7 +13,6 @@ export default {
       apiFetch({
         url: apiPrefix + "/order/waiting/list",
         params,
-        isQueryAll: true,
         method: "post",
       })
     );

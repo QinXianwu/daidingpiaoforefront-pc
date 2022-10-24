@@ -154,7 +154,7 @@ export function apiFetch(objData) {
     method: "post",
     isLoading: true, // 是否显示加载
     isReturnAll: false, // 是否返回全部接受数据
-    isQueryAll: false, // 是否传输全部请求参数
+    isQueryAll: true, // 是否传输全部请求参数
     isErrorTips: true, // 接口报错时是否弹窗提示
     ...objData,
   };

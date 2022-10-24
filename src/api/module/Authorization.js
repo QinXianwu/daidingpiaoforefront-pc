@@ -3,7 +3,7 @@ import { createCatchAsyncFun } from "@/utils/index";
 // async 方法的处理
 const catchAsyncFun = createCatchAsyncFun((error) => {
   // 错误日志上报 todo
-  console.warn("登录相关接口网络请求出错", error);
+  console.warn("权限相关接口网络请求出错", error);
 });
 export default {
   // 登录
@@ -12,7 +12,6 @@ export default {
       apiFetch({
         url: apiPrefix + "/rbac/login/login",
         params,
-        isQueryAll: true,
         isReturnAll: true,
       })
     );
@@ -23,8 +22,16 @@ export default {
       apiFetch({
         url: apiPrefix + "/rbac/login/out-login",
         params,
-        isQueryAll: true,
         isReturnAll: true,
+      })
+    );
+  },
+  // 获取路由权限
+  GetPageMenuTenantListApi(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/common/list/resources",
+        params,
       })
     );
   },

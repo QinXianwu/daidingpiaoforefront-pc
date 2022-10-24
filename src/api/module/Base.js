@@ -13,7 +13,6 @@ export default {
       apiFetch({
         url: apiPrefix + "/common/list/point-sale",
         params,
-        isQueryAll: true,
         method: "post",
       })
     );
