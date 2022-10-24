@@ -12,7 +12,6 @@ router.beforeEach(async (to, from, next) => {
   if (permissionHash) {
     next();
   } else {
-    console.log(router);
     const accessRoutes = await store.dispatch("permission/GenerateRoutes");
     console.log("accessRoutes", accessRoutes);
     // accessRoutes.forEach((r) => router.addRoute(r));

@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "HeadContent",
   props: {
@@ -71,24 +72,25 @@ export default {
       account: "",
       isReceiveOrders: true, // 是否开启接受订单
       isOpenSound: true, // 是否开启声音
-      alipayAccountOptions: [
-        {
-          label: "todo",
-          value: "todo",
-        },
-      ],
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      alipayAccountOptions: "agent/alipayAccountOptions",
+    }),
+  },
   methods: {
     onOpenReceiveOrders(val) {
       console.log(val);
+      // UpdateTicketingSwitch
     },
     onOpenSound(val) {
       console.log(val);
+      // UpdateTicketingSwitch
     },
     onSelectAlipayAccount(val) {
-      this.$emit("update:alipayAccount", val);
+      const item = this.alipayAccountOptions.find((item) => item.value === val);
+      this.$emit("update:alipayAccount", item?.label || "");
     },
   },
 };

@@ -17,4 +17,34 @@ export default {
       })
     );
   },
+  // 获取支付宝流水号
+  GetAlipaySerialNumber(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/order/waiting/ali-pay-number",
+        params,
+        method: "post",
+      })
+    );
+  },
+  // 接单开关
+  UpdateTicketingSwitch(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/order/waiting/ticketing-switch",
+        params,
+        method: "post",
+      })
+    );
+  },
+  // 操作出票
+  OperationTicketing(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/order/waiting/ticket-result-info",
+        params,
+        method: "post",
+      })
+    );
+  },
 };

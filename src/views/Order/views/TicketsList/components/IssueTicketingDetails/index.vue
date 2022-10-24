@@ -33,6 +33,7 @@
               </div>
               <PassengerInfo
                 :key="index"
+                :ticketInfo="ticketing"
                 :passengerInfo="item"
                 :ref="`PassengerInfo-${item.id}`"
                 :seatTypeOptions="getSeatTypeOptions(ticketing.acceptSeatName)"
@@ -41,8 +42,21 @@
           </div>
         </div>
       </div>
-      <FooterView :mobilePhone="orderInfo.contactMobile" @onSubmit="onSubmit" />
+      <FooterView
+        :amount="getTicketTotalAmount()"
+        :alipayAccount="alipayAccount"
+        :eorderNumber.sync="eorderNumber"
+        :payTradeNumber.sync="payTradeNumber"
+        :mobilePhone="orderInfo.contactMobile"
+        :partnerOrderId="orderInfo.partnerOrderId"
+        @onSubmit="onSubmit"
+      />
     </div>
+    <SelectNoTicketType
+      :show.sync="showSelectNoTicketType"
+      :noTicketResult.sync="noTicketResult"
+      @on-success="ticketingAction"
+    />
   </div>
 </template>
 
@@ -50,11 +64,17 @@
 import HeadView from "./Head.vue";
 import FooterView from "./Footer.vue";
 import PassengerInfo from "./PassengerInfo.vue";
-
+import CONST from "@/constants/index";
+import filters from "@/filters/index";
+import SelectNoTicketType from "./SelectNoTicketType.vue";
 export default {
   name: "IssueTicketingDetails",
-  components: { HeadView, PassengerInfo, FooterView },
+  components: { HeadView, PassengerInfo, FooterView, SelectNoTicketType },
   props: {
+    alipayAccount: {
+      type: String,
+      default: "",
+    },
     orderInfo: {
       type: Object,
       default: () => ({}),
@@ -66,14 +86,68 @@ export default {
   },
   data() {
     return {
-      fromDataMap: {}, // 乘客表单map
+      eorderCode: "E",
+      eorderNumber: "", // 电子订单号
+      payTradeNumber: "", // 支付流水号
+      formPassengerMap: {}, // 乘客表单map
+      noTicketResult: {}, // 无票原因
       validationMethodsList: [], // 校验方法列表
+      showSelectNoTicketType: false, // 显示选择无票类型
     };
   },
   created() {
     // console.log("出票详情");
   },
-  computed: {},
+  computed: {
+    // 订单表单数据
+    formOrderData({ orderInfo, payTradeNumber, eorderCode, eorderNumber }) {
+      return {
+        id: orderInfo.id,
+        agentCode: orderInfo.agentCode,
+        agentName: orderInfo.agentName,
+        contactMobile: orderInfo.contactMobile,
+        currentTime: orderInfo.currentTime,
+        orderPrice: orderInfo.orderPrice,
+        partnerOrderId: orderInfo.partnerOrderId,
+        resultMsg: orderInfo.resultMsg || "出票失败",
+        eorderNumber: eorderCode + eorderNumber,
+        payTradeNumber,
+      };
+    },
+    // 出票行程数据
+    formTicketList({ ticketingList, formPassengerMap }) {
+      if (!ticketingList?.length) return [];
+      return ticketingList.map((item) => {
+        const passengerList = item?.passengerList?.map((item) => {
+          return {
+            id: item.id,
+            passengerId: item.passengerId,
+            passengerName: item.passengerName,
+            passengerType: item.passengerType,
+            passportNumber: item.passportNumber,
+            passportType: item.passportType,
+            passportTypeName: item.passportTypeName,
+            ticketName: formPassengerMap[item.id].ticketName,
+            realTicketPrice: formPassengerMap[item.id].realTicketPrice,
+            carriageNo: formPassengerMap[item.id].carriageNo,
+            seatName: formPassengerMap[item.id].seatName,
+            seatNo: formPassengerMap[item.id].seatNo,
+          };
+        });
+        return {
+          id: item.id,
+          arriveTime: item.arriveTime,
+          deliveryTicketId: item.deliveryTicketId,
+          departTime: item.departTime,
+          fromStationName: item.fromStationName,
+          toStationName: item.toStationName,
+          trainNumber: item.trainNumber,
+          ticketCount: item.ticketCount,
+          passengerList: passengerList || [],
+        };
+      });
+    },
+  },
   methods: {
     // 获取座位类型
     getSeatTypeOptions(arrJson) {
@@ -83,7 +157,14 @@ export default {
         value: index,
       }));
     },
-    // 处理 PassengerInfo 数据
+    // 出票总金额
+    getTicketTotalAmount() {
+      let totalAmount = 0;
+      const values = Object.values(this.formPassengerMap);
+      values.forEach((item) => (totalAmount += item?.realTicketPrice || 0));
+      return totalAmount;
+    },
+    // 处理PassengerInfo组件进行校验数据
     handlePassengerInfo() {
       if (!this.ticketingList?.length) return;
       this.ticketingList.map((ticketing) => {
@@ -94,7 +175,7 @@ export default {
           const PassengerInfo = this.$refs[`PassengerInfo-${item.id}`][index];
           // 存储校验方法
           this.validationMethodsList.push(PassengerInfo.formValidation);
-          this.fromDataMap[item.id] = PassengerInfo.fromData;
+          this.formPassengerMap[item.id] = PassengerInfo.formData;
         });
       });
     },
@@ -110,13 +191,31 @@ export default {
           return error;
         }
       }
-      console.log(this.fromDataMap);
-      if (result) {
-        this.$message.success("有票");
-      } else {
-        this.$message.error("无票");
-      }
+      if (!this.alipayAccount) return this.$message.error("请选择支付宝账号");
+      if (!this.payTradeNumber)
+        return this.$message.error("请匹配或手填支付流水号");
+      if (!result) return (this.showSelectNoTicketType = true);
+      this.ticketingAction(result);
     },
+    // 有票/无票
+    ticketingAction(type) {
+      const fmt = "yyyy-MM-dd hh:mm:ss";
+      const query = { ...this.formOrderData };
+      query.orderPrice = String(this.getTicketTotalAmount()); // 获取实际出票总金额
+      const state = type // 出票状态
+        ? CONST.ORDER_RESULT_CODE.SUCCESS
+        : this.noTicketResult.type;
+      query.resultMsg = type ? query.resultMsg : this.noTicketResult.resultMsg;
+      query.orderResultCode = String(state);
+      query.ticketSuccessTime = filters.formatDate(Date.now(), fmt); // 出票成功时间
+      query.ticketList = this.formTicketList;
+      console.log(query);
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.handlePassengerInfo();
+    });
   },
 };
 </script>

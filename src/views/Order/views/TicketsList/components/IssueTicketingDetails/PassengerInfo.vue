@@ -13,7 +13,7 @@
           <div class="value">
             <el-input
               class="name-input"
-              v-model="fromData.ticketName"
+              v-model="formData.ticketName"
               placeholder="请输入出票姓名"
             />
             <span class="form-tip">（同音不同字时填写票机展示姓名）</span>
@@ -32,7 +32,7 @@
             $CONST.PASSENGER_TYPE_TEXT[passengerInfo.passengerType]
           }}</span>
           <div class="value">
-            <el-radio-group class="info-radiogroup" v-model="fromData.seatName">
+            <el-radio-group class="info-radiogroup" v-model="formData.seatName">
               <el-radio
                 :key="ele.value"
                 :label="ele.label"
@@ -63,7 +63,7 @@
                 :minlength="item.minlength"
                 :maxlength="item.maxlength"
                 :disabled="item.disabled"
-                v-model="fromData[item.prop]"
+                v-model="formData[item.prop]"
                 @input="(e) => inputChange(e, item)"
                 placeholder="请输入"
               />
@@ -87,6 +87,10 @@ export default {
   name: "PassengerInfo",
   components: { CopyButton },
   props: {
+    ticketInfo: {
+      type: Object,
+      default: () => ({}),
+    },
     seatTypeOptions: {
       type: Array,
       default: () => [],
@@ -98,7 +102,7 @@ export default {
   },
   data() {
     return {
-      fromData: {
+      formData: {
         ticketName: "",
         seatName: "",
         carriageNo: "",
@@ -115,7 +119,7 @@ export default {
     };
   },
   computed: {
-    fromOptions({ fromData }) {
+    fromOptions({ formData }) {
       return [
         {
           prop: "carriageNo",
@@ -132,7 +136,7 @@ export default {
           min: 0,
           max: 999999999,
           prop: "realTicketPrice",
-          label: fromData?.realTicketPrice || 0,
+          label: formData?.realTicketPrice || 0,
           tipLabel: "金额",
           callback: this.inputChange,
         },
@@ -154,7 +158,7 @@ export default {
           newValue = max;
         }
       }
-      this.fromData[item.prop] = String(newValue);
+      this.formData[item.prop] = String(newValue);
     },
     // 校验表单
     formValidation() {
@@ -165,7 +169,7 @@ export default {
       for (const key in this.rules) {
         const item = this.rules[key];
         // 必填校验
-        if (item?.required && !this.fromData[key]) {
+        if (item?.required && !this.formData[key]) {
           result.message = item?.message || "校验未通过";
           // throw new Error(result.message);
           this.$message.error(result.message);
@@ -177,6 +181,11 @@ export default {
       result.message = "校验通过";
       return Promise.resolve(true);
     },
+  },
+  mounted() {
+    this.formData.seatName = this.ticketInfo.seatName;
+    this.formData.ticketName = this.passengerInfo.passengerName;
+    this.formData.realTicketPrice = this.ticketInfo.ticketPrice;
   },
 };
 </script>

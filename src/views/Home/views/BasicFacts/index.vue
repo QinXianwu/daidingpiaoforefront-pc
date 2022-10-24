@@ -13,8 +13,8 @@ export default {
   computed: {},
   methods: {},
   mounted() {
-    //
-    this.$store.dispatch("agent/GetPointSaleListAction");
+    // 获取支付宝账号列表
+    this.$store.dispatch("agent/GetAlipayAccountListAction");
   },
 };
 </script>

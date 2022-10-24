@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import backgroundImage from "./images/backgroundImage.jpg";
 export default {
   name: "Login",
@@ -56,8 +57,13 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState({
+      token: (state) => state.authorization.state,
+    }),
+  },
   created() {
-    if (this.$store.state.authorization.state) {
+    if (this.token) {
       this.$router.push("/Home/BasicFacts");
     }
   },
@@ -72,7 +78,7 @@ export default {
         console.log(error);
         return;
       }
-      this.$store.dispatch("authorization/Login", this.formData);
+      await this.$store.dispatch("authorization/Login", this.formData);
     },
   },
 };

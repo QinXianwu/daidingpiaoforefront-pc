@@ -48,6 +48,7 @@
           <template #expand="{ scope }">
             <IssueTicketingDetails
               :orderInfo="scope"
+              :alipayAccount="alipayAccount"
               :ticketingList="scope.ticketList"
               v-if="scope.ticketList && scope.ticketList.length"
             />
@@ -100,11 +101,6 @@ export default {
       alipayAccount: "", // 支付宝账号
     };
   },
-  watch: {
-    alipayAccount(val) {
-      console.log(val);
-    },
-  },
   computed: {
     upperTotal() {
       return 2;
@@ -128,7 +124,7 @@ export default {
     },
     async getList(isClear) {
       if (isClear) this.page.current = 1;
-      let query = {
+      const query = {
         ...this.page,
         paramData: { ...this.query },
       };
@@ -145,6 +141,8 @@ export default {
   },
   mounted() {
     this.getList();
+    // 获取支付宝账号列表
+    this.$store.dispatch("agent/GetAlipayAccountListAction");
   },
 };
 </script>

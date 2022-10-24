@@ -8,18 +8,29 @@
         </CopyButton>
       </div>
       <div class="application">
-        <el-button type="primary">匹配流水号</el-button>
-        <el-button>手机流水号</el-button>
+        <el-button type="primary" @click="matchSerialNumber">
+          <span>匹配流水号</span>
+        </el-button>
+        <el-button @click="isSerialNumber = false">手填流水号</el-button>
+        <el-input
+          class="input-serialNumber"
+          v-model="serialNumber"
+          placeholder="请匹配流水号或手填流水号"
+          :clearable="true"
+          :disabled="isSerialNumber"
+          @input="(value) => $emit('update:payTradeNumber', value)"
+        ></el-input>
       </div>
     </div>
     <div class="item">
       <div class="emit">
-        <span class="label mr-10">电子订单号：{{ "E" }}</span>
+        <span class="label mr-10">电子订单号：{{ eorderCode }}</span>
         <el-input
           type="emit"
-          v-model="emit"
+          :value="eorderNumber"
           class="min-input"
           placeholder="选填"
+          @input="(value) => $emit('update:eorderNumber', value)"
         />
       </div>
     </div>
@@ -39,7 +50,32 @@ import CopyButton from "@/components/CopyButton/index";
 
 export default {
   props: {
+    // 订单id
+    partnerOrderId: {
+      type: String,
+      default: "",
+    },
+    // 总金额
+    amount: {
+      type: [Number, String],
+      default: "",
+    },
+    // 支付宝账号
+    alipayAccount: {
+      type: String,
+      default: "",
+    },
     mobilePhone: {
+      type: String,
+      default: "",
+    },
+    // 订单支付流水号
+    payTradeNumber: {
+      type: String,
+      default: "",
+    },
+    // 电子订单号
+    eorderNumber: {
       type: String,
       default: "",
     },
@@ -47,8 +83,29 @@ export default {
   components: { CopyButton },
   data() {
     return {
-      emit: "",
+      eorderCode: "E",
+      serialNumber: "",
+      isSerialNumber: true,
     };
+  },
+  methods: {
+    // 匹配流水号
+    async matchSerialNumber() {
+      if (!this.alipayAccount) return this.$message.error("请选择支付宝账号");
+      if (!this.amount) return this.$message.error("请输入金额");
+
+      // await this.$http.Order.GetAlipaySerialNumber({
+      //   body: {
+      //     agentCode: "000001064",
+      //     amount: this.amount,
+      //     partnerOrderId: "",
+      //     payAccountName: this.alipayAccount,
+      //   },
+      // });
+      this.serialNumber = "123456";
+      this.$emit("update:payTradeNumber", this.serialNumber);
+      this.isSerialNumber = true;
+    },
   },
 };
 </script>
@@ -64,6 +121,14 @@ export default {
       font-size: 22px;
       font-weight: 500;
       color: $main-font-color;
+    }
+  }
+  .application {
+    display: flex;
+    align-items: center;
+    .input-serialNumber {
+      width: 380px;
+      margin: 0 0 0 20px;
     }
   }
   .emit {
