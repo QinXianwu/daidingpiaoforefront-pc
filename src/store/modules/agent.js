@@ -46,6 +46,15 @@ const actions = {
 };
 
 const getters = {
+  // 代售点options
+  pointSaleOptions(state) {
+    if (!state.pointSaleList?.length) return [];
+    return state.pointSaleList.map((item) => ({
+      label: item.name,
+      value: item.code,
+    }));
+  },
+  // 支付宝账号options
   alipayAccountOptions(state) {
     if (!state.alipayAccountList?.length) return [];
     return state.alipayAccountList.map((item) => ({

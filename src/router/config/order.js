@@ -3,17 +3,9 @@ import ChildrenView from "@/layouts/ChildrenView/index";
 import TicketsList from "@/views/Order/views/TicketsList/index.vue";
 import AfterSales from "@/views/Order/views/AfterSales/index.vue";
 import AfterSalesLogistics from "@/views/Order/views/AfterSalesLogistics/index.vue";
-
-const siteList = CONST.SITE_OPTIONS()
-  .map((item) => {
-    if (item.label !== "全部") {
-      return { id: item.value, title: item.label };
-    }
-  })
-  .filter((item) => item && item.id);
-
-export default siteList.map((item, index) => {
-  return {
+export const generateSiteList = (arr) => {
+  const list = arr?.length ? arr : [];
+  return list.map((item, index) => ({
     path: item?.path || `Site-${index}`,
     name: item?.name || `Site-${index}`,
     component: ChildrenView,
@@ -50,5 +42,16 @@ export default siteList.map((item, index) => {
         },
       },
     ],
-  };
-});
+  }));
+};
+
+const siteList = CONST.SITE_OPTIONS()
+  .map((item) => {
+    if (item.label !== "全部") {
+      return { id: item.value, title: item.label };
+    }
+  })
+  .filter((item) => item && item.id);
+// console.log(siteList);
+
+export default generateSiteList(siteList);

@@ -1,9 +1,10 @@
 // 权限控制相关
 import Vue from "vue";
-// import router, { resetRouter } from "@/router";
 import router from "@/router";
+import { generateSiteList } from "@/router/config/order";
 import store from "@/store";
 import hasPermission from "./hasPermission";
+
 import { clearNum } from "@/api/request";
 router.beforeEach(async (to, from, next) => {
   //true用户已登录， false用户未登录
@@ -14,8 +15,18 @@ router.beforeEach(async (to, from, next) => {
   if (!isLogin && to.path !== "/Authorization/Login") {
     return next({ path: "/Authorization/Login" });
   } else if (!permissionHash && isLogin && to.path !== "/401") {
+    // 获取代售点列表
+    const pointSaleList = await store.dispatch("agent/GetPointSaleListAction");
+    const siteOptions = pointSaleList.map((item) => ({
+      id: item.code,
+      title: item.name,
+    }));
+    // 配置代售点路由组件子类
+    const siteRoutesChildren = generateSiteList(siteOptions);
     // 如果没有hash表 但已授权
-    const accessRoutes = await store.dispatch("permission/GenerateRoutes");
+    const accessRoutes = await store.dispatch("permission/GenerateRoutes", {
+      siteRoutesChildren,
+    });
     accessRoutes.forEach((r) => router.addRoute(r));
     next({ ...to, replace: true });
   } else {
