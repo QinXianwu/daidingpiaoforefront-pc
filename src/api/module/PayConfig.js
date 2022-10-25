@@ -27,4 +27,24 @@ export default {
       })
     );
   },
+  // 编辑支付宝账号
+  UpdateAlipayAccount(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + `/sys/alipay/update/${params.id}`,
+        params,
+        method: "post",
+      })
+    );
+  },
+  // 删除支付宝账号
+  DeleteAlipayAccount(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + `/sys/alipay/delete/${params.id}`,
+        params,
+        method: "post",
+      })
+    );
+  },
 };

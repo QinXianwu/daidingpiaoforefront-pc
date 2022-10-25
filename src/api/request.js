@@ -73,7 +73,6 @@ service.interceptors.response.use(
   },
 
   (error) => {
-    console.log("123213", error);
     requestNum--;
     if (requestNum <= 0) {
       loadingInstance.close();

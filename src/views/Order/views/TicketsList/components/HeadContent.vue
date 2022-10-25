@@ -81,7 +81,10 @@ export default {
   },
   watch: {
     alipayAccountOptions(val) {
-      if (val?.length && !this.account) this.account = val[0].value;
+      if (val?.length && !this.account) {
+        this.account = val[0].value;
+        this.$emit("update:alipayAccount", this.account || "");
+      }
     },
   },
   methods: {

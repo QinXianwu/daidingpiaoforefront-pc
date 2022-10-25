@@ -2,21 +2,28 @@
 export const formData = [
   {
     label: "用户名",
-    prop: "code",
+    prop: "userName",
     type: "text",
     value: "",
     placeholder: "请输入用户名",
   },
   {
-    label: "联系电话",
-    prop: "code",
+    label: "登录账号",
+    prop: "account",
     type: "text",
     value: "",
-    placeholder: "请输入联系电话",
+    placeholder: "请输入登录账号",
   },
+  // {
+  //   label: "联系电话",
+  //   prop: "code",
+  //   type: "text",
+  //   value: "",
+  //   placeholder: "请输入联系电话",
+  // },
   {
     label: "所属角色",
-    prop: "code",
+    prop: "roleName",
     type: "select",
     value: "",
     options: [],
@@ -27,23 +34,27 @@ export const formData = [
 export const column = [
   {
     label: "用户名",
-    prop: "departure_time",
+    prop: "userName",
   },
   {
     label: "登录账号",
-    prop: "departure_time",
+    prop: "account",
   },
   {
     label: "所属角色",
-    prop: "departure_time",
+    prop: "roleName",
   },
-  {
-    label: "联系电话",
-    prop: "departure_time",
-  },
+  // {
+  //   label: "联系电话",
+  //   prop: "departure_time",
+  // },
   {
     label: "创建时间",
-    prop: "trips_number",
+    prop: "createTime",
+  },
+  {
+    label: "更新时间",
+    prop: "updateTime",
   },
   {
     label: "操作",

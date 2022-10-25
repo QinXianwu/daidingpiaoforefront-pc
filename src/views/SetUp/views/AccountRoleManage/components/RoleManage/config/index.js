@@ -1,8 +1,8 @@
 // 表格头
 export const column = [
   {
-    label: "支付宝账号",
-    prop: "alipayAccount",
+    label: "角色名称",
+    prop: "name",
   },
   {
     label: "创建时间",

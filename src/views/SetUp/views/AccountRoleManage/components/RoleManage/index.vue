@@ -1,96 +1,104 @@
 <template>
-  <div class="RoleManage">
-    <div class="content">
-      <div class="main" v-if="!isUpdateRoleList">
-        <div class="head">
-          <el-button type="primary" @click="isUpdateRoleList = true">
-            新增角色
-          </el-button>
-        </div>
-        <TablePanel
-          isShowTopCheck
-          :checkbox="false"
-          :table-head="tableHead"
-          :table-data="roleList"
-        >
-          <!-- 角色名称 -->
-          <template slot-scope="scoped" slot="custom_name">
-            <div>{{ scoped.scope.name }}</div>
-          </template>
-          <!-- 操作 -->
-          <template slot-scope="scoped" slot="custom_operate">
-            <div class="operate action-groud">
-              <el-button type="text" @click="updateRole(scoped.scope)">
-                编辑
-              </el-button>
-              <el-button type="text" @click="delRole(scoped.scope)">
-                删除
-              </el-button>
-            </div>
-          </template>
-        </TablePanel>
-      </div>
-
-      <!-- 编辑/新增角色 -->
-      <DrawerPopup v-model="isUpdateRoleList">
-        <div>新增</div>
-        <!-- <UpdateRole
-          :roleId="roleInfo && roleInfo.VirtualRoleId"
-          @close="close"
-        /> -->
-      </DrawerPopup>
+  <div class="AlibabaPay">
+    <div class="action">
+      <el-button type="primary" @click="handleAdd"> 新增角色 </el-button>
     </div>
+    <TablePanel :tableData="list" :tableHead="column">
+      <!-- 操作 -->
+      <template #action="{ scope }">
+        <div class="action-groud">
+          <el-button type="text" @click="handleEdit(scope)"> 编辑 </el-button>
+          <el-button type="text" @click="handlePermission(scope)">
+            分配权限
+          </el-button>
+          <el-button type="text" @click="handleDelete(scope)"> 删除 </el-button>
+        </div>
+      </template>
+    </TablePanel>
+    <!-- 分页 -->
+    <Pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :page-size="page.size"
+      :current-page="page.current"
+      :total="total"
+    />
+    <!-- 编辑/新增角色 -->
+    <UpdateRoleDiaog
+      :editInfo="editInfo"
+      :show.sync="showUpdateRole"
+      @close="close"
+    />
+    <!-- 分配权限 -->
+    <DistributionPermission
+      :editInfo="editInfo"
+      :show.sync="showUpdatePermission"
+      @close="close"
+    />
   </div>
 </template>
 
 <script>
-// import UpdateRole from "./components/UpdateRole.vue";
+import { column } from "./config";
+import UpdateRoleDiaog from "./components/UpdateRoleDiaog.vue";
+import DistributionPermission from "./components/DistributionPermission.vue";
 
 export default {
-  name: "RoleManage",
-  // components: { UpdateRole },
+  name: "AlibabaPay",
+  components: { UpdateRoleDiaog, DistributionPermission },
   data() {
     return {
-      tableHead: [
-        {
-          label: "角色名称",
-          prop: "Name",
-        },
-        { label: "操作", prop: "custom_operate", type: "custom" },
-      ],
-      roleInfo: null,
-      roleList: [],
-      isUpdateRoleList: false, // 新增/编辑角色
+      column, //表格头
+      list: [],
+      editInfo: "",
+      showUpdateRole: false,
+      showUpdatePermission: false,
+      page: {
+        size: 10,
+        current: 1,
+      },
+      query: {},
+      total: 0,
+      rules: [], //过滤规则
     };
   },
-  mounted() {
-    // this.getList();
-  },
+  computed: {},
   methods: {
-    async getList() {
-      const [, res] = await this.$http.AppRole.GetAppRoleList();
-      // console.log(res);
-      if (!res) return;
-      this.roleList = res;
+    handleSizeChange(val) {
+      this.page.size = val;
+      this.page.current = 1;
+      this.getList(true);
     },
-    // 新增/添加角色
-    updateRole(data) {
-      console.log(data);
-      this.roleInfo = data;
-      this.isUpdateRoleList = !this.isUpdateRoleList;
+    handleCurrentChange(val) {
+      this.page.current = val;
+      this.getList(false);
     },
-    // 删除
-    async delRole(data) {
+    close(isRefresh = false) {
+      this.editInfo = "";
+      this.showUpdateRole = false;
+      this.showUpdatePermission = false;
+      if (isRefresh) this.getList();
+    },
+    handleAdd() {
+      this.editInfo = "";
+      this.showUpdateRole = true;
+    },
+    handleEdit(item) {
+      this.editInfo = item;
+      this.showUpdateRole = true;
+    },
+    handlePermission(item) {
+      this.editInfo = item;
+      this.showUpdatePermission = true;
+    },
+    async handleDelete({ id }) {
+      if (!id) return this.$message.error("获取不到当前角色ID");
       try {
-        await this.$confirm("确定要删除该角色吗？", "删除提示", {
+        await this.$confirm("确定要删除当前角色吗?", "删除提示", {
           type: "warning",
           showClose: false,
         });
-        const [err] = await this.$http.AppRole.DelAppRole({
-          RoleId: data.VirtualRoleId,
-          AppId: data.AppId,
-          TenantId: data.TenantId,
-        });
+        const [err] = await this.$http.AccountRoleManage.DeleteRole({ id });
         let msg = err ? err.Message : "删除成功";
         this.$confirm(msg, "删除提示", {
           showClose: false,
@@ -100,58 +108,28 @@ export default {
           if (!err) this.getList();
         });
       } catch (error) {
-        console.log(error);
+        error;
       }
     },
-    close(isRefresh = false) {
-      this.roleInfo = null;
-      this.isUpdateRoleList = false;
-      if (isRefresh) this.getList();
+    async getList(isClear) {
+      if (isClear) this.page.current = 1;
+      const query = {
+        ...this.page,
+        paramData: { ...this.query },
+      };
+      const [, res] = await this.$http.AccountRoleManage.GetRoleList(query);
+      if (!res?.list?.length) return;
+      this.list = res.list;
+      this.total = res.total;
     },
+  },
+  mounted() {
+    this.getList();
   },
 };
 </script>
-
 <style lang="scss" scoped>
-.RoleManage {
-  .head {
-    margin: 0 0 24px;
-  }
-}
-
-.RoleManage ::v-deep {
-  .el-table--small .el-table__cell {
-    padding: 0;
-  }
-  .el-table__header-wrapper {
-    .cell {
-      height: 48px;
-      margin: 0;
-      padding: 0;
-      font-size: 14px;
-      line-height: 48px;
-      background: #f7f8fa;
-      color: $main-font-color;
-    }
-  }
-  .el-table__body {
-    line-height: 56px;
-    text-align: center;
-    .cell {
-      color: $sub-font-color;
-      align-items: center;
-    }
-    .el-table__row {
-      height: 56px;
-      background: #ffffff;
-    }
-  }
-  .input-medium {
-    width: 380px;
-  }
-  .el-form-item__label {
-    color: $main-font-color;
-    height: 40px;
-  }
+.action {
+  padding: 0 0 15px;
 }
 </style>

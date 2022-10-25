@@ -69,7 +69,7 @@
         @current-change="handleCurrentChange"
         :page-size="page.size"
         :current-page="page.current"
-        :pageSizes="[upperTotal, 10, 20, 50, 100]"
+        :pageSizes="[10, 20, 50, 100]"
         :total="total"
       />
     </div>
@@ -90,8 +90,8 @@ export default {
       column, //表格头
       list: [],
       page: {
-        size: 2,
-        current: 20,
+        current: 1,
+        size: 10,
       },
       query: {
         agentCode: "000001064",
