@@ -198,7 +198,7 @@ export default {
       this.ticketingAction(result);
     },
     // 有票/无票
-    ticketingAction(type) {
+    async ticketingAction(type) {
       const fmt = "yyyy-MM-dd hh:mm:ss";
       const query = { ...this.formOrderData };
       query.orderPrice = String(this.getTicketTotalAmount()); // 获取实际出票总金额
@@ -207,9 +207,14 @@ export default {
         : this.noTicketResult.type;
       query.resultMsg = type ? query.resultMsg : this.noTicketResult.resultMsg;
       query.orderResultCode = String(state);
+      query.failCode = String(state);
       query.ticketSuccessTime = filters.formatDate(Date.now(), fmt); // 出票成功时间
       query.ticketList = this.formTicketList;
       console.log(query);
+      const [, res] = await this.$http.Order.OperationTicketing({
+        bodyInfo: query,
+      });
+      this.$message[res ? "success" : "error"](`操作${res ? "成功" : "失败"}`);
     },
   },
   mounted() {

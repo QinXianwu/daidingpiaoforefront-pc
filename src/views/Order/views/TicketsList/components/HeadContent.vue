@@ -79,6 +79,11 @@ export default {
       alipayAccountOptions: "agent/alipayAccountOptions",
     }),
   },
+  watch: {
+    alipayAccountOptions(val) {
+      if (val?.length && !this.account) this.account = val[0].value;
+    },
+  },
   methods: {
     onOpenReceiveOrders(val) {
       console.log(val);
