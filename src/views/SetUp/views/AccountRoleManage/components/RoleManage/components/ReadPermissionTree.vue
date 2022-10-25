@@ -17,7 +17,7 @@ export default {
   props: {
     permissionInfo: Array,
   },
-  data: function() {
+  data: function () {
     return {
       isAllExpanded: true,
       defaultProps: {
@@ -31,7 +31,7 @@ export default {
     heanldTreeState() {
       const isAllExpanded = this.isAllExpanded;
       this.$refs.tree.$children.forEach(
-        item => (item.expanded = !isAllExpanded),
+        (item) => (item.expanded = !isAllExpanded)
       );
       this.isAllExpanded = !isAllExpanded;
     },

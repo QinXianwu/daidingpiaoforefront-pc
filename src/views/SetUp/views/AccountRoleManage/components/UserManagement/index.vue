@@ -1,29 +1,27 @@
 <template>
-  <div class="view-container">
-    <div class="content">
-      <SearchForm
-        isReturnFormData
-        :formData="formData"
-        :isShowExportList="false"
-        @on-search="onSearch"
-      />
-      <TablePanel :tableData="list" :tableHead="column">
-        <!-- 操作 -->
-        <template #action="{}">
-          <div class="action-groud">
-            <el-button type="text" @click="customerService"> 客服 </el-button>
-          </div>
-        </template>
-      </TablePanel>
-      <!-- 分页 -->
-      <Pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :page-size="page.rows"
-        :current-page="page.page"
-        :total="total"
-      />
-    </div>
+  <div class="UserManagement">
+    <SearchForm
+      isReturnFormData
+      :formData="formData"
+      :isShowExportList="false"
+      @on-search="onSearch"
+    />
+    <TablePanel :tableData="list" :tableHead="column">
+      <!-- 操作 -->
+      <template #action="{}">
+        <div class="action-groud">
+          <el-button type="text" @click="customerService"> 客服 </el-button>
+        </div>
+      </template>
+    </TablePanel>
+    <!-- 分页 -->
+    <Pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :page-size="page.rows"
+      :current-page="page.page"
+      :total="total"
+    />
   </div>
 </template>
 
@@ -74,9 +72,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.view-container {
-  background-color: #fff;
-}
 .bulk-operations {
   padding: 10px 0;
 }

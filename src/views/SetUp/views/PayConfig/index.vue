@@ -1,11 +1,10 @@
 <template>
-  <div class="container-wrap">
-    <div class="container">
-      <el-tabs tab-position="top" v-model="activeName">
-        <el-tab-pane label="支付宝账号管理" name="AlibabaPay">
-          <AlibabaPay />
-        </el-tab-pane>
-      </el-tabs>
+  <div class="view-container">
+    <el-tabs tab-position="top" v-model="activeName">
+      <el-tab-pane label="支付宝账号管理" name="AlibabaPay" />
+    </el-tabs>
+    <div class="content">
+      <AlibabaPay v-if="activeName === 'AlibabaPay'" />
     </div>
   </div>
 </template>
@@ -28,15 +27,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container-wrap {
-  padding: 20px 20px;
-  background: #f7f8fa;
-}
-.container {
-  padding: 26px 30px;
-  background: #ffffff;
-  ::v-deep .input-medium {
-    width: 380px;
+.view-container {
+  background: #fff;
+  .content {
+    padding: 20px 0;
   }
 }
 </style>

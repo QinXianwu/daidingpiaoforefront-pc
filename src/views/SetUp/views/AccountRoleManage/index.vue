@@ -1,12 +1,14 @@
 <template>
   <div class="view-container">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="用户管理" name="UserManagement" />
+      <el-tab-pane label="账号管理" name="UserManagement" />
       <el-tab-pane label="角色管理" name="RoleManage" />
     </el-tabs>
 
-    <UserManagement v-if="activeName === 'UserManagement'" />
-    <RoleManage v-if="activeName === 'RoleManage'" />
+    <div class="content">
+      <UserManagement v-if="activeName === 'UserManagement'" />
+      <RoleManage v-if="activeName === 'RoleManage'" />
+    </div>
   </div>
 </template>
 
@@ -32,5 +34,8 @@ export default {
 <style lang="scss" scoped>
 .view-container {
   background: #ffffff;
+  .content {
+    padding: 20px 0;
+  }
 }
 </style>

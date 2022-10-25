@@ -17,4 +17,14 @@ export default {
       })
     );
   },
+  // 新增支付宝账号
+  AddAlipayAccount(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/sys/alipay/create",
+        params,
+        method: "post",
+      })
+    );
+  },
 };
