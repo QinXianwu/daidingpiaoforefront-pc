@@ -7,6 +7,7 @@
         key="collapse"
         v-slot="{ navigate }"
         class="sidebar-logo-link"
+        custom
       >
         <span @click="navigate" @keypress.enter="navigate">
           <img
@@ -23,6 +24,7 @@
         key="expand"
         v-slot="{ navigate }"
         class="sidebar-logo-link"
+        custom
       >
         <span @click="navigate" @keypress.enter="navigate">
           <img

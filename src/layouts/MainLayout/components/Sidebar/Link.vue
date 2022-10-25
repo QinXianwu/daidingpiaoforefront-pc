@@ -10,6 +10,7 @@
     v-slot="{ navigate }"
     class="sidebar-logo-link"
     v-bind="linkProps(to, query)"
+    custom
   >
     <span @click="navigate" @keypress.enter="navigate">
       <slot />

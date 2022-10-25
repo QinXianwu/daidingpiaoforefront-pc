@@ -1,23 +1,26 @@
 // 权限控制相关
 import Vue from "vue";
+// import router, { resetRouter } from "@/router";
 import router from "@/router";
 import store from "@/store";
 import hasPermission from "./hasPermission";
 import { clearNum } from "@/api/request";
 router.beforeEach(async (to, from, next) => {
-  const { permissionHash } = store.state.permission;
+  //true用户已登录， false用户未登录
+  const isLogin = Boolean(store.state.authorization.state);
+  const permissionHash = store.state.permission.permissionHash;
   // 清除loading
   clearNum();
-  // 如果已经有hash表了，直接跳转
-  if (permissionHash) {
-    next();
-  } else {
+  if (!isLogin && to.path !== "/Authorization/Login") {
+    return next({ path: "/Authorization/Login" });
+  } else if (!permissionHash && isLogin && to.path !== "/401") {
+    // 如果没有hash表 但已授权
     const accessRoutes = await store.dispatch("permission/GenerateRoutes");
-    console.log("accessRoutes", accessRoutes);
-    // accessRoutes.forEach((r) => router.addRoute(r));
-    // router.addRoutes(accessRoutes);
-    // next({ path: "/Authorization/Login", replace: true });
-    // next({ ...to, replace: true });
+    accessRoutes.forEach((r) => router.addRoute(r));
+    next({ ...to, replace: true });
+  } else {
+    // 如果已经有hash表了，直接跳转
+    next();
   }
 });
 

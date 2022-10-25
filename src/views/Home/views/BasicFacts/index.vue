@@ -13,8 +13,7 @@ export default {
   computed: {},
   methods: {},
   mounted() {
-    // 获取支付宝账号列表
-    this.$store.dispatch("agent/GetAlipayAccountListAction");
+    //
   },
 };
 </script>

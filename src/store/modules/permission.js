@@ -1,6 +1,6 @@
 import api from "@/api/module";
-import { asyncRoutes, constantRoutes } from "@/router";
 import Page401 from "@/views/ErrorPage/401";
+import { asyncRoutes, constantRoutes } from "@/router";
 
 const IS_NO_PERMISSION = !!process.env.VUE_APP_NO_PERMISSION;
 /**

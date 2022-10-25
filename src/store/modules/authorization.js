@@ -40,6 +40,7 @@ const actions = {
       "没有授权或者授权过期了，点击确定跳转到登录页"
     ).then(() => {
       location.href = "/";
+      // router.push({ path: "/Authorization/Login" });
     });
   },
   // 登录

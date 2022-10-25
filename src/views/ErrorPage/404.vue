@@ -25,7 +25,7 @@
         <div class="bullshit__info">
           请检查您输入的URL是否正确，或单击下面的按钮返回主页。
         </div>
-        <router-link v-slot="{ navigate }" v-bind="{ to: '/' }">
+        <router-link v-slot="{ navigate }" v-bind="{ to: '/' }" custom>
           <span
             class="bullshit__return-home"
             @click="navigate"

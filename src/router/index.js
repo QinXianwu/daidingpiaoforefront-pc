@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import routerList from "./modules/index";
-import beforeEachFun from "./beforeEachFun";
+// import beforeEachFun from "./beforeEachFun";
 import MainLayout from "@/layouts/MainLayout/index";
 // import startPageIntro from "@/pagesIntro/index";
 
@@ -25,7 +25,7 @@ export const constantRoutes = [
   {
     path: "/",
     alias: "/Authorization/Login",
-    meta: { auth: false },
+    meta: {},
     component: () => import("@/views/Authorization/views/Login"),
     hidden: true,
   },
@@ -34,6 +34,7 @@ export const constantRoutes = [
     path: "/redirect",
     component: MainLayout,
     hidden: true,
+    meta: {},
     children: [
       {
         path: "/redirect/:path(.*)",
@@ -43,18 +44,18 @@ export const constantRoutes = [
   },
   {
     path: "/404",
-    meta: { auth: false },
+    meta: {},
     component: () => import("@/views/ErrorPage/404"),
     hidden: true,
   },
   {
     path: "/401",
-    meta: { auth: false },
+    meta: {},
     component: () => import("@/views/ErrorPage/401"),
     hidden: true,
   },
-  { path: "*", redirect: "/404", hidden: true },
-  ...routerList,
+  // { path: "*", redirect: "/404", hidden: true },
+  // ...routerList,
 ];
 
 /**
@@ -92,6 +93,6 @@ export function resetRouter() {
   const newRouter = createRouter();
   router.matcher = newRouter.matcher; // reset router
 }
-router.beforeEach(beforeEachFun);
+// router.beforeEach(beforeEachFun);
 
 export default router;
