@@ -69,10 +69,14 @@
               />
             </div>
             <span
-              class="label ml-10 mr-10"
-              :class="{ 'amount-label': item.prop === 'realTicketPrice' }"
-              >{{ item.label }}</span
+              class="label ml-10 mr-10 amount-label"
+              v-if="item.prop === 'realTicketPrice'"
             >
+              {{ ticketInfo.ticketPrice }}
+            </span>
+            <span class="label ml-10 mr-10" v-else>
+              {{ item.label }}
+            </span>
           </div>
         </div>
       </div>
@@ -148,6 +152,7 @@ export default {
       if (!item?.prop) return;
       let newValue = value;
       if (item?.type === "number") {
+        newValue = newValue.match(/^\d*(\.?\d{0,2})/g)[0] || null;
         const min = item?.min || 0;
         const max = item?.max || 9999999999;
         if (Number(value) < min) {
@@ -183,7 +188,16 @@ export default {
     },
   },
   mounted() {
-    this.formData.seatName = this.ticketInfo.seatName;
+    if (this.seatTypeOptions?.length) {
+      const itemSeat = this.seatTypeOptions.find(
+        (item) => item.label === this.ticketInfo.seatName
+      );
+      this.formData.seatName = itemSeat
+        ? itemSeat.label
+        : this.seatTypeOptions[0].label;
+    } else {
+      this.formData.seatName = this.ticketInfo.seatName;
+    }
     this.formData.ticketName = this.passengerInfo.passengerName;
     this.formData.realTicketPrice = this.ticketInfo.ticketPrice;
   },

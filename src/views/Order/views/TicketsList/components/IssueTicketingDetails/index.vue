@@ -95,9 +95,6 @@ export default {
       showSelectNoTicketType: false, // 显示选择无票类型
     };
   },
-  created() {
-    // console.log("出票详情");
-  },
   computed: {
     // 订单表单数据
     formOrderData({ orderInfo, payTradeNumber, eorderCode, eorderNumber }) {
@@ -161,7 +158,9 @@ export default {
     getTicketTotalAmount() {
       let totalAmount = 0;
       const values = Object.values(this.formPassengerMap);
-      values.forEach((item) => (totalAmount += item?.realTicketPrice || 0));
+      values.forEach(
+        (item) => (totalAmount += Number(item?.realTicketPrice) || 0)
+      );
       return totalAmount;
     },
     // 处理PassengerInfo组件进行校验数据
@@ -205,7 +204,10 @@ export default {
       const state = type // 出票状态
         ? CONST.ORDER_RESULT_CODE.SUCCESS
         : this.noTicketResult.type;
-      query.resultMsg = type ? query.resultMsg : this.noTicketResult.resultMsg;
+      query.resultMsg =
+        state === CONST.ORDER_RESULT_CODE.SUCCESS
+          ? "出票成功"
+          : this.noTicketResult.resultMsg || query.resultMsg;
       query.orderResultCode = String(state);
       query.failCode = String(state);
       query.ticketSuccessTime = filters.formatDate(Date.now(), fmt); // 出票成功时间
@@ -218,9 +220,7 @@ export default {
     },
   },
   mounted() {
-    this.$nextTick(() => {
-      this.handlePassengerInfo();
-    });
+    this.handlePassengerInfo();
   },
 };
 </script>

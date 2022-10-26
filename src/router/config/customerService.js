@@ -14,8 +14,8 @@ export default siteList.map((item) => {
     path: `NoticeManage/${item.id}`,
     component: NoticeManage,
     name: `NoticeManage-${item.id}`,
-    siteId: item.id,
     meta: {
+      agentCode: item.id,
       title: item.title,
     },
   };

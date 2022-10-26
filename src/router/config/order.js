@@ -18,27 +18,27 @@ export const generateSiteList = (arr) => {
         path: `TicketsList/${item.id}`,
         component: TicketsList,
         name: `TicketsList-${item.id}`,
-        siteId: item.id,
         meta: {
           title: "打票及回填",
+          agentCode: item.id,
         },
       },
       {
         path: `AfterSales/${item.id}`,
         component: AfterSales,
         name: `AfterSales-${item.id}`,
-        siteId: item.id,
         meta: {
           title: "取车票报销凭证",
+          agentCode: item.id,
         },
       },
       {
         path: `AfterSalesLogistics/${item.id}`,
         component: AfterSalesLogistics,
         name: `AfterSalesLogistics-${item.id}`,
-        siteId: item.id,
         meta: {
           title: "取报销凭证快递",
+          agentCode: item.id,
         },
       },
     ],

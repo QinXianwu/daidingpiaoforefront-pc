@@ -84,8 +84,9 @@ export default {
           `${id ? "编辑" : "新增"}支付宝账号${res ? "成功" : "失败"}`
       );
       if (res) {
-        this.isLoading = false;
         this.handleClose(true);
+        // 刷新支付宝账号列表
+        this.$store.dispatch("agent/GetAlipayAccountListAction", true);
       }
     },
   },

@@ -18,8 +18,8 @@ router.beforeEach(async (to, from, next) => {
     // 获取代售点列表
     const pointSaleList = await store.dispatch("agent/GetPointSaleListAction");
     const siteOptions = pointSaleList.map((item) => ({
-      id: item.code,
-      title: item.name,
+      id: item?.code,
+      title: item?.name,
     }));
     // 配置代售点路由组件子类
     const siteRoutesChildren = generateSiteList(siteOptions);

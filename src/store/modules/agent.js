@@ -31,8 +31,7 @@ const actions = {
     if (state.pointSaleList.length !== 0 && !isRefresh)
       return state.pointSaleList;
     const [, data] = await api.Base.GetPointSaleList();
-    if (!data?.length) return;
-    commit("SET_POINT_SALE_LIST", data);
+    commit("SET_POINT_SALE_LIST", data?.length ? data : []);
     return data || [];
   },
   async GetAlipayAccountListAction({ commit, state }, isRefresh = false) {

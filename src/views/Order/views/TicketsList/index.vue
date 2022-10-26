@@ -46,13 +46,18 @@
           </template>
           <!-- 展开行-出票详情 -->
           <template #expand="{ scope }">
+            <div
+              class="nothing-ticketing"
+              v-if="!scope.ticketList || !scope.ticketList.length"
+            >
+              暂无数据
+            </div>
             <IssueTicketingDetails
+              v-else
               :orderInfo="scope"
               :alipayAccount="alipayAccount"
               :ticketingList="scope.ticketList"
-              v-if="scope.ticketList && scope.ticketList.length"
             />
-            <div class="nothing-ticketing">暂无数据</div>
           </template>
           <!-- 操作 -->
           <template #action="{}">
@@ -94,18 +99,14 @@ export default {
         size: 10,
       },
       query: {
-        agentCode: "000001064",
-        lastId: "",
+        // lastId: "",
+        agentCode: this.$router.currentRoute.meta.agentCode,
       },
       total: 0,
       alipayAccount: "", // 支付宝账号
     };
   },
-  computed: {
-    upperTotal() {
-      return 2;
-    },
-  },
+  computed: {},
   methods: {
     handleSizeChange(val) {
       this.page.size = val;

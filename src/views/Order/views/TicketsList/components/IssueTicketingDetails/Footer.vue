@@ -95,14 +95,15 @@ export default {
       if (!this.amount) return this.$message.error("请输入金额");
       const [, res] = await this.$http.Order.GetAlipaySerialNumber({
         body: {
-          agentCode: "000001064",
-          amount: this.amount,
+          amount: String(this.amount),
           partnerOrderId: this.partnerOrderId,
           payAccountName: this.alipayAccount,
+          agentCode: this.$router.currentRoute.meta.agentCode,
         },
       });
-      if (!res?.paymentNumber) return this.$message.error("获取流水号异常");
-      this.serialNumber = res.paymentNumber;
+      if (!res?.length) return this.$message.error("该订单未匹配到支付流水号");
+      const paymentNumber = res[0]?.paymentNumber || "";
+      this.serialNumber = paymentNumber;
       this.$emit("update:payTradeNumber", this.serialNumber);
       this.isSerialNumber = true;
     },
