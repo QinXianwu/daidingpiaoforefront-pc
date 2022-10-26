@@ -15,8 +15,11 @@
 
       <!-- 平台选择组件-内部组件 -->
       <span class="account-id">
+        <span v-if="eOrderNumberPrefix"
+          >电子订单号前缀：{{ eOrderNumberPrefix }}</span
+        >
         <CopyButton :copyString="mainAccountId" v-if="mainAccountId">
-          <span class="account-id-text">ID：{{ mainAccountId }}</span>
+          <span class="account-id-text">账号：{{ mainAccountId }}</span>
           <i class="el-icon-copy-document express-info-click" />
         </CopyButton>
       </span>
@@ -58,9 +61,12 @@ export default {
       userInfo: (state) => state.user.userInfo,
       McatGlobal: (state) => state.app.McatGlobal,
     }),
-    mainAccountId({ userInfo, McatGlobal }) {
-      const id = userInfo?.id || McatGlobal?.UserAccount?.UserId;
-      return id ? String(id) : "";
+    mainAccountId({ userInfo }) {
+      const name = userInfo?.account;
+      return name || "";
+    },
+    eOrderNumberPrefix({ userInfo }) {
+      return userInfo?.eOrderNumberPrefix || "";
     },
     userAvatar() {
       return defaultUserAvatar;

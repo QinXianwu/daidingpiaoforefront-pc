@@ -1,5 +1,7 @@
+const userInfo = localStorage.getItem("user_info") || {};
+
 const state = {
-  userInfo: {},
+  userInfo: JSON.parse(userInfo),
 };
 
 const mutations = {
