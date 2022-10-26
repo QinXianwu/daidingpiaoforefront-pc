@@ -76,7 +76,7 @@ export default {
       this.showUpdatePayAccount = true;
     },
     async handleDelete({ id }) {
-      if (!id) return this.$message.error("获取不到当前账号ID");
+      if (!id) return this.$message.error("获取该账户ID异常");
       try {
         await this.$confirm("确定要删除当前支付宝账号吗?", "删除提示", {
           type: "warning",

@@ -1,38 +1,23 @@
 <template>
   <el-dialog
-    :title="`${
-      editInfo && editInfo.id ? '编辑' : editInfo.pid ? '新增子' : '新增'
-    }账号`"
+    title="修改账号密码"
     :visible.sync="visible"
     width="550px"
     v-loading="isLoading"
     @close="handleClose(false)"
   >
     <el-form ref="form" :model="formData" :rules="rules" label-width="150px">
-      <el-form-item label="所属账号:" v-if="editInfo && editInfo.pid">
-        <el-input v-model="formData.parentAccount" :disabled="true" />
-      </el-form-item>
       <el-form-item label="用户名:" prop="userName">
-        <el-input v-model="formData.userName" placeholder="请输入用户名" />
+        <el-input v-model="formData.userName" :disabled="true" />
       </el-form-item>
       <el-form-item label="登录账号:" prop="account">
-        <el-input
-          :disabled="!!editInfo.id"
-          v-model="formData.account"
-          placeholder="请输入登录账号"
-        />
+        <el-input v-model="formData.account" :disabled="true" />
       </el-form-item>
-      <el-form-item label="登录密码:" prop="password" v-if="!editInfo.id">
+      <el-form-item label="登录密码:" prop="password">
         <el-input
           type="password"
           v-model="formData.password"
           placeholder="请输入登录密码"
-        />
-      </el-form-item>
-      <el-form-item label="电子订单号前缀:" prop="eorderNumberPrefix">
-        <el-input
-          v-model="formData.eorderNumberPrefix"
-          placeholder="请输入电子订单号前缀"
         />
       </el-form-item>
     </el-form>
@@ -47,7 +32,7 @@
 <script>
 import dialogMixin from "@/mixins/dialogMixin";
 export default {
-  name: "UpdateAcconutDiaog",
+  name: "UpdatePasswordDiaog",
   mixins: [dialogMixin],
   props: {
     editInfo: {
@@ -57,17 +42,13 @@ export default {
   },
   watch: {
     visible(val) {
-      // 修改
       if (val && this.editInfo?.id) {
         this.formData = { ...this.editInfo };
       } else {
-        // 新增
         this.formData = {
           userName: "",
           account: "",
           password: "",
-          eorderNumberPrefix: "",
-          parentAccount: this.editInfo?.parentAccount || "",
         };
       }
     },
@@ -78,7 +59,6 @@ export default {
         userName: "",
         account: "",
         password: "",
-        eorderNumberPrefix: "",
       },
       isLoading: false,
       rules: {
@@ -120,24 +100,15 @@ export default {
         return;
       }
       this.isLoading = true;
-      const id = this.editInfo?.id || "";
-      const pid = this.editInfo?.pid || "";
       const query = { ...this.formData };
-      if (pid) query.id = pid;
-      delete query.pid;
-      delete query.parentAccount;
-
-      const [, res] = await this.$http.AccountRoleManage[
-        id ? "UpdateAccount" : pid ? "AddSubAccount" : "AddAccount"
-      ]({ ...query });
+      const [, res] = await this.$http.AccountRoleManage.UpdateAccount({
+        ...query,
+      });
+      this.isLoading = false;
       this.$message[res ? "success" : "error"](
-        res?.message ||
-          `${id ? "编辑" : pid ? "新增子" : "新增"}账号${res ? "成功" : "失败"}`
+        res?.message || `修改账号密码${res ? "成功" : "失败"}`
       );
-      if (res) {
-        this.isLoading = false;
-        this.handleClose(true);
-      }
+      if (res) this.handleClose(true);
     },
   },
 };

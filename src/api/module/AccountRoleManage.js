@@ -27,6 +27,26 @@ export default {
       })
     );
   },
+  // 删除账户
+  DeleteAccount(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + `/sys/user/delete/${params.id}`,
+        params,
+        method: "post",
+      })
+    );
+  },
+  // 账号角色列表Options
+  GetAccountByRoleList(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/sys/user/role/list",
+        params,
+        method: "post",
+      })
+    );
+  },
   // 账号分配角色
   AccountDistributionRole(params) {
     return catchAsyncFun(

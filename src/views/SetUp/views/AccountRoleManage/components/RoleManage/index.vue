@@ -105,7 +105,13 @@ export default {
           showCancelButton: false,
           type: !err ? "success" : "error",
         }).then(() => {
-          if (!err) this.getList();
+          if (!err) {
+            this.getList();
+            this.$store.dispatch(
+              "accountRoleManage/GetPointSaleListAction",
+              true
+            );
+          }
         });
       } catch (error) {
         error;

@@ -93,16 +93,16 @@ export default {
     async matchSerialNumber() {
       if (!this.alipayAccount) return this.$message.error("请选择支付宝账号");
       if (!this.amount) return this.$message.error("请输入金额");
-
-      // await this.$http.Order.GetAlipaySerialNumber({
-      //   body: {
-      //     agentCode: "000001064",
-      //     amount: this.amount,
-      //     partnerOrderId: "",
-      //     payAccountName: this.alipayAccount,
-      //   },
-      // });
-      this.serialNumber = "123456";
+      const [, res] = await this.$http.Order.GetAlipaySerialNumber({
+        body: {
+          agentCode: "000001064",
+          amount: this.amount,
+          partnerOrderId: this.partnerOrderId,
+          payAccountName: this.alipayAccount,
+        },
+      });
+      if (!res?.paymentNumber) return this.$message.error("获取流水号异常");
+      this.serialNumber = res.paymentNumber;
       this.$emit("update:payTradeNumber", this.serialNumber);
       this.isSerialNumber = true;
     },

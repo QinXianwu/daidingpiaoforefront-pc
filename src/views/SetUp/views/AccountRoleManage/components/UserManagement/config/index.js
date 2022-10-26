@@ -21,14 +21,14 @@ export const formData = [
   //   value: "",
   //   placeholder: "请输入联系电话",
   // },
-  {
-    label: "所属角色",
-    prop: "roleName",
-    type: "select",
-    value: "",
-    options: [],
-    placeholder: "请选择所属角色",
-  },
+  // {
+  //   label: "所属角色",
+  //   prop: "roleName",
+  //   type: "select",
+  //   value: "",
+  //   options: [],
+  //   placeholder: "请选择所属角色",
+  // },
 ];
 // 表格头
 export const column = [
@@ -41,13 +41,15 @@ export const column = [
     prop: "account",
   },
   {
+    label: "所属账号",
+    prop: "parentAccount",
+    type: "custom",
+  },
+  {
     label: "所属角色",
     prop: "roleName",
+    type: "custom",
   },
-  // {
-  //   label: "联系电话",
-  //   prop: "departure_time",
-  // },
   {
     label: "创建时间",
     prop: "createTime",
