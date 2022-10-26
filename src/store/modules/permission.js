@@ -64,6 +64,11 @@ const actions = {
     // 配置站点路由
     const orderRoute = asyncRoutes.find((item) => item.path === "/Order");
     orderRoute.children = data?.siteRoutesChildren || [];
+    // 配置客服路由
+    const serviceRoute = asyncRoutes.find(
+      (item) => item.path === "/CustomerService"
+    );
+    serviceRoute.children = data?.serviceRoutesChildren || [];
     // 根据权限列表，获取得到可访问的路由
     const accessedRoutes = filterAsyncRoutes(asyncRoutes, permissionHash);
     if (accessedRoutes.length > 0) {

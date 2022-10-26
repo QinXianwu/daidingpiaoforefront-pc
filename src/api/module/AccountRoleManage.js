@@ -57,6 +57,16 @@ export default {
       })
     );
   },
+  // 账户获取代售点列表
+  GetAccountByPointSale(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/sys/user/point-sale/list",
+        params,
+        method: "post",
+      })
+    );
+  },
   // 添加子账号
   AddSubAccount(params) {
     return catchAsyncFun(

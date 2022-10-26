@@ -29,11 +29,26 @@
           placeholder="请输入登录密码"
         />
       </el-form-item>
-      <el-form-item label="电子订单号前缀:" prop="eorderNumberPrefix">
+      <el-form-item label="电子订单号前缀:" prop="eOrderNumberPrefix">
         <el-input
-          v-model="formData.eorderNumberPrefix"
+          v-model="formData.eOrderNumberPrefix"
           placeholder="请输入电子订单号前缀"
         />
+      </el-form-item>
+      <el-form-item label="代售点:" prop="pointSaleId">
+        <el-select
+          v-model="formData.pointSaleId"
+          placeholder="请选择代售点"
+          v-loading="isLoadingSiteList"
+        >
+          <el-option
+            :key="index"
+            :label="item.name"
+            :value="item.code"
+            v-for="(item, index) in pointSaleOptions"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
     </el-form>
     <span slot="footer">
@@ -57,16 +72,21 @@ export default {
   },
   watch: {
     visible(val) {
+      if (val) this.getPointSaleOptions();
       // 修改
       if (val && this.editInfo?.id) {
         this.formData = { ...this.editInfo };
+        if (this.formData?.pointSaleId) {
+          const arr = JSON.parse(this.formData?.pointSaleId);
+          this.formData.pointSaleId = arr?.length ? arr[0] : "";
+        }
       } else {
         // 新增
         this.formData = {
           userName: "",
           account: "",
           password: "",
-          eorderNumberPrefix: "",
+          eOrderNumberPrefix: "",
           parentAccount: this.editInfo?.parentAccount || "",
         };
       }
@@ -78,9 +98,11 @@ export default {
         userName: "",
         account: "",
         password: "",
-        eorderNumberPrefix: "",
+        eOrderNumberPrefix: "",
       },
+      pointSaleOptions: [],
       isLoading: false,
+      isLoadingSiteList: false,
       rules: {
         userName: [
           {
@@ -108,6 +130,14 @@ export default {
   },
   computed: {},
   methods: {
+    // 获取代售点列表
+    async getPointSaleOptions() {
+      this.isLoadingSiteList = true;
+      const [, res] =
+        await this.$http.AccountRoleManage.GetAccountByPointSale();
+      if (res?.length) this.pointSaleOptions = res;
+      this.isLoadingSiteList = false;
+    },
     // 处理提交
     async handleSubmit() {
       // 表单校验
@@ -123,6 +153,10 @@ export default {
       const id = this.editInfo?.id || "";
       const pid = this.editInfo?.pid || "";
       const query = { ...this.formData };
+      const pointSaleId = this.formData.pointSaleId
+        ? [Number(this.formData.pointSaleId)]
+        : [];
+      query.pointSaleId = JSON.stringify(pointSaleId);
       if (pid) query.id = pid;
       delete query.pid;
       delete query.parentAccount;
@@ -130,14 +164,12 @@ export default {
       const [, res] = await this.$http.AccountRoleManage[
         id ? "UpdateAccount" : pid ? "AddSubAccount" : "AddAccount"
       ]({ ...query });
+      this.isLoading = false;
       this.$message[res ? "success" : "error"](
         res?.message ||
           `${id ? "编辑" : pid ? "新增子" : "新增"}账号${res ? "成功" : "失败"}`
       );
-      if (res) {
-        this.isLoading = false;
-        this.handleClose(true);
-      }
+      if (res) this.handleClose(true);
     },
   },
 };

@@ -1,7 +1,8 @@
 // 权限控制相关
 import Vue from "vue";
 import router from "@/router";
-import { generateSiteList } from "@/router/config/order";
+import { generateOrderSiteList } from "@/router/config/order";
+import { generateServiceSiteList } from "@/router/config/customerService";
 import store from "@/store";
 import hasPermission from "./hasPermission";
 
@@ -22,10 +23,13 @@ router.beforeEach(async (to, from, next) => {
       title: item?.name,
     }));
     // 配置代售点路由组件子类
-    const siteRoutesChildren = generateSiteList(siteOptions);
+    const siteRoutesChildren = generateOrderSiteList(siteOptions);
+    // 配置客服路由组件子类
+    const serviceRoutesChildren = generateServiceSiteList(siteOptions);
     // 如果没有hash表 但已授权
     const accessRoutes = await store.dispatch("permission/GenerateRoutes", {
       siteRoutesChildren,
+      serviceRoutesChildren,
     });
     accessRoutes.forEach((r) => router.addRoute(r));
     next({ ...to, replace: true });

@@ -101,6 +101,10 @@ export default {
       }
       this.isLoading = true;
       const query = { ...this.formData };
+      const pointSaleId = this.formData.pointSaleId
+        ? [Number(this.formData.pointSaleId)]
+        : [];
+      query.pointSaleId = JSON.stringify(pointSaleId);
       const [, res] = await this.$http.AccountRoleManage.UpdateAccount({
         ...query,
       });

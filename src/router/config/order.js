@@ -3,7 +3,7 @@ import ChildrenView from "@/layouts/ChildrenView/index";
 import TicketsList from "@/views/Order/views/TicketsList/index.vue";
 import AfterSales from "@/views/Order/views/AfterSales/index.vue";
 import AfterSalesLogistics from "@/views/Order/views/AfterSalesLogistics/index.vue";
-export const generateSiteList = (arr) => {
+export const generateOrderSiteList = (arr) => {
   const list = arr?.length ? arr : [];
   return list.map((item, index) => ({
     path: item?.path || `Site-${index}`,
@@ -54,4 +54,4 @@ const siteList = CONST.SITE_OPTIONS()
   .filter((item) => item && item.id);
 // console.log(siteList);
 
-export default generateSiteList(siteList);
+export default generateOrderSiteList(siteList);

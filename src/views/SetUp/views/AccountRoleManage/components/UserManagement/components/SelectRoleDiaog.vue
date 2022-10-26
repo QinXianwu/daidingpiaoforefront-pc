@@ -95,6 +95,10 @@ export default {
       this.isLoading = true;
       const id = this.editInfo?.id || "";
       const query = { userId: id, roles: [this.formData.roleId] };
+      const pointSaleId = this.formData.pointSaleId
+        ? [Number(this.formData.pointSaleId)]
+        : [];
+      query.pointSaleId = JSON.stringify(pointSaleId);
       const [, res] =
         await this.$http.AccountRoleManage.AccountDistributionRole({
           ...query,
