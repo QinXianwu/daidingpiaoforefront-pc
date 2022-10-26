@@ -44,7 +44,7 @@
           <el-option
             :key="index"
             :label="item.name"
-            :value="item.code"
+            :value="Number(item.id)"
             v-for="(item, index) in pointSaleOptions"
           >
           </el-option>
@@ -72,16 +72,9 @@ export default {
   },
   watch: {
     visible(val) {
-      if (val) this.getPointSaleOptions();
-      // 修改
-      if (val && this.editInfo?.id) {
-        this.formData = { ...this.editInfo };
-        if (this.formData?.pointSaleId) {
-          const arr = JSON.parse(this.formData?.pointSaleId);
-          this.formData.pointSaleId = arr?.length ? arr[0] : "";
-        }
-      } else {
-        // 新增
+      this.getPointSaleOptions();
+      // 新增
+      if (!val) {
         this.formData = {
           userName: "",
           account: "",
@@ -89,6 +82,15 @@ export default {
           eOrderNumberPrefix: "",
           parentAccount: this.editInfo?.parentAccount || "",
         };
+        return;
+      }
+      // 修改
+      if (this.editInfo?.id) {
+        this.formData = { ...this.editInfo };
+        if (this.formData?.pointSaleId) {
+          const arr = JSON.parse(this.formData?.pointSaleId);
+          this.formData.pointSaleId = arr?.length ? arr[0] : "";
+        }
       }
     },
   },
@@ -135,7 +137,7 @@ export default {
       this.isLoadingSiteList = true;
       const [, res] =
         await this.$http.AccountRoleManage.GetAccountByPointSale();
-      if (res?.length) this.pointSaleOptions = res;
+      this.pointSaleOptions = res?.length ? res : [];
       this.isLoadingSiteList = false;
     },
     // 处理提交
