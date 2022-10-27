@@ -1,3 +1,4 @@
+import PERMISSION_ID from "@/permission/PERMISSION_ID";
 import MainLayout from "@/layouts/MainLayout/index";
 import ReadyMoney from "@/views/OrderRefund/views/ReadyMoney/index.vue";
 import NonReadyMoney from "@/views/OrderRefund/views/NonReadyMoney/index.vue";
@@ -11,7 +12,7 @@ export default {
     title: "订单退票",
     icon: "refund",
     affix: true,
-    // PermissionId: PERMISSION_ID.Home,
+    PermissionId: PERMISSION_ID.Order_Ticket_Return,
   },
   children: [
     {
@@ -20,6 +21,7 @@ export default {
       name: "ReadyMoney",
       meta: {
         title: "现金退票",
+        PermissionId: PERMISSION_ID.Order_Ticket_Return_Cash,
       },
     },
     {
@@ -28,6 +30,7 @@ export default {
       name: "NonReadyMoney",
       meta: {
         title: "非现金退票",
+        PermissionId: PERMISSION_ID.Order_Ticket_Return_NotCash,
       },
     },
     {

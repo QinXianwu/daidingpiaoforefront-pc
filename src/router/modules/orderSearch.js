@@ -1,3 +1,4 @@
+import PERMISSION_ID from "@/permission/PERMISSION_ID";
 import MainLayout from "@/layouts/MainLayout/index";
 import TicketsSearch from "@/views/OrderSearch/views/TicketsSearch/index.vue";
 import Refund from "@/views/OrderSearch/views/Refund/index.vue";
@@ -17,7 +18,7 @@ export default {
     title: "订单查询",
     icon: "order_search",
     affix: true,
-    // PermissionId: PERMISSION_ID.Home,
+    PermissionId: PERMISSION_ID.Order_Query,
   },
   children: [
     {
@@ -26,6 +27,7 @@ export default {
       name: "TicketsSearch",
       meta: {
         title: "出票查询&回填信息修改",
+        PermissionId: PERMISSION_ID.Order_Query_Ticketing,
       },
     },
     {
@@ -34,6 +36,7 @@ export default {
       name: "Refund",
       meta: {
         title: "退票查询",
+        PermissionId: PERMISSION_ID.Order_Query_TicketingReturn,
       },
     },
     {
@@ -58,6 +61,7 @@ export default {
       name: "DaySalePointSettlement",
       meta: {
         title: "每日代售点结算查询",
+        PermissionId: PERMISSION_ID.Order_Query_DaySalePoint,
       },
     },
     {

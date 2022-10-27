@@ -1,4 +1,5 @@
 import CONST from "@/constants/index";
+import PERMISSION_ID from "@/permission/PERMISSION_ID";
 import ChildrenView from "@/layouts/ChildrenView/index";
 import TicketsList from "@/views/Order/views/TicketsList/index.vue";
 import AfterSales from "@/views/Order/views/AfterSales/index.vue";
@@ -21,6 +22,7 @@ export const generateOrderSiteList = (arr) => {
         meta: {
           title: "打票及回填",
           agentCode: item.id,
+          PermissionId: PERMISSION_ID.Order_Ticketing,
         },
       },
       {

@@ -138,7 +138,7 @@ export default {
       this.total = res?.total || 0;
       this.$nextTick(() => {
         setTimeout(() => {
-          this.getList(true);
+          // this.getList(true);
         }, 5000);
       });
     },
