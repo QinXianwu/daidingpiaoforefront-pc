@@ -15,9 +15,6 @@
 
       <!-- 平台选择组件-内部组件 -->
       <span class="account-id">
-        <span v-if="eOrderNumberPrefix"
-          >电子订单号前缀：{{ eOrderNumberPrefix }}</span
-        >
         <CopyButton :copyString="mainAccountId" v-if="mainAccountId">
           <span class="account-id-text">账号：{{ mainAccountId }}</span>
           <i class="el-icon-copy-document express-info-click" />
@@ -25,17 +22,39 @@
       </span>
 
       <!-- 用户头像 -->
-      <ElDropdown class="avatar-container right-menu-item" trigger="click">
-        <div class="avatar-wrapper hover-effect">
+      <ElPopover
+        width="300"
+        trigger="click"
+        class="avatar-container right-menu-item"
+      >
+        <div class="popover-content">
+          <div class="user-name">
+            <p>用户名：{{ (userInfo && userInfo.userName) || "-" }}</p>
+            <p>
+              <span>登录账号：</span>
+              <CopyButton :copyString="mainAccountId" v-if="mainAccountId">
+                <span class="account-id-text">
+                  {{ mainAccountId || "-" }}
+                </span>
+                <i class="el-icon-copy-document express-info-click" />
+              </CopyButton>
+            </p>
+          </div>
+          <div class="eOrder-Prefix">
+            <span>电子订单号前缀：</span>
+            <span :style="{ color: eOrderNumberPrefix ? '#ff7843' : '' }">{{
+              eOrderNumberPrefix || "未配置"
+            }}</span>
+          </div>
+          <el-button class="logout" @click.native="LogoutAsync">
+            <span>退出登录</span>
+          </el-button>
+        </div>
+        <div class="avatar-wrapper hover-effect" slot="reference">
           <el-image class="user-avatar" :src="userAvatar" />
           <i class="el-icon-caret-bottom" />
         </div>
-        <ElDropdownMenu slot="dropdown">
-          <ElDropdownItem divided @click.native="LogoutAsync">
-            <span style="display: block">退出登录</span>
-          </ElDropdownItem>
-        </ElDropdownMenu>
-      </ElDropdown>
+      </ElPopover>
     </div>
   </div>
 </template>
@@ -165,25 +184,26 @@ export default {
         padding-left: 8px;
       }
     }
-    .account-id {
-      font-weight: bold;
-      margin: 0 10px;
-      &-text {
-        font-size: 14px;
-        margin-right: 10px;
-        color: $main-font-color;
-      }
-    }
   }
 }
-.mta_sys_switch {
-  ::v-deep .sys_switch_target {
-    padding-right: 13px;
-    border-right: 1px solid #d9d9d9;
-    .sys_switch_target_img {
-      width: 20px;
-      height: 20px;
-    }
+.account-id {
+  font-weight: bold;
+  margin: 0 10px;
+  &-text {
+    font-size: 14px;
+    margin-right: 10px;
+    color: $main-font-color;
+  }
+}
+.popover-content {
+  .user-name p,
+  .eOrder-Prefix {
+    padding: 5px 0 0;
+  }
+  .logout {
+    margin: 10px 0 0;
+    width: 100%;
+    padding: 10px 0;
   }
 }
 </style>
