@@ -5,6 +5,7 @@ export default {
   path: "/CustomerService",
   component: MainLayout,
   redirect: "/404",
+  alwaysShow: true,
   meta: {
     title: "联系客服",
     icon: "customer_service",

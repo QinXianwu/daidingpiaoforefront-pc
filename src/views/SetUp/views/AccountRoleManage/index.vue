@@ -1,8 +1,16 @@
 <template>
   <div class="view-container">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="账号管理" name="UserManagement" />
-      <el-tab-pane label="角色管理" name="RoleManage" />
+      <el-tab-pane
+        label="账号管理"
+        name="UserManagement"
+        v-permission="$PERMISSION_ID.SystemSetUp_AccountManagement"
+      />
+      <el-tab-pane
+        label="角色管理"
+        name="RoleManage"
+        v-permission="$PERMISSION_ID.SystemSetUp_RoleManagement"
+      />
     </el-tabs>
 
     <div class="content">
@@ -11,8 +19,8 @@
     </div>
   </div>
 </template>
-
 <script>
+// this.$PERMISSION_ID
 import UserManagement from "./components/UserManagement/index.vue";
 import RoleManage from "./components/RoleManage/index.vue";
 

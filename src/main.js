@@ -7,6 +7,8 @@ import "@/plugins/index";
 import "./assets/styles/index.scss";
 import "./icons"; // icon
 import "./permission/index"; // 权限控制相关
+import hasPermission from "./permission/hasPermission";
+import PERMISSION_ID from "@/permission/PERMISSION_ID";
 // import { i18n } from "@/lang/index"; // 多语言
 import "virtual:svg-icons-register";
 
@@ -37,6 +39,8 @@ Object.keys(filters).forEach((k) => Vue.filter(k, filters[k]));
 
 Vue.config.productionTip = false;
 Vue.prototype.AJAX_CODE = CONST.AJAX_CODE;
+Vue.prototype.$PERMISSION_ID = PERMISSION_ID; // 权限ID
+Vue.prototype.$hasPermission = hasPermission; // 权限判断
 Vue.prototype.$http = api;
 Vue.prototype.$CONST = CONST; // 全局挂载常量
 Vue.prototype.$CookieStore = CookieStore;
