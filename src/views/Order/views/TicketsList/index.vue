@@ -2,7 +2,7 @@
   <div class="view-container">
     <div class="content">
       <HeadContent :alipayAccount.sync="alipayAccount" />
-      <TicketDetails />
+      <TicketDetails :ticketInfo="ticketInfo" />
 
       <div class="ticketing">
         <div class="title">
@@ -46,18 +46,17 @@
           </template>
           <!-- 展开行-出票详情 -->
           <template #expand="{ scope }">
-            <div
-              class="nothing-ticketing"
-              v-if="!scope.ticketList || !scope.ticketList.length"
-            >
-              暂无数据
-            </div>
             <IssueTicketingDetails
-              v-else
               :orderInfo="scope"
               :alipayAccount="alipayAccount"
               :ticketingList="scope.ticketList"
+              v-if="scope.ticketList && scope.ticketList.length"
+              @success="
+                getStatistics();
+                getList(true);
+              "
             />
+            <div class="nothing-ticketing" v-else>暂无数据</div>
           </template>
           <!-- 操作 -->
           <template #action="{}">
@@ -69,14 +68,14 @@
       </div>
 
       <!-- 分页 -->
-      <Pagination
+      <!-- <Pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :page-size="page.size"
         :current-page="page.current"
         :pageSizes="[10, 20, 50, 100]"
         :total="total"
-      />
+      /> -->
     </div>
   </div>
 </template>
@@ -99,11 +98,12 @@ export default {
         size: 10,
       },
       query: {
-        // lastId: "",
         agentCode: this.$router.currentRoute.meta.agentCode,
       },
       total: 0,
+      ticketInfo: {},
       alipayAccount: "", // 支付宝账号
+      timeId: "",
     };
   },
   computed: {},
@@ -130,20 +130,34 @@ export default {
         paramData: { ...this.query },
       };
       const [, res] = await this.$http.Order.GetOrderWaitList(query);
-      if (!res?.list?.length) return;
-      this.list = res.list;
+      // if (!res?.list?.length) return;
+      const idsStr = this.list.map((item) => item.id).join(",");
+      const tempList = res?.list?.length ? res?.list : [];
+      const joinList = tempList.filter((item) => !idsStr.includes(item.id));
+      this.list = [].concat(this.list, joinList);
       this.total = res?.total || 0;
       this.$nextTick(() => {
         setTimeout(() => {
-          this.list.push(this.list[0]);
+          this.getList(true);
         }, 5000);
       });
+    },
+    // 获取代售点数据
+    async getStatistics() {
+      const [, res] = await this.$http.Order.GetOrderStatistics({
+        agentCode: this.$router.currentRoute.meta.agentCode,
+      });
+      this.ticketInfo = res ? res : {};
     },
   },
   mounted() {
     this.getList();
+    this.getStatistics();
     // 获取支付宝账号列表
     this.$store.dispatch("agent/GetAlipayAccountListAction");
+  },
+  beforeDestroy() {
+    //
   },
 };
 </script>

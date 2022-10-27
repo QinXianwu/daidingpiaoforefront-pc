@@ -154,7 +154,8 @@ export default {
   methods: {
     // 获取座位类型
     getSeatTypeOptions(arrJson) {
-      const arr = typeof arrJson === "string" ? JSON.parse(arrJson) : [];
+      const arr =
+        typeof arrJson === "string" ? JSON.parse(arrJson || `[]`) : [];
       return arr.map((item, index) => ({
         label: item,
         value: index,
@@ -223,6 +224,7 @@ export default {
         bodyInfo: query,
       });
       this.$message[res ? "success" : "error"](`操作${res ? "成功" : "失败"}`);
+      if (res) this.$emit("success");
     },
   },
   mounted() {

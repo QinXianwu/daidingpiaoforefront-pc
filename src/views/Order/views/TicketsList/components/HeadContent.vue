@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "HeadContent",
   props: {
@@ -70,14 +70,20 @@ export default {
   data() {
     return {
       account: "",
-      isReceiveOrders: true, // 是否开启接受订单
+      isReceiveOrders: false, // 是否开启接受订单
       isOpenSound: true, // 是否开启声音
     };
   },
   computed: {
+    ...mapState({
+      pointSaleList: (state) => state.agent.pointSaleList,
+    }),
     ...mapGetters({
       alipayAccountOptions: "agent/alipayAccountOptions",
     }),
+    agentCode() {
+      return this.$router.currentRoute.meta.agentCode;
+    },
   },
   watch: {
     alipayAccountOptions(val) {
@@ -88,18 +94,37 @@ export default {
     },
   },
   methods: {
-    onOpenReceiveOrders(val) {
-      console.log(val);
-      // UpdateTicketingSwitch
+    async onOpenReceiveOrders(val) {
+      const [, res] = await this.$http.Order.UpdateTicketingSwitch({
+        agentCode: this.agentCode,
+        bodyInfo: {
+          action: val ? "on" : "off",
+        },
+      });
+      if (Number(res?.code) !== this.$AJAX_CODE) {
+        this.isReceiveOrders = !val;
+        this.$message.error(`${val ? "开启" : "关闭"}接单失败`);
+        return;
+      }
+      // 修改成功需同步vuex中的pointSaleList
+      const tempList = [...this.pointSaleList];
+      const item = tempList.find((item) => item.code === this.agentCode);
+      item.openOrderReceiving = val;
+      this.isReceiveOrders = val;
+      this.$store.commit("agent/SET_POINT_SALE_LIST", tempList);
     },
     onOpenSound(val) {
       console.log(val);
-      // UpdateTicketingSwitch
     },
     onSelectAlipayAccount(val) {
       const item = this.alipayAccountOptions.find((item) => item.value === val);
       this.$emit("update:alipayAccount", item?.label || "");
     },
+  },
+  mounted() {
+    const tempList = [...this.pointSaleList];
+    const item = tempList.find((item) => item.code === this.agentCode);
+    this.isReceiveOrders = item.openOrderReceiving;
   },
 };
 </script>

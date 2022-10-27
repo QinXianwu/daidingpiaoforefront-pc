@@ -17,6 +17,7 @@ export default {
       })
     );
   },
+  // 获取支付宝账号列表
   GetAlipayAccountList(params) {
     return catchAsyncFun(
       apiFetch({

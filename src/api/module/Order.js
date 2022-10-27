@@ -14,6 +14,7 @@ export default {
         url: apiPrefix + "/order/waiting/list",
         params,
         method: "post",
+        isLoading: false,
       })
     );
   },
@@ -32,6 +33,17 @@ export default {
     return catchAsyncFun(
       apiFetch({
         url: apiPrefix + "/order/waiting/ticketing-switch",
+        params,
+        method: "post",
+        isReturnAll: true,
+      })
+    );
+  },
+  // 获取代售点统计数据
+  GetOrderStatistics(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + `/order/waiting/order-statistics/${params.agentCode}`,
         params,
         method: "post",
       })
