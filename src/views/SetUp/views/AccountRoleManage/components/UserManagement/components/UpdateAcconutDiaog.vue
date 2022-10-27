@@ -50,6 +50,16 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="进单量上限:" prop="receiveOrderLimit">
+        <el-input-number
+          v-model="formData.receiveOrderLimit"
+          :precision="0"
+          :step="1"
+          :min="0"
+          :max="9999"
+          placeholder="请输入进单量上限"
+        />
+      </el-form-item>
     </el-form>
     <span slot="footer">
       <el-button type="primary" :loading="isLoading" @click="handleSubmit">

@@ -46,6 +46,12 @@
               eOrderNumberPrefix || "未配置"
             }}</span>
           </div>
+          <div class="receiveOrderLimit">
+            <span>接单上限数量：</span>
+            <span :style="{ color: receiveOrderLimit ? '#ff4949' : '' }">{{
+              receiveOrderLimit
+            }}</span>
+          </div>
           <el-button class="logout" @click.native="LogoutAsync">
             <span>退出登录</span>
           </el-button>
@@ -86,6 +92,9 @@ export default {
     },
     eOrderNumberPrefix({ userInfo }) {
       return userInfo?.eOrderNumberPrefix || "";
+    },
+    receiveOrderLimit({ userInfo }) {
+      return userInfo?.receiveOrderLimit || 0;
     },
     userAvatar() {
       return defaultUserAvatar;
@@ -197,7 +206,8 @@ export default {
 }
 .popover-content {
   .user-name p,
-  .eOrder-Prefix {
+  .eOrder-Prefix,
+  .receiveOrderLimit {
     padding: 5px 0 0;
   }
   .logout {
