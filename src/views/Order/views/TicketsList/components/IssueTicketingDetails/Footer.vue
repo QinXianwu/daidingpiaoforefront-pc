@@ -24,7 +24,7 @@
     </div>
     <div class="item">
       <div class="emit">
-        <span class="label mr-10">电子订单号：{{ eorderCode }}</span>
+        <span class="label mr-10">电子订单号：{{ eOrderNumberPrefix }}</span>
         <el-input
           type="emit"
           :value="eorderNumber"
@@ -46,8 +46,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import CopyButton from "@/components/CopyButton/index";
-
 export default {
   props: {
     // 订单id
@@ -83,10 +83,17 @@ export default {
   components: { CopyButton },
   data() {
     return {
-      eorderCode: "E",
       serialNumber: "",
       isSerialNumber: true,
     };
+  },
+  computed: {
+    ...mapState({
+      userInfo: (state) => state.user.userInfo,
+    }),
+    eOrderNumberPrefix({ userInfo }) {
+      return userInfo?.eOrderNumberPrefix || "";
+    },
   },
   methods: {
     // 匹配流水号

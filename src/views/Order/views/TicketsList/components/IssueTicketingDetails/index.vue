@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import HeadView from "./Head.vue";
 import FooterView from "./Footer.vue";
 import PassengerInfo from "./PassengerInfo.vue";
@@ -86,7 +87,6 @@ export default {
   },
   data() {
     return {
-      eorderCode: "E",
       eorderNumber: "", // 电子订单号
       payTradeNumber: "", // 支付流水号
       formPassengerMap: {}, // 乘客表单map
@@ -96,6 +96,12 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      userInfo: (state) => state.user.userInfo,
+    }),
+    eorderCode({ userInfo }) {
+      return userInfo?.eOrderNumberPrefix || "";
+    },
     // 订单表单数据
     formOrderData({ orderInfo, payTradeNumber, eorderCode, eorderNumber }) {
       return {
