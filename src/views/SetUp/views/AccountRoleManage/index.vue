@@ -20,7 +20,6 @@
   </div>
 </template>
 <script>
-// this.$PERMISSION_ID
 import UserManagement from "./components/UserManagement/index.vue";
 import RoleManage from "./components/RoleManage/index.vue";
 
