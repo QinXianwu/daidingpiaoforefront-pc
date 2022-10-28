@@ -59,4 +59,15 @@ export default {
       })
     );
   },
+  // 新订单
+  GetNewOrderCount(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/order/waiting/order/count",
+        params,
+        method: "post",
+        isLoading: false,
+      })
+    );
+  },
 };

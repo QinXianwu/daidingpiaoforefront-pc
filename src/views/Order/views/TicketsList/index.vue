@@ -85,6 +85,7 @@ import { column } from "./config";
 import TimeDown from "@/components/TimeDown/index";
 import HeadContent from "./components/HeadContent.vue";
 import TicketDetails from "./components/TicketDetails.vue";
+import { mapState } from "vuex";
 import IssueTicketingDetails from "./components/IssueTicketingDetails/index";
 export default {
   name: "TicketsList",
@@ -95,7 +96,7 @@ export default {
       list: [],
       page: {
         current: 1,
-        size: 10,
+        size: 1,
       },
       query: {
         agentCode: this.$router.currentRoute.meta.agentCode,
@@ -106,7 +107,14 @@ export default {
       timeId: "",
     };
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      userInfo: (state) => state.user.userInfo,
+    }),
+    receiveOrderLimit({ userInfo }) {
+      return userInfo?.receiveOrderLimit || 1;
+    },
+  },
   methods: {
     handleSizeChange(val) {
       this.page.size = val;
@@ -127,6 +135,7 @@ export default {
       if (isClear) this.page.current = 1;
       const query = {
         ...this.page,
+        size: this.receiveOrderLimit,
         paramData: { ...this.query },
       };
       const [, res] = await this.$http.Order.GetOrderWaitList(query);
@@ -137,7 +146,7 @@ export default {
       this.list = [].concat(this.list, joinList);
       this.total = res?.total || 0;
       this.$nextTick(() => {
-        setTimeout(() => {
+        this.timeId = setTimeout(() => {
           // this.getList(true);
         }, 5000);
       });
@@ -157,7 +166,8 @@ export default {
     this.$store.dispatch("agent/GetAlipayAccountListAction");
   },
   beforeDestroy() {
-    //
+    // 清除定时器
+    if (this.timeId) clearInterval(this.timeId);
   },
 };
 </script>

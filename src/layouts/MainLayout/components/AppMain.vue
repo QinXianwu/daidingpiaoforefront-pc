@@ -1,5 +1,6 @@
 <template>
   <section class="app-main">
+    <AppPromptController />
     <!-- 主视图 -->
     <transition name="fadeLeft">
       <keep-alive :include="watchViews">
@@ -10,8 +11,12 @@
 </template>
 
 <script>
+import AppPromptController from "./AppPromptController.vue";
 export default {
   name: "AppMain",
+  components: {
+    AppPromptController,
+  },
   data() {
     return {
       watchViews: [],

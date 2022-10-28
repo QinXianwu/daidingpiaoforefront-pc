@@ -22,7 +22,8 @@
       <div class="item">
         <span class="item-label mr-10">是否开启声音:</span>
         <ElSwitch
-          v-model="isOpenSound"
+          ref="openSound"
+          :value="isAudio"
           @change="onOpenSound"
           active-icon-class="el-icon-message-solid"
           inactive-icon-class="el-icon-close-notification"
@@ -71,12 +72,12 @@ export default {
     return {
       account: "",
       isReceiveOrders: false, // 是否开启接受订单
-      isOpenSound: true, // 是否开启声音
     };
   },
   computed: {
     ...mapState({
       pointSaleList: (state) => state.agent.pointSaleList,
+      isAudio: (state) => state.app.isAudio, // 是否开启声音
     }),
     ...mapGetters({
       alipayAccountOptions: "agent/alipayAccountOptions",
@@ -101,7 +102,7 @@ export default {
           action: val ? "on" : "off",
         },
       });
-      if (Number(res?.code) !== this.$AJAX_CODE) {
+      if (Number(res?.code) !== this.AJAX_CODE.SUCCESS) {
         this.isReceiveOrders = !val;
         this.$message.error(`${val ? "开启" : "关闭"}接单失败`);
         return;
@@ -112,9 +113,10 @@ export default {
       item.openOrderReceiving = val;
       this.isReceiveOrders = val;
       this.$store.commit("agent/SET_POINT_SALE_LIST", tempList);
+      this.$message.success(`${val ? "开启" : "关闭"}接单成功`);
     },
     onOpenSound(val) {
-      console.log(val);
+      this.$store.commit("app/SET_IS_AUDIO", val);
     },
     onSelectAlipayAccount(val) {
       const item = this.alipayAccountOptions.find((item) => item.value === val);
@@ -122,6 +124,8 @@ export default {
     },
   },
   mounted() {
+    // this.$refs.openSound.$el.click();
+
     const tempList = [...this.pointSaleList];
     const item = tempList.find((item) => item.code === this.agentCode);
     this.isReceiveOrders = item.openOrderReceiving;

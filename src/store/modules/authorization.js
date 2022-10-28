@@ -56,6 +56,7 @@ const actions = {
       const token = res.data?.token;
       const userInfo = JSON.stringify(res?.data?.sysUser || "");
       commit("SET_USER_SIGNIN", { token, userInfo, date: 1 });
+      localStorage.setItem("isAudio", 1);
       location.href = "/";
       ELEMENT.Message.success("登录成功");
     } else {
