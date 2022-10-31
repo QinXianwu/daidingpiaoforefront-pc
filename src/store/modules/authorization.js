@@ -28,7 +28,7 @@ const actions = {
     resetRouter(); // 重置路由
     commit("SET_USER_SIGNOUT");
     localStorage.setItem("isAudio", 0);
-    localStorage.setItem("user_info", {});
+    localStorage.setItem("user_info", "{}");
     location.href = "/";
   },
   // 去登录
