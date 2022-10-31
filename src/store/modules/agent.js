@@ -5,6 +5,7 @@ const state = {
   userInfo: null, //客户信息
   agentInfo: null, //经销商信息
   pointSaleList: [], // 代售点列表
+  pointSaleAction: [], // 代售点Action 新订单通知
   alipayAccountList: [], // 支付宝账号列表
 };
 
@@ -21,6 +22,9 @@ const mutations = {
   SET_POINT_SALE_LIST(state, data) {
     state.pointSaleList = data;
   },
+  SET_POINT_SALE_ACTION(state, data) {
+    state.pointSaleAction = data;
+  },
   SET_ALIPAY_ACCOUNT_LIST(state, data) {
     state.alipayAccountList = data;
   },
@@ -32,6 +36,7 @@ const actions = {
       return state.pointSaleList;
     const [, data] = await api.Base.GetPointSaleList();
     commit("SET_POINT_SALE_LIST", data?.length ? data : []);
+    commit("SET_POINT_SALE_ACTION", data?.length ? data : []);
     return data || [];
   },
   async GetAlipayAccountListAction({ commit, state }, isRefresh = false) {

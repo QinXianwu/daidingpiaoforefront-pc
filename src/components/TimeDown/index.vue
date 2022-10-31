@@ -27,6 +27,11 @@ export default {
       type: [String, Number],
       default: "",
     },
+    // 距离该时间进行提示 单位s
+    reminderTime: {
+      type: [String, Number],
+      default: "",
+    },
     showH: {
       type: Boolean,
       default: true,
@@ -43,10 +48,7 @@ export default {
   data() {
     return {
       diffTime: 0, // 倒计时
-      state: {
-        start: false,
-        end: false,
-      },
+      isReminder: false, // 是否已提示
     };
   },
   watch: {
@@ -69,11 +71,16 @@ export default {
       const targerTime = new Date(targerTimeTemp).getTime();
       this.timeId = setTimeout(() => {
         this.diffTime = (targerTime - Date.now()) / 1000;
-        if (this.diffTime > 0) {
-          this.state.start = true;
+        // console.log(this.diffTime);
+        if (this.diffTime > 1) {
+          // 响应提示
+          if (this.diffTime < Number(this.reminderTime) && !this.isReminder) {
+            // console.log("响应提示");
+            this.isReminder = true;
+            this.$emit("on-reminder");
+          }
           this.getTimeDiff();
-        } else if (this.state.start && !this.state.end) {
-          this.state.end = true;
+        } else {
           this.$emit("on-change");
         }
       }, 1000);

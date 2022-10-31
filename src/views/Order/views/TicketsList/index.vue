@@ -40,7 +40,9 @@
           <template #process_countdown="{ scope }">
             <TimeDown
               :showH="false"
+              :reminderTime="300"
               :targerTime="scope.expireTime"
+              @on-reminder="onReminder"
               @on-change="onCountdownOver(scope)"
             />
           </template>
@@ -81,17 +83,21 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { column } from "./config";
+import neworder from "assets/media/neworder.wav";
+import timeout from "assets/media/timeout.wav";
 import TimeDown from "@/components/TimeDown/index";
 import HeadContent from "./components/HeadContent.vue";
 import TicketDetails from "./components/TicketDetails.vue";
-import { mapState } from "vuex";
 import IssueTicketingDetails from "./components/IssueTicketingDetails/index";
 export default {
   name: "TicketsList",
   components: { HeadContent, TicketDetails, TimeDown, IssueTicketingDetails },
   data() {
     return {
+      neworderAudio: new Audio(neworder), // 新订单提示
+      timeoutAudio: new Audio(timeout), // 即将超时提示
       column, //表格头
       list: [],
       page: {
@@ -109,7 +115,10 @@ export default {
   },
   computed: {
     ...mapState({
+      isAudio: (state) => state.app.isAudio, // 是否开启声音
       userInfo: (state) => state.user.userInfo,
+      pointSaleList: (state) => state.agent.pointSaleList,
+      pointSaleAction: (state) => state.agent.pointSaleAction,
     }),
     receiveOrderLimit({ userInfo }) {
       return userInfo?.receiveOrderLimit || 1;
@@ -128,8 +137,14 @@ export default {
     sendMessage() {
       console.log("sendMessage");
     },
+    // 即将超时处理提示
+    onReminder() {
+      this.$message.error("你有一个订单即将超时，请及时处理");
+      if (this.isAudio) this.timeoutAudio.play();
+    },
     onCountdownOver(val) {
-      console.log("onCountdownOver", val);
+      const index = this.list.findIndex((item) => item.id === val?.id);
+      if (index >= 0) this.list.splice(index, 1);
     },
     async getList(isClear) {
       if (isClear) this.page.current = 1;
@@ -139,15 +154,19 @@ export default {
         paramData: { ...this.query },
       };
       const [, res] = await this.$http.Order.GetOrderWaitList(query);
-      // if (!res?.list?.length) return;
       const idsStr = this.list.map((item) => item.id).join(",");
       const tempList = res?.list?.length ? res?.list : [];
       const joinList = tempList.filter((item) => !idsStr.includes(item.id));
-      this.list = [].concat(this.list, joinList);
+      const tempArr = [].concat(this.list, joinList);
+      if (tempArr?.length > this.list?.length && this.isAudio) {
+        this.$message.success("你有一个新订单，请及时处理");
+        this.neworderAudio.play();
+      }
+      this.list = [...tempArr];
       this.total = res?.total || 0;
       this.$nextTick(() => {
         this.timeId = setTimeout(() => {
-          // this.getList(true);
+          this.getList(true);
         }, 5000);
       });
     },
@@ -162,12 +181,25 @@ export default {
   mounted() {
     this.getList();
     this.getStatistics();
+    // 更新新订单通知code列表
+    const tempArr = this.pointSaleAction.filter(
+      (item) => item.code !== this.query.agentCode
+    );
+    this.$store.commit("agent/SET_POINT_SALE_ACTION", tempArr || []);
     // 获取支付宝账号列表
     this.$store.dispatch("agent/GetAlipayAccountListAction");
   },
   beforeDestroy() {
     // 清除定时器
     if (this.timeId) clearInterval(this.timeId);
+    // 更新新订单通知code列表
+    const pointItem = this.pointSaleList.find(
+      (item) => item.code === this.query.agentCode
+    );
+    this.$store.commit(
+      "agent/SET_POINT_SALE_ACTION",
+      [...this.pointSaleAction, pointItem] || []
+    );
   },
 };
 </script>
