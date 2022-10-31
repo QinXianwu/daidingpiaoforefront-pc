@@ -139,7 +139,13 @@ export default {
     },
     // 即将超时处理提示
     onReminder() {
-      this.$message.error("你有一个订单即将超时，请及时处理");
+      // this.$message.error("你有一个订单即将超时，请及时处理");
+      this.$notify({
+        title: "订单即将超时",
+        message: "你有一个订单即将超时，请及时处理",
+        type: "error",
+        offset: 50,
+      });
       if (this.isAudio) this.timeoutAudio.play();
     },
     onCountdownOver(val) {
@@ -158,9 +164,15 @@ export default {
       const tempList = res?.list?.length ? res?.list : [];
       const joinList = tempList.filter((item) => !idsStr.includes(item.id));
       const tempArr = [].concat(this.list, joinList);
-      if (tempArr?.length > this.list?.length && this.isAudio) {
-        this.$message.success("你有一个新订单，请及时处理");
-        this.neworderAudio.play();
+      if (tempArr?.length > this.list?.length) {
+        // this.$message.success("你有一个新订单，请及时处理");
+        this.$notify({
+          title: "新订单",
+          message: "你有一个新订单，请及时处理",
+          type: "success",
+          offset: 50,
+        });
+        if (this.isAudio) this.neworderAudio.play();
       }
       this.list = [...tempArr];
       this.total = res?.total || 0;

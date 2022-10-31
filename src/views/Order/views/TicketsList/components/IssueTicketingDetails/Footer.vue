@@ -109,7 +109,11 @@ export default {
         },
       });
       if (!res?.length) return this.$message.error("该订单未匹配到支付流水号");
-      const paymentNumber = res[0]?.paymentNumber || "";
+      const filterDate = res.filter((item) => item.direction === "支出");
+      if (!filterDate?.length)
+        return this.$message.error("该订单未匹配到支付流水号");
+      // console.log(filterDate);
+      const paymentNumber = filterDate[0]?.paymentNumber || "";
       this.serialNumber = paymentNumber;
       this.$emit("update:payTradeNumber", this.serialNumber);
       this.isSerialNumber = true;
