@@ -10,7 +10,7 @@
             is: item && item.value,
             dazzling: item && item.isDazzling && item.value,
           }"
-          >{{ (item && item.value) || "-" }}</span
+          >{{ item.value }}</span
         >
       </div>
     </div>
@@ -32,35 +32,38 @@ export default {
       return [
         {
           label: "订单数",
-          // value: ticketInfo?.order_num,
-          value: 1,
+          value: ticketInfo?.orderCount || 0,
         },
         {
           label: "票数",
-          value: ticketInfo?.ticket_num,
+          value: ticketInfo?.ticketCount || 0,
         },
         {
           label: "票款",
-          value: "33.2",
+          value: ticketInfo?.fare || 0,
           isDazzling: true, // 是否高亮
         },
-        {
-          label: "代购费",
-          value: "",
-          isDazzling: true,
-        },
-        {
-          label: "服务费",
-          value: "",
-          isDazzling: true,
-        },
-        {
-          label: "订单总金额",
-          value: "",
-          isDazzling: true,
-        },
+        // {
+        //   label: "代购费",
+        //   value: "",
+        //   isDazzling: true,
+        // },
+        // {
+        //   label: "服务费",
+        //   value: "",
+        //   isDazzling: true,
+        // },
+        // {
+        //   label: "订单总金额",
+        //   value: "",
+        //   isDazzling: true,
+        // },
       ];
     },
+  },
+  methods: {},
+  mounted() {
+    //
   },
 };
 </script>

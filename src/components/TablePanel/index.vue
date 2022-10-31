@@ -119,7 +119,7 @@
 
           <!--  默认直接显示 -->
           <template v-if="item.type === 'money'">
-            ￥{{ scoped.row[item.prop] | cent2yuan | formatCurrency }}
+            ￥{{ scoped.row[item.prop] | formatCurrency }}
             <i
               v-if="item.emit"
               class="edit_icon el-icon-edit"
