@@ -67,10 +67,10 @@ export const column = [
     label: "订单总金额",
     prop: "license_number",
   },
-  {
-    label: "异常订单总金额",
-    prop: "license_number",
-  },
+  // {
+  //   label: "异常订单总金额",
+  //   prop: "license_number",
+  // },
   {
     label: "结算总金额",
     prop: "license_number",

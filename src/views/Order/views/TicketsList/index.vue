@@ -40,7 +40,7 @@
           <template #process_countdown="{ scope }">
             <TimeDown
               :showH="false"
-              :reminderTime="300"
+              :reminderTime="120"
               :targerTime="scope.expireTime"
               @on-reminder="onReminder"
               @on-change="onCountdownOver(scope)"
@@ -63,7 +63,7 @@
           <!-- 操作 -->
           <template #action="{}">
             <div class="action-groud">
-              <el-button type="text" @click="sendMessage"> 发送通知 </el-button>
+              <!-- <el-button type="text" @click="sendMessage"> 发送通知 </el-button> -->
             </div>
           </template>
         </TablePanel>
@@ -148,9 +148,14 @@ export default {
       });
       if (this.isAudio) this.timeoutAudio.play();
     },
+    // 过期删除
     onCountdownOver(val) {
-      const index = this.list.findIndex((item) => item.id === val?.id);
-      if (index >= 0) this.list.splice(index, 1);
+      this.$nextTick(() => {
+        setTimeout(() => {
+          const index = this.list.findIndex((item) => item.id === val?.id);
+          if (index >= 0) this.list.splice(index, 1);
+        }, 200);
+      });
     },
     async getList(isClear) {
       if (isClear) this.page.current = 1;

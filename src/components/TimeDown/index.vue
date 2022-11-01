@@ -70,9 +70,8 @@ export default {
       if (typeof this.targerTime === "number") targerTimeTemp = this.targerTime;
       const targerTime = new Date(targerTimeTemp).getTime();
       this.timeId = setTimeout(() => {
-        this.diffTime = (targerTime - Date.now()) / 1000;
-        // console.log(this.diffTime);
-        if (this.diffTime > 1) {
+        this.diffTime = ((targerTime - Date.now()) / 1000).toFixed(2);
+        if (this.diffTime > 0) {
           // 响应提示
           if (this.diffTime < Number(this.reminderTime) && !this.isReminder) {
             // console.log("响应提示");
