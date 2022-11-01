@@ -129,10 +129,8 @@ export default {
         ...this.page,
         paramData: { ...this.query },
       });
-      if (!res?.list?.length) return;
-      this.list = res.list || [];
+      this.list = res?.list || [];
       this.total = res?.total || 0;
-      console.log(res);
     },
     async getTicketingStatisticsInfo({ agentCode }) {
       if (!agentCode) return (this.ticketInfo = {});

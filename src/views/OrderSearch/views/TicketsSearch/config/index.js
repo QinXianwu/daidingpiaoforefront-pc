@@ -108,7 +108,8 @@ export const column = [
   },
   {
     label: "订单时间",
-    prop: "ticket_type",
+    prop: "handleTime",
+    width: 160,
   },
   {
     label: "处理账号名",
