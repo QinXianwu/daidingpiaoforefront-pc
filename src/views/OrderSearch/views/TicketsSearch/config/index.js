@@ -18,7 +18,7 @@ export const formData = [
   },
   {
     label: "车次",
-    prop: "trips_number",
+    prop: "trainNumber",
     type: "text",
     value: "",
     placeholder: "请输入车次",

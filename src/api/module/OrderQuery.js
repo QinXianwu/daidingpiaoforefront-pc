@@ -28,6 +28,26 @@ export default {
       })
     );
   },
+  // 获取退票查询列表
+  GetTicketRefundList(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/query/refund-ticket",
+        params,
+        method: "post",
+      })
+    );
+  },
+  // 获取退票查询-票款明细
+  GetTicketRefundDetail(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/query/refund-ticket/detail",
+        params,
+        method: "post",
+      })
+    );
+  },
   // 每日代售点结算查询
   GetEveryDayClearingList(params) {
     return catchAsyncFun(

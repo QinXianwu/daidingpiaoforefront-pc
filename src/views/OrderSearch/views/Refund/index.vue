@@ -4,20 +4,13 @@
       <SearchForm
         isShowExport
         isReturnFormData
-        :formData="formData"
+        :formData="queryFormData"
         :isShowExportList="false"
         @on-search="onSearch"
         @on-export="onExport"
       />
-      <TicketDetails />
-      <TablePanel :tableData="list" :tableHead="column">
-        <!-- 操作 -->
-        <template #action="{}">
-          <div class="action-groud">
-            <el-button type="text" @click="customerService"> 客服 </el-button>
-          </div>
-        </template>
-      </TablePanel>
+      <TicketDetails :ticketInfo="ticketInfo" />
+      <TablePanel :tableData="list" :tableHead="column" />
       <!-- 分页 -->
       <Pagination
         @size-change="handleSizeChange"
@@ -31,7 +24,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { column, formData } from "./config";
+import { DownloadFile } from "@/utils/index";
 import TicketDetails from "./components/TicketDetails.vue";
 export default {
   name: "Refund",
@@ -42,38 +37,63 @@ export default {
       column, //表格头
       list: [],
       page: {
-        rows: 10,
-        page: 1,
+        current: 1,
+        size: 10,
       },
+      query: {},
       total: 0,
-      rules: [], //过滤规则
+      ticketInfo: {},
+      isLoading: false,
+      isExporting: false,
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      pointSaleOptions: "agent/pointSaleOptions",
+    }),
+    queryFormData({ formData, pointSaleOptions }) {
+      const data = [...formData];
+      const item = data.find((item) => item.prop === "code");
+      if (item) item.options = pointSaleOptions;
+      return data;
+    },
+  },
   methods: {
     handleSizeChange(val) {
-      this.page.rows = val;
-      this.page.page = 1;
-      // this.getList(true);
+      this.page.size = val;
+      this.page.current = 1;
+      this.getList(true);
     },
     handleCurrentChange(val) {
-      this.page.page = val;
-      // this.getList(false);
+      this.page.current = val;
+      this.getList(false);
     },
     onSearch(data) {
-      console.log(data);
-      this.rules = {};
-      // this.getList(true);
+      // console.log(data);
+      this.getTicketingRefundInfo({ code: data?.code || "" });
+      this.query = { ...data };
+      if (data?.refundTicketDate?.length) {
+        this.query.refundTicketStartTime = data.refundTicketDate[0];
+        this.query.refundTicketEndTime = data.refundTicketDate[1];
+      }
+      delete this.query.refundTicketDate;
+      this.getList(true);
     },
     // 导出
-    async onExport() {
+    async onExport(data) {
       if (this.isExporting) return false;
+      const query = { ...data };
+      if (data?.refundTicketDate?.length) {
+        this.query.refundTicketStartTime = data.refundTicketDate[0];
+        this.query.refundTicketEndTime = data.refundTicketDate[1];
+      }
+      delete query.refundTicketDate;
       this.isExporting = true;
-      const res = true;
-      // const [, res] = await this.$http.ExportImport.ExportWinExchange({
-      //   ActCode: this.ActCode,
-      //   ...this.searchQuery,
-      // });
+      const [, res] = await this.$http.ExportImport.ExportRefundTicket({
+        size: -1,
+        current: 1,
+        paramData: { ...query },
+      });
       this.isExporting = false;
       if (res) {
         try {
@@ -82,19 +102,39 @@ export default {
             cancelButtonText: "取消",
             type: "success",
           });
-          console.log("去下载");
-          // 去下载
-          // this.$router.push({ name: "ExportList" });
+          const fileName = this.$options.filters.formatDate(
+            Date.now(),
+            "yyyy-MM-dd hh:mm:ss"
+          );
+          DownloadFile({
+            data: res,
+            FileName: "退票_" + fileName,
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8 ",
+          });
         } catch (e) {
-          e;
+          // e;
         }
       }
     },
-    customerService() {
-      console.log("客服");
-    },
     async getList(isClear) {
-      if (isClear) this.page.page = 1;
+      if (this.isLoading) return;
+      if (isClear) this.page.current = 1;
+      this.isLoading = true;
+      const [, res] = await this.$http.OrderQuery.GetTicketRefundList({
+        ...this.page,
+        paramData: { ...this.query },
+      });
+      this.isLoading = false;
+      this.list = res?.list || [];
+      this.total = res?.total || 0;
+    },
+    async getTicketingRefundInfo({ code }) {
+      if (!code) return (this.ticketInfo = {});
+      const [, res] = await this.$http.OrderQuery.GetTicketRefundDetail({
+        code,
+      });
+      console.log(res);
+      // this.ticketInfo = res ? res : {};
     },
   },
   mounted() {

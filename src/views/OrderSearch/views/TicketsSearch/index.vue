@@ -73,7 +73,7 @@ export default {
     queryFormData({ formData, pointSaleOptions }) {
       const data = [...formData];
       const item = data.find((item) => item.prop === "agentCode");
-      item.options = pointSaleOptions;
+      if (item) item.options = pointSaleOptions;
       return data;
     },
   },
@@ -127,7 +127,7 @@ export default {
           );
           DownloadFile({
             data: res,
-            FileName: "ticketQuery_" + fileName,
+            FileName: "出票_" + fileName,
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8 ",
           });
         } catch (e) {

@@ -3,37 +3,37 @@ import CONST from "@/constants/index";
 export const formData = [
   {
     label: "乘客姓名",
-    prop: "name",
+    prop: "passengerName",
     type: "text",
     value: "",
     placeholder: "请输入乘客姓名",
   },
   {
     label: "代售点",
-    prop: "ticket_number",
+    prop: "code",
     type: "select",
-    value: CONST.SITE_ID.ALL,
-    options: CONST.SITE_OPTIONS(),
+    value: "",
+    options: [],
     placeholder: "请选择代售点",
   },
   {
     label: "车票状态",
-    prop: "ticket_number",
+    prop: "ticketStatus",
     type: "select",
-    value: CONST.TICKETS_STATE.SUCCESS,
+    value: "",
     options: CONST.TICKETS_STATE_OPTIONS(),
     placeholder: "请选择车票状态",
   },
   {
     label: "取票号",
-    prop: "ticket_number",
+    prop: "ticketCollectionNumber",
     type: "text",
     value: "",
     placeholder: "请输入取票号",
   },
   {
     label: "退票类型",
-    prop: "ticket_number",
+    prop: "refundTicketType",
     type: "select",
     value: CONST.REFUND_TYPE.READY_MONEY,
     options: CONST.REFUND_TYPE_OPTIONS(),
@@ -41,7 +41,7 @@ export const formData = [
   },
   {
     label: "退票日期",
-    prop: "create_time",
+    prop: "refundTicketDate",
     type: "datetimerange",
     value: [],
   },
@@ -50,39 +50,41 @@ export const formData = [
 export const column = [
   {
     label: "发车时间",
-    prop: "departure_time",
-    width: 120,
+    prop: "departTime",
+    width: 160,
   },
   {
     label: "车次",
-    prop: "trips_number",
+    prop: "trainNumber",
   },
   {
     label: "取票号",
-    prop: "license_number",
+    prop: "ticketCollectionNumber",
   },
   {
     label: "出发/到达",
-    prop: "start_end_station",
+    prop: "fromToStationName",
   },
   {
     label: "姓名",
-    prop: "name",
+    prop: "passengerName",
   },
   {
-    label: "票类型",
-    prop: "ticket_type",
+    label: "退票类型",
+    prop: "ticketType",
   },
   {
     label: "退票时间",
-    prop: "certificate_type",
+    prop: "refundTicketTime",
+    width: 160,
   },
   {
     label: "退款金额",
-    prop: "license_number",
+    prop: "refundTicketAmount",
+    type: "money",
   },
   {
     label: "优先级",
-    prop: "license_number",
+    prop: "prioritization",
   },
 ];

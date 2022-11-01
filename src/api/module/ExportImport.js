@@ -8,13 +8,26 @@ const catchAsyncFun = createCatchAsyncFun((error) => {
 
 export default {
   // 出票查询&回填信息修改 导出
-  ExportRefundTicket(params) {
+  ExportTicketing(params) {
     return catchAsyncFun(
       apiFetch({
         url: apiPrefix + "/query/ticketing/download",
         params,
         method: "post",
         TaskName: "出票查询导出",
+        isReturnAll: true,
+        responseType: "blob",
+      })
+    );
+  },
+  // 退票查询 导出
+  ExportRefundTicket(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/query/refund-ticket/download",
+        params,
+        method: "post",
+        TaskName: "退票查询导出",
         isReturnAll: true,
         responseType: "blob",
       })
