@@ -2,36 +2,35 @@
 export const formData = [
   {
     label: "姓名",
-    prop: "name",
+    prop: "passengerName",
     type: "text",
     value: "",
     placeholder: "请输入姓名",
   },
-
   {
     label: "出发站",
-    prop: "start_site",
+    prop: "arrivalStation",
     type: "text",
     value: "",
     placeholder: "请输入出发站",
   },
   {
     label: "到达站",
-    prop: "end_site",
+    prop: "departStation",
     type: "text",
     value: "",
     placeholder: "请输入到达站",
   },
   {
     label: "车次",
-    prop: "ticket_number",
+    prop: "trainNumber",
     type: "text",
     value: "",
     placeholder: "请输入车次",
   },
   {
     label: "身份证",
-    prop: "order_code",
+    prop: "passportNumber",
     type: "text",
     value: "",
     placeholder: "请输入身份证",
@@ -47,56 +46,58 @@ export const formData = [
 export const column = [
   {
     label: "发车时间",
-    prop: "order_code",
+    prop: "ticketTime",
+    width: 160,
   },
   {
     label: "车次",
-    prop: "out_num",
+    prop: "trainNumber",
   },
   {
     label: "出发/到达",
-    prop: "invoice_amount",
+    prop: "fromToStationName",
   },
   {
     label: "取票号",
-    prop: "certificate_type",
+    prop: "eOrderNumber",
   },
   {
     label: "证件类型",
-    prop: "license_number",
+    prop: "passportName",
   },
   {
     label: "证件号",
-    prop: "name",
+    prop: "passportNumber",
   },
   {
     label: "出票下单姓名",
-    prop: "ticket_type",
+    prop: "passengerName",
   },
   {
     label: "实际出票姓名",
-    prop: "certificate_type",
+    prop: "realPassengerName",
   },
   {
     label: "坐席",
-    prop: "license_number",
+    prop: "seatName",
   },
   {
     label: "乘客类型",
-    prop: "name",
+    prop: "passengerType",
   },
   {
     label: "申请时间",
-    prop: "ticket_type",
+    prop: "createTime",
   },
-
   {
     label: "证件照",
-    prop: "certificate_type",
+    prop: "identityFirstImage",
+    type: "image",
   },
   {
     label: "票价",
     prop: "",
+    type: "money",
   },
   {
     label: "退款比例(%)",
@@ -104,7 +105,8 @@ export const column = [
   },
   {
     label: "退款金额",
-    prop: "ticket_type",
+    prop: "preRefundPrice",
+    type: "money",
   },
   {
     label: "操作",

@@ -25,10 +25,20 @@
         </span>
       </div>
       <TablePanel :tableData="list" :tableHead="column">
+        <template #fromToStationName="{ scope }">
+          <span>
+            {{ scope.departStation - scope.arrivalStation }}
+          </span>
+        </template>
         <!-- 操作 -->
         <template #action="{}">
           <div class="action-groud">
-            <el-button type="text" @click="customerService"> 客服 </el-button>
+            <el-button type="text" @click="handleAction">
+              <span>审核通过</span>
+            </el-button>
+            <el-button type="text" @click="handleAction">
+              <span>审核失败</span>
+            </el-button>
           </div>
         </template>
       </TablePanel>
@@ -36,8 +46,8 @@
       <Pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :page-size="page.rows"
-        :current-page="page.page"
+        :page-size="page.size"
+        :current-page="page.current"
         :total="total"
       />
     </div>
@@ -56,28 +66,37 @@ export default {
       column, //表格头
       list: [],
       page: {
-        rows: 10,
-        page: 1,
+        current: 1,
+        size: 10,
       },
+      query: {},
       total: 0,
-      rules: [], //过滤规则
+      ticketInfo: {},
+      isLoading: false,
+      isExporting: false,
     };
   },
   computed: {},
   methods: {
     handleSizeChange(val) {
-      this.page.rows = val;
-      this.page.page = 1;
-      // this.getList(true);
+      this.page.size = val;
+      this.page.current = 1;
+      this.getList(true);
     },
     handleCurrentChange(val) {
-      this.page.page = val;
-      // this.getList(false);
+      this.page.current = val;
+      this.getList(false);
     },
     onSearch(data) {
-      console.log(data);
-      this.rules = {};
-      // this.getList(true);
+      // console.log(data);
+      this.getTicketingStatisticsInfo({ agentCode: data?.agentCode || "" });
+      this.query = { ...data };
+      if (data?.ticketDate?.length) {
+        this.query.departStartTime = data.ticketDate[0];
+        this.query.departEndTime = data.ticketDate[1];
+      }
+      delete this.query.ticketDate;
+      this.getList(true);
     },
     onExportExcel() {
       console.log("onExportExcel");
@@ -91,11 +110,20 @@ export default {
     onUnableBuyTickets() {
       console.log("onUnableBuyTickets");
     },
-    customerService() {
-      console.log("客服");
+    handleAction() {
+      console.log("操作");
     },
     async getList(isClear) {
-      if (isClear) this.page.page = 1;
+      if (this.isLoading) return;
+      if (isClear) this.page.current = 1;
+      this.isLoading = true;
+      const [, res] = await this.$http.OrderRefund.GetTicketingRefundCashList({
+        ...this.page,
+        paramData: { ...this.query },
+      });
+      this.isLoading = false;
+      this.list = res?.list || [];
+      this.total = res?.total || 0;
     },
   },
   mounted() {
