@@ -3,24 +3,17 @@
     <div class="content">
       <SearchForm
         isReturnFormData
-        :formData="formData"
+        :formData="queryFormData"
         :isShowExportList="false"
         @on-search="onSearch"
       />
-      <TablePanel :tableData="list" :tableHead="column">
-        <!-- 操作 -->
-        <template #action="{}">
-          <div class="action-groud">
-            <el-button type="text" @click="customerService"> 客服 </el-button>
-          </div>
-        </template>
-      </TablePanel>
+      <TablePanel :tableData="list" :tableHead="column" />
       <!-- 分页 -->
       <Pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :page-size="page.rows"
-        :current-page="page.page"
+        :page-size="page.size"
+        :current-page="page.current"
         :total="total"
       />
     </div>
@@ -28,7 +21,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { column, formData } from "./config";
+
 export default {
   name: "DaySalePointSettlement",
   components: {},
@@ -38,34 +33,55 @@ export default {
       column, //表格头
       list: [],
       page: {
-        rows: 10,
-        page: 1,
+        current: 1,
+        size: 10,
       },
+      query: {},
       total: 0,
-      rules: [], //过滤规则
+      isLoading: false,
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      pointSaleOptions: "agent/pointSaleOptions",
+    }),
+    queryFormData({ formData, pointSaleOptions }) {
+      const data = [...formData];
+      const item = data.find((item) => item.prop === "code");
+      if (item) item.options = pointSaleOptions;
+      return data;
+    },
+  },
   methods: {
     handleSizeChange(val) {
-      this.page.rows = val;
-      this.page.page = 1;
-      // this.getList(true);
+      this.page.size = val;
+      this.page.current = 1;
+      this.getList(true);
     },
     handleCurrentChange(val) {
-      this.page.page = val;
-      // this.getList(false);
+      this.page.current = val;
+      this.getList(false);
     },
     onSearch(data) {
-      console.log(data);
-      this.rules = {};
-      // this.getList(true);
-    },
-    customerService() {
-      console.log("客服");
+      this.query = { ...data };
+      if (data?.settlementDate?.length) {
+        this.query.startTime = data.settlementDate[0];
+        this.query.endTime = data.settlementDate[1];
+      }
+      delete this.query.settlementDate;
+      this.getList(true);
     },
     async getList(isClear) {
-      if (isClear) this.page.page = 1;
+      if (this.isLoading) return;
+      if (isClear) this.page.current = 1;
+      this.isLoading = true;
+      const [, res] = await this.$http.OrderQuery.GetEveryDayClearingList({
+        ...this.page,
+        paramData: { ...this.query },
+      });
+      this.isLoading = false;
+      this.list = res?.list || [];
+      this.total = res?.total || 0;
     },
   },
   mounted() {

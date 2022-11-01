@@ -28,4 +28,14 @@ export default {
       })
     );
   },
+  // 每日代售点结算查询
+  GetEveryDayClearingList(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/query/every-day",
+        params,
+        method: "post",
+      })
+    );
+  },
 };
