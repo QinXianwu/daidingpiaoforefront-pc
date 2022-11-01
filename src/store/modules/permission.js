@@ -63,12 +63,12 @@ const actions = {
     const permissionHash = getPermissionsHash(res, new Map());
     // 配置站点路由
     const orderRoute = asyncRoutes.find((item) => item.path === "/Order");
-    orderRoute.children = data?.siteRoutesChildren || [];
+    if (orderRoute) orderRoute.children = data?.siteRoutesChildren || [];
     // 配置客服路由
     const serviceRoute = asyncRoutes.find(
       (item) => item.path === "/CustomerService"
     );
-    serviceRoute.children = data?.serviceRoutesChildren || [];
+    if (serviceRoute) serviceRoute.children = data?.serviceRoutesChildren || [];
     // 根据权限列表，获取得到可访问的路由
     const accessedRoutes = filterAsyncRoutes(asyncRoutes, permissionHash);
     if (accessedRoutes.length > 0) {

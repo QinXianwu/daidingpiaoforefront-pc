@@ -49,7 +49,7 @@ export const formData = [
     label: "出票类型",
     prop: "handle",
     type: "select",
-    value: CONST.TICKETS_TYPE.THERE_TICKETS,
+    value: "",
     options: CONST.TICKETS_TYPE_OPTIONS(),
     placeholder: "请选择出票类型",
   },

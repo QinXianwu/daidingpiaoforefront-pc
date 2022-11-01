@@ -26,7 +26,7 @@
         <!-- 操作 -->
         <template #action="{}">
           <div class="action-groud">
-            <el-button type="text" @click="customerService"> 客服 </el-button>
+            <el-button type="text" @click="sendMessage"> 发送通知 </el-button>
           </div>
         </template>
       </TablePanel>
@@ -43,8 +43,9 @@
 </template>
 
 <script>
-import { column, formData } from "./config";
 import { mapGetters } from "vuex";
+import { column, formData } from "./config";
+import { DownloadFile } from "@/utils/index";
 import TicketDetails from "./components/TicketDetails.vue";
 export default {
   name: "TicketsSearch",
@@ -61,6 +62,8 @@ export default {
       query: {},
       total: 0,
       ticketInfo: {},
+      isLoading: false,
+      isExporting: false,
     };
   },
   computed: {
@@ -96,14 +99,20 @@ export default {
       this.getList(true);
     },
     // 导出
-    async onExport() {
+    async onExport(data) {
       if (this.isExporting) return false;
+      const query = { ...data };
+      if (data?.ticketDate?.length) {
+        query.departStartTime = data.ticketDate[0];
+        query.departEndTime = data.ticketDate[1];
+      }
+      delete query.ticketDate;
       this.isExporting = true;
-      const res = true;
-      // const [, res] = await this.$http.ExportImport.ExportWinExchange({
-      //   ActCode: this.ActCode,
-      //   ...this.searchQuery,
-      // });
+      const [, res] = await this.$http.ExportImport.ExportRefundTicket({
+        size: -1,
+        current: 1,
+        paramData: { ...query },
+      });
       this.isExporting = false;
       if (res) {
         try {
@@ -112,23 +121,32 @@ export default {
             cancelButtonText: "取消",
             type: "success",
           });
-          console.log("去下载");
-          // 去下载
-          // this.$router.push({ name: "ExportList" });
+          const fileName = this.$options.filters.formatDate(
+            Date.now(),
+            "yyyy-MM-dd hh:mm:ss"
+          );
+          DownloadFile({
+            data: res,
+            FileName: "ticketQuery_" + fileName,
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8 ",
+          });
         } catch (e) {
-          e;
+          // e;
         }
       }
     },
-    customerService() {
-      console.log("客服");
+    sendMessage() {
+      console.log("发送通知");
     },
     async getList(isClear) {
+      if (this.isLoading) return;
       if (isClear) this.page.current = 1;
+      this.isLoading = true;
       const [, res] = await this.$http.OrderQuery.GetTicketingList({
         ...this.page,
         paramData: { ...this.query },
       });
+      this.isLoading = false;
       this.list = res?.list || [];
       this.total = res?.total || 0;
     },
