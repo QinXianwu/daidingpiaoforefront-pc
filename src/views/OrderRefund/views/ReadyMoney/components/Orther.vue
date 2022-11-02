@@ -16,7 +16,7 @@
     <div class="item">
       <span class="label">是否开启声音：</span>
       <ElSwitch
-        v-model="isOpenSound"
+        :vlaue="isAudio"
         @change="onOpenSound"
         active-icon-class="el-icon-message-solid"
         inactive-icon-class="el-icon-close-notification"
@@ -42,22 +42,26 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "Orther",
   components: {},
   data() {
     return {
       isNoSingle: true,
-      isOpenSound: true,
     };
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      isAudio: (state) => state.app.isAudio, // 是否开启声音
+    }),
+  },
   methods: {
     onGrabOrder() {
       console.log("onGrabOrder");
     },
-    onOpenSound() {
-      console.log("onGrabOrder");
+    onOpenSound(val) {
+      this.$store.commit("app/SET_IS_AUDIO", val);
     },
   },
 };
