@@ -62,11 +62,11 @@
 
 <script>
 import { mapState } from "vuex";
+import CONST from "@/constants/index";
+import filters from "@/filters/index";
 import HeadView from "./Head.vue";
 import FooterView from "./Footer.vue";
 import PassengerInfo from "./PassengerInfo.vue";
-import CONST from "@/constants/index";
-import filters from "@/filters/index";
 import SelectNoTicketType from "./SelectNoTicketType.vue";
 export default {
   name: "IssueTicketingDetails",
@@ -190,6 +190,7 @@ export default {
       if (Date.now() > expireTime) return this.$message.error("订单已超时");
       this.handlePassengerInfo();
       if (!this.validationMethodsList?.length) return;
+      // 校验是否全部输入乘客信息
       for (const index in this.validationMethodsList) {
         try {
           const validation = await this.validationMethodsList[index]();
@@ -199,6 +200,26 @@ export default {
           return error;
         }
       }
+      // 校验乘客座号是否存在相同的
+      const seatNoArr = [];
+      let isSeatNoExist = false;
+      this.formTicketList.map((item) => {
+        if (item?.passengerList?.length) {
+          item?.passengerList.forEach((ele) => {
+            if (seatNoArr.find((seatNo) => seatNo === ele?.seatNo)) {
+              try {
+                isSeatNoExist = true;
+                this.$message.error(`乘客座号(${ele?.seatNo})不能相同`);
+                throw new Error(`乘客座号(${ele?.seatNo})不能相同`);
+              } catch (error) {
+                console.error(error);
+                return error;
+              }
+            } else seatNoArr.push(ele.seatNo);
+          });
+        }
+      });
+      if (isSeatNoExist) return;
       if (!this.alipayAccount) return this.$message.error("请选择支付宝账号");
       if (!this.payTradeNumber)
         return this.$message.error("请匹配或手填支付流水号");
