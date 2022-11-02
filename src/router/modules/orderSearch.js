@@ -70,6 +70,7 @@ export default {
       name: "HourSalePointSettlement",
       meta: {
         title: "分时代售点结算查询",
+        PermissionId: PERMISSION_ID.Order_Query_HourSalePoint,
       },
     },
     {

@@ -13,7 +13,7 @@ export default {
   meta: {
     title: "系统设置",
     icon: "setup",
-    PermissionId: PERMISSION_ID.SystemSetUp,
+    PermissionId: PERMISSION_ID.SetUp,
   },
   children: [
     {
@@ -28,7 +28,7 @@ export default {
       name: "PayConfig",
       meta: {
         title: "支付配置",
-        PermissionId: PERMISSION_ID.SystemSetUp_AliPayManagement,
+        PermissionId: PERMISSION_ID.SetUp_AliPayManagement,
       },
     },
     {
@@ -37,7 +37,7 @@ export default {
       name: "SysConfig",
       meta: {
         title: "系统配置",
-        // PermissionId: PERMISSION_ID.SystemSetUp_AliPayManagement,
+        PermissionId: PERMISSION_ID.SetUp_SysConfigManagement,
       },
     },
     {

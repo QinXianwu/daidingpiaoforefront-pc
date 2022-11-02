@@ -44,6 +44,8 @@ router.beforeEach(async (to, from, next) => {
 // 如果不满足权限，则会被隐藏
 Vue.directive("permission", {
   inserted(el, { value: permissionId }) {
+    console.log(hasPermission(permissionId));
+    console.log(el);
     if (!hasPermission(permissionId)) {
       // 隐藏元素
       el.style.display = "none";

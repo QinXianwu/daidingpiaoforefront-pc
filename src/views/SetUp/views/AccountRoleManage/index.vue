@@ -1,16 +1,14 @@
 <template>
-  <div class="view-container">
+  <div class="view-container" v-if="isPermission">
     <el-tabs v-model="activeName">
-      <el-tab-pane
-        label="账号管理"
-        name="UserManagement"
-        v-permission="$PERMISSION_ID.SystemSetUp_AccountManagement"
-      />
-      <el-tab-pane
-        label="角色管理"
-        name="RoleManage"
-        v-permission="$PERMISSION_ID.SystemSetUp_RoleManagement"
-      />
+      <template v-for="(item, index) in tabPaneList">
+        <el-tab-pane
+          :label="item.label"
+          :name="item.name"
+          :key="index"
+          v-if="$hasPermission(item.permission)"
+        />
+      </template>
     </el-tabs>
 
     <div class="content">
@@ -18,23 +16,48 @@
       <RoleManage v-if="activeName === 'RoleManage'" />
     </div>
   </div>
+  <Page401 v-else />
 </template>
 <script>
-import UserManagement from "./components/UserManagement/index.vue";
+import Page401 from "@/views/ErrorPage/401";
 import RoleManage from "./components/RoleManage/index.vue";
+import UserManagement from "./components/UserManagement/index.vue";
 
 export default {
   name: "AccountRoleManage",
   components: {
     UserManagement,
     RoleManage,
+    Page401,
   },
   data() {
     return {
+      isPermission: false,
       activeName: "UserManagement",
+      tabPaneList: [
+        {
+          label: "账号管理",
+          name: "UserManagement",
+          permission: this.$PERMISSION_ID.SetUp_AccountManagement,
+        },
+        {
+          label: "角色管理",
+          name: "RoleManage",
+          permission: this.$PERMISSION_ID.SetUp_RoleManagement,
+        },
+      ],
     };
   },
   methods: {},
+  mounted() {
+    const item = this.tabPaneList.find((item) =>
+      this.$hasPermission(item.permission)
+    );
+    if (item) {
+      this.isPermission = true;
+      this.activeName = item.name;
+    }
+  },
 };
 </script>
 
