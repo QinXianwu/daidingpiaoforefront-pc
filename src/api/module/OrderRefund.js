@@ -17,4 +17,24 @@ export default {
       })
     );
   },
+  // 获取非现金退票列表
+  GetTicketingRefundNoNwCashList(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/refund/non-cash",
+        params,
+        method: "post",
+      })
+    );
+  },
+  // 退票操作
+  TicketingRefundAction(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/refund/non-cash/refund_ticket",
+        params,
+        method: "post",
+      })
+    );
+  },
 };

@@ -7,6 +7,7 @@ const catchAsyncFun = createCatchAsyncFun((error) => {
 });
 
 export default {
+  // 订单查询 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
   // 出票查询&回填信息修改 导出
   ExportTicketing(params) {
     return catchAsyncFun(
@@ -33,4 +34,33 @@ export default {
       })
     );
   },
+  // 订单查询 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+  // 订单退票 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+  // 非现金退票 导出
+  ExportRefundTicketNonCash(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/refund/non-cash/download",
+        params,
+        method: "post",
+        TaskName: "非现金退票导出",
+        isReturnAll: true,
+        responseType: "blob",
+      })
+    );
+  },
+  ExportRefundTicketNonCashPass(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/refund/non-cash/certificates/download",
+        params,
+        method: "post",
+        TaskName: "非现金退票导出证件",
+        isReturnAll: true,
+        responseType: "blob",
+      })
+    );
+  },
+  // 订单退票 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 };

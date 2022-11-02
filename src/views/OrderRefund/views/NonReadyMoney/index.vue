@@ -1,13 +1,17 @@
 <template>
   <div class="view-container">
     <div class="content">
-      <SearchForm isReturnFormData :formData="formData" @on-search="onSearch" />
+      <SearchForm
+        isShowExport
+        isShowExportPass
+        isReturnFormData
+        :formData="formData"
+        @on-search="onSearch"
+        @on-export="onExport"
+        @on-exportPass="onExportPass"
+      />
       <Orther />
       <div class="bulk-operations">
-        <el-button type="primary" @click="onExportExcel">导出Excel</el-button>
-        <el-button type="primary" @click="onExportCredential"
-          >导出证件</el-button
-        >
         <el-button type="primary" @click="onOneImport">一键导入</el-button>
         <span class="ml-10">
           <el-button type="primary" @click="onUnableBuyTickets"
@@ -24,11 +28,18 @@
           </el-tooltip>
         </span>
       </div>
-      <TablePanel :tableData="list" :tableHead="column">
+      <TablePanel
+        ref="TablePanel"
+        :tableData="list"
+        :tableHead="column"
+        :checkbox="false"
+      >
         <!-- 操作 -->
-        <template #action="{}">
+        <template #action="{ scope }">
           <div class="action-groud">
-            <el-button type="text" @click="customerService"> 客服 </el-button>
+            <el-button type="text" @click="handleAction(scope)">
+              <span>退票审核</span>
+            </el-button>
           </div>
         </template>
       </TablePanel>
@@ -36,66 +47,163 @@
       <Pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :page-size="page.rows"
-        :current-page="page.page"
+        :page-size="page.size"
+        :current-page="page.current"
         :total="total"
       />
     </div>
+    <!-- 审核退票 -->
+    <ReviewRefundTicket
+      :editInfo="revireInfo"
+      :show.sync="showReviewRefundTicket"
+      @close="close"
+    />
   </div>
 </template>
 
 <script>
 import { column, formData } from "./config";
 import Orther from "./components/Orther.vue";
+import { DownloadFile } from "@/utils/index";
+import ReviewRefundTicket from "./components/ReviewRefundTicket.vue";
 export default {
   name: "NonReadyMoney",
-  components: { Orther },
+  components: { Orther, ReviewRefundTicket },
   data() {
     return {
       formData,
       column, //表格头
       list: [],
       page: {
-        rows: 10,
-        page: 1,
+        current: 1,
+        size: 10,
       },
+      query: {},
       total: 0,
-      rules: [], //过滤规则
+      ticketInfo: {},
+      isLoading: false,
+      isExporting: false,
+      isExportingPass: false,
+      revireInfo: {},
+      showReviewRefundTicket: false,
     };
   },
   computed: {},
   methods: {
     handleSizeChange(val) {
-      this.page.rows = val;
-      this.page.page = 1;
-      // this.getList(true);
+      this.page.size = val;
+      this.page.current = 1;
+      this.getList(true);
     },
     handleCurrentChange(val) {
-      this.page.page = val;
-      // this.getList(false);
+      this.page.current = val;
+      this.getList(false);
     },
     onSearch(data) {
-      console.log(data);
-      this.rules = {};
-      // this.getList(true);
+      // console.log(data);
+      this.query = { ...data };
+      if (data?.trainDate?.length) {
+        this.query.startTicketTime = data.trainDate[0];
+        this.query.endTicketTime = data.trainDate[1];
+      }
+      delete this.query.trainDate;
+      this.getList(true);
     },
-    onExportExcel() {
-      console.log("onExportExcel");
+    // 导出
+    async onExport(data) {
+      if (this.isExporting) return false;
+      const query = { ...data };
+      if (data?.trainDate?.length) {
+        query.startTicketTime = data.trainDate[0];
+        query.endTicketTime = data.trainDate[1];
+      }
+      delete query.trainDate;
+      this.isExporting = true;
+      const [, res] = await this.$http.ExportImport.ExportRefundTicketNonCash({
+        size: -1,
+        current: 1,
+        paramData: { ...query },
+      });
+      this.isExporting = false;
+      if (!res) return this.$message.error("导出失败");
+      this.onExportDownloadFile({ data: res, fileName: "非现金退票" });
     },
-    onExportCredential() {
-      console.log("onExportCredential");
+    // 导出证件
+    async onExportPass(data) {
+      if (this.isExportingPass) return false;
+      const query = { ...data };
+      if (data?.trainDate?.length) {
+        query.startTicketTime = data.trainDate[0];
+        query.endTicketTime = data.trainDate[1];
+      }
+      delete query.trainDate;
+      this.isExportingPass = true;
+      const [, res] =
+        await this.$http.ExportImport.ExportRefundTicketNonCashPass({
+          size: -1,
+          current: 1,
+          paramData: { ...query },
+        });
+      this.isExportingPass = false;
+      if (!res) return this.$message.error("导出失败");
+      this.onExportDownloadFile({
+        data: res,
+        fileName: "非现金退票_导出证件",
+        fileType: "application/zip;charset=UTF-8",
+      });
     },
+    async onExportDownloadFile({ data, fileName, fileType }) {
+      if (!data) return;
+      try {
+        await this.$confirm("导出成功，是否进行下载？", "导出提示", {
+          confirmButtonText: "去下载",
+          cancelButtonText: "取消",
+          type: "success",
+        });
+        const date = this.$options.filters.formatDate(
+          Date.now(),
+          "yyyy-MM-dd hh:mm:ss"
+        );
+        const dateType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8";
+        DownloadFile({
+          data: data,
+          FileName: `${fileName || ""}_${date}`,
+          type: fileType || dateType,
+        });
+      } catch (e) {
+        // e;
+      }
+    },
+    // 导入
     onOneImport() {
       console.log("onOneImport");
     },
+    // 无法购票
     onUnableBuyTickets() {
       console.log("onUnableBuyTickets");
     },
-    customerService() {
-      console.log("客服");
+    handleAction(item) {
+      if (!item?.id) return this.$message.error("获取该订单ID异常");
+      this.showReviewRefundTicket = true;
+      this.revireInfo = { ...item };
+    },
+    close() {
+      this.showReviewRefundTicket = false;
+      this.revireInfo = {};
     },
     async getList(isClear) {
-      if (isClear) this.page.page = 1;
+      if (this.isLoading) return;
+      if (isClear) this.page.current = 1;
+      this.isLoading = true;
+      const [, res] =
+        await this.$http.OrderRefund.GetTicketingRefundNoNwCashList({
+          ...this.page,
+          paramData: { ...this.query },
+        });
+      this.isLoading = false;
+      this.list = res?.list || [];
+      this.total = res?.total || 0;
     },
   },
   mounted() {

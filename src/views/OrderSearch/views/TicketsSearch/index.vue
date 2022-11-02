@@ -108,31 +108,30 @@ export default {
       }
       delete query.ticketDate;
       this.isExporting = true;
-      const [, res] = await this.$http.ExportImport.ExportRefundTicket({
+      const [, res] = await this.$http.ExportImport.ExportTicketing({
         size: -1,
         current: 1,
         paramData: { ...query },
       });
       this.isExporting = false;
-      if (res) {
-        try {
-          await this.$confirm("导出成功，是否进行下载？", "导出提示", {
-            confirmButtonText: "去下载",
-            cancelButtonText: "取消",
-            type: "success",
-          });
-          const fileName = this.$options.filters.formatDate(
-            Date.now(),
-            "yyyy-MM-dd hh:mm:ss"
-          );
-          DownloadFile({
-            data: res,
-            FileName: "出票_" + fileName,
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8 ",
-          });
-        } catch (e) {
-          // e;
-        }
+      if (!res) return this.$message.error("导出失败");
+      try {
+        await this.$confirm("导出成功，是否进行下载？", "导出提示", {
+          confirmButtonText: "去下载",
+          cancelButtonText: "取消",
+          type: "success",
+        });
+        const fileName = this.$options.filters.formatDate(
+          Date.now(),
+          "yyyy-MM-dd hh:mm:ss"
+        );
+        DownloadFile({
+          data: res,
+          FileName: "出票_" + fileName,
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8 ",
+        });
+      } catch (e) {
+        // e;
       }
     },
     sendMessage() {

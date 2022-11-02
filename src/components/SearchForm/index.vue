@@ -105,6 +105,21 @@
           <!-- 日期 at 日期时间选择 END -->
 
           <!-- 日期时间区间选择 START -->
+          <!-- 选择日期date没有时间 -->
+          <template v-else-if="item.type === 'daterange'">
+            <el-date-picker
+              v-model="item.value"
+              align="right"
+              type="daterange"
+              :placeholder="item.placeholder"
+              :range-separator="item.rangePlaceholder || '至'"
+              :start-placeholder="item.startPlaceholder || '开始日期'"
+              :end-placeholder="item.endPlaceholder || '结束日期'"
+              value-format="yyyy-MM-dd"
+            >
+            </el-date-picker>
+          </template>
+
           <template v-else-if="item.type === 'datetimerange'">
             <el-date-picker
               v-model="item.value"
@@ -230,6 +245,9 @@
           <el-button v-if="isShowExport" size="mini" @click="exportFn">
             导出
           </el-button>
+          <el-button v-if="isShowExportPass" size="mini" @click="exportPassFn">
+            导出证件
+          </el-button>
           <el-button
             v-if="isShowExport && isShowExportList"
             type="text"
@@ -256,6 +274,9 @@
           查询
         </el-button>
         <el-button v-if="isShowExport" @click="exportFn">导出</el-button>
+        <el-button v-if="isShowExportPass" @click="exportPassFn"
+          >导出证件</el-button
+        >
         <el-button
           v-if="isShowExport && isShowExportList"
           type="text"
@@ -303,10 +324,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    // 是否显示导出证件按钮
+    isShowExportPass: {
+      type: Boolean,
+      default: false,
+    },
     // 是否显示查看已导出列表
     isShowExportList: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     // 是否显示重置按钮
     isShowReset: {
@@ -459,6 +485,10 @@ export default {
     // 导出
     exportFn() {
       this.emitTemp("on-export");
+    },
+    // 导出证件
+    exportPassFn() {
+      this.emitTemp("on-exportPass");
     },
     // 重置为默认值
     resetFn() {

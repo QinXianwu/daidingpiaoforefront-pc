@@ -95,25 +95,24 @@ export default {
         paramData: { ...query },
       });
       this.isExporting = false;
-      if (res) {
-        try {
-          await this.$confirm("导出成功，是否进行下载？", "导出提示", {
-            confirmButtonText: "去下载",
-            cancelButtonText: "取消",
-            type: "success",
-          });
-          const fileName = this.$options.filters.formatDate(
-            Date.now(),
-            "yyyy-MM-dd hh:mm:ss"
-          );
-          DownloadFile({
-            data: res,
-            FileName: "退票_" + fileName,
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8 ",
-          });
-        } catch (e) {
-          // e;
-        }
+      if (!res) return this.$message.error("导出失败");
+      try {
+        await this.$confirm("导出成功，是否进行下载？", "导出提示", {
+          confirmButtonText: "去下载",
+          cancelButtonText: "取消",
+          type: "success",
+        });
+        const fileName = this.$options.filters.formatDate(
+          Date.now(),
+          "yyyy-MM-dd hh:mm:ss"
+        );
+        DownloadFile({
+          data: res,
+          FileName: "退票_" + fileName,
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8 ",
+        });
+      } catch (e) {
+        // e;
       }
     },
     async getList(isClear) {

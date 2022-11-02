@@ -11,7 +11,7 @@ export const formData = [
   {
     label: "结算日期",
     prop: "settlementDate",
-    type: "datetimerange",
+    type: "daterange",
     value: [],
   },
 ];

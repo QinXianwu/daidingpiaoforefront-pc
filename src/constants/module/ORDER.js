@@ -90,6 +90,34 @@ export const TICKETS_STATE_OPTIONS = () => [
   },
 ];
 
+// 退票处理类型
+export const REFUND_ACTION_TYPE = {
+  SUCCESS: 1, // 退票成功
+  FAIL: 2, // 退票失败
+  REFUNDED: 3, // 退票退回
+};
+
+export const REFUND_ACTION_TYPE_TEXT = {
+  [REFUND_ACTION_TYPE.SUCCESS]: "退票成功",
+  [REFUND_ACTION_TYPE.FAIL]: "退票失败",
+  [REFUND_ACTION_TYPE.REFUNDED]: "退票退回",
+};
+
+export const REFUND_ACTION_TYPE_OPTIONS = () => [
+  {
+    label: REFUND_ACTION_TYPE_TEXT[REFUND_ACTION_TYPE.SUCCESS],
+    value: REFUND_ACTION_TYPE.SUCCESS,
+  },
+  {
+    label: REFUND_ACTION_TYPE_TEXT[REFUND_ACTION_TYPE.FAIL],
+    value: REFUND_ACTION_TYPE.FAIL,
+  },
+  {
+    label: REFUND_ACTION_TYPE_TEXT[REFUND_ACTION_TYPE.REFUNDED],
+    value: REFUND_ACTION_TYPE.REFUNDED,
+  },
+];
+
 // 退票类型
 export const REFUND_TYPE = {
   READY_MONEY: 1, // 现金

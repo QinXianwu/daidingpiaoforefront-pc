@@ -9,14 +9,14 @@ export const formData = [
   },
   {
     label: "出发站",
-    prop: "arrivalStation",
+    prop: "departStation",
     type: "text",
     value: "",
     placeholder: "请输入出发站",
   },
   {
     label: "到达站",
-    prop: "departStation",
+    prop: "arrivalStation",
     type: "text",
     value: "",
     placeholder: "请输入到达站",
@@ -37,7 +37,7 @@ export const formData = [
   },
   {
     label: "车票日期",
-    prop: "create_time",
+    prop: "trainDate",
     type: "datetimerange",
     value: [],
   },

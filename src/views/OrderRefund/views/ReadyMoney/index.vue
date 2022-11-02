@@ -89,7 +89,6 @@ export default {
     },
     onSearch(data) {
       // console.log(data);
-      this.getTicketingStatisticsInfo({ agentCode: data?.agentCode || "" });
       this.query = { ...data };
       if (data?.ticketDate?.length) {
         this.query.departStartTime = data.ticketDate[0];
