@@ -200,7 +200,7 @@ export default {
           return error;
         }
       }
-      // 校验乘客座号是否存在相同的
+      // 校验乘客座号是否存在重复的
       const seatNoArr = [];
       let isSeatNoExist = false;
       this.formTicketList.map((item) => {
@@ -209,8 +209,8 @@ export default {
             if (seatNoArr.find((seatNo) => seatNo === ele?.seatNo)) {
               try {
                 isSeatNoExist = true;
-                this.$message.error(`乘客座号(${ele?.seatNo})不能相同`);
-                throw new Error(`乘客座号(${ele?.seatNo})不能相同`);
+                this.$message.error(`乘客座号(${ele?.seatNo})不能重复`);
+                throw new Error(`乘客座号(${ele?.seatNo})不能重复`);
               } catch (error) {
                 console.error(error);
                 return error;
