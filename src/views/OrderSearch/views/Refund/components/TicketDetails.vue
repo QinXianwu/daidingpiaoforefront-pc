@@ -31,12 +31,8 @@ export default {
       // console.log(ticketInfo);
       return [
         {
-          label: "订单数",
-          value: ticketInfo?.orderCount || 0,
-        },
-        {
-          label: "票数",
-          value: ticketInfo?.ticketCount || 0,
+          label: "退票款",
+          value: ticketInfo?.refundTicketAmount || 0,
         },
         {
           label: "票款",

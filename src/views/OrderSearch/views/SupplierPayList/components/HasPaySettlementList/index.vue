@@ -2,12 +2,7 @@
   <div class="view-container">
     <div class="title">已打款结算记录</div>
     <div class="content">
-      <SearchForm
-        isReturnFormData
-        :formData="formData"
-        :isShowExportList="false"
-        @on-search="onSearch"
-      />
+      <SearchForm isReturnFormData :formData="formData" @on-search="onSearch" />
       <TablePanel :tableData="list" :tableHead="column">
         <!-- 操作 -->
         <template #action="{}">

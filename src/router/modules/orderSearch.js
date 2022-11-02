@@ -5,7 +5,7 @@ import Refund from "@/views/OrderSearch/views/Refund/index.vue";
 import RefundDetails from "@/views/OrderSearch/views/RefundDetails/index.vue";
 import ReimbursementVoucher from "@/views/OrderSearch/views/ReimbursementVoucher/index.vue";
 import DaySalePointSettlement from "@/views/OrderSearch/views/DaySalePointSettlement/index.vue";
-import TimeSharingSalePointSettlement from "@/views/OrderSearch/views/TimeSharingSalePointSettlement/index.vue";
+import HourSalePointSettlement from "@/views/OrderSearch/views/HourSalePointSettlement/index.vue";
 import SupplierPayList from "@/views/OrderSearch/views/SupplierPayList/index.vue";
 import BackCommissionSettlement from "@/views/OrderSearch/views/BackCommissionSettlement/index.vue";
 import AbnormalSettlement from "@/views/OrderSearch/views/AbnormalSettlement/index.vue";
@@ -65,9 +65,9 @@ export default {
       },
     },
     {
-      path: "TimeSharingSalePointSettlement",
-      component: TimeSharingSalePointSettlement,
-      name: "TimeSharingSalePointSettlement",
+      path: "HourSalePointSettlement",
+      component: HourSalePointSettlement,
+      name: "HourSalePointSettlement",
       meta: {
         title: "分时代售点结算查询",
       },

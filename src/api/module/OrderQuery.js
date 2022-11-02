@@ -58,4 +58,14 @@ export default {
       })
     );
   },
+  // 分时代收点结算查询
+  GetEveryHourClearingList(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/query/every-hour/list",
+        params,
+        method: "post",
+      })
+    );
+  },
 };

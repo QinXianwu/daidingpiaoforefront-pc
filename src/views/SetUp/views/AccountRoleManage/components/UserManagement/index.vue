@@ -1,12 +1,7 @@
 <template>
   <div class="UserManagement">
     <div class="content">
-      <SearchForm
-        isReturnFormData
-        :formData="formData"
-        :isShowExportList="false"
-        @on-search="onSearch"
-      />
+      <SearchForm isReturnFormData :formData="formData" @on-search="onSearch" />
       <div class="action">
         <el-button type="primary" @click="handleAdd"> 新增账号 </el-button>
       </div>

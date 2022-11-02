@@ -5,7 +5,6 @@
         isShowExport
         isReturnFormData
         :formData="queryFormData"
-        :isShowExportList="false"
         @on-search="onSearch"
         @on-export="onExport"
       />

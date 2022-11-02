@@ -21,7 +21,7 @@ export const formData = [
     prop: "ticketStatus",
     type: "select",
     value: "",
-    options: CONST.TICKETS_STATE_OPTIONS(),
+    options: "",
     placeholder: "请选择车票状态",
   },
   {
@@ -35,7 +35,7 @@ export const formData = [
     label: "退票类型",
     prop: "refundTicketType",
     type: "select",
-    value: CONST.REFUND_TYPE.READY_MONEY,
+    value: "",
     options: CONST.REFUND_TYPE_OPTIONS(),
     placeholder: "请选择退票类型",
   },

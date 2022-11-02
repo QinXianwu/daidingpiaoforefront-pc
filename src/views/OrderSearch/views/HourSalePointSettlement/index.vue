@@ -74,7 +74,7 @@ export default {
       if (this.isLoading) return;
       if (isClear) this.page.current = 1;
       this.isLoading = true;
-      const [, res] = await this.$http.OrderQuery.GetEveryDayClearingList({
+      const [, res] = await this.$http.OrderQuery.GetEveryHourClearingList({
         ...this.page,
         paramData: { ...this.query },
       });
