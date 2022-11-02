@@ -47,7 +47,6 @@ export default {
       },
       query: {},
       total: 0,
-      rules: [], //过滤规则
     };
   },
   computed: {},
@@ -102,8 +101,7 @@ export default {
         paramData: { ...this.query },
       };
       const [, res] = await this.$http.PayConfig.GetAlipayAccountList(query);
-      if (!res?.list?.length) return;
-      this.list = res.list;
+      this.list = res?.list?.length ? res.list : [];
       this.total = res.total;
     },
   },
