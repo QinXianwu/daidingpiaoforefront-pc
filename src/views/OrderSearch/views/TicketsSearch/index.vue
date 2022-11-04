@@ -22,6 +22,9 @@
         <template #ticketCount="{ scope }">
           <span class="text-html">{{ scope.ticketCount }}</span>
         </template>
+        <template #orderDate="{ scope }">
+          <span class="text-html">{{ scope.handleTime }}</span>
+        </template>
         <!-- 操作 -->
         <template #action="{}">
           <div class="action-groud">

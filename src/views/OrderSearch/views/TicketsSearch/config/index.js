@@ -108,12 +108,13 @@ export const column = [
   },
   {
     label: "订单时间",
-    prop: "handleTime",
+    prop: "orderDate",
+    type: "custom",
     width: 160,
   },
   {
     label: "处理账号名",
-    prop: "handle_user_account",
+    prop: "handleUserAccount",
   },
   {
     label: "是否有票",
