@@ -54,8 +54,10 @@
               :ticketingList="scope.ticketList"
               v-if="scope.ticketList && scope.ticketList.length"
               @success="
-                getStatistics();
-                getList(true);
+                (val) => {
+                  getStatistics();
+                  onCountdownOver(val);
+                }
               "
             />
             <div class="nothing-ticketing" v-else>暂无数据</div>

@@ -247,7 +247,7 @@ export default {
         bodyInfo: query,
       });
       this.$message[res ? "success" : "error"](`操作${res ? "成功" : "失败"}`);
-      if (res) this.$emit("success");
+      if (res) this.$emit("success", this.orderInfo);
     },
   },
   mounted() {

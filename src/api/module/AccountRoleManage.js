@@ -147,4 +147,14 @@ export default {
       })
     );
   },
+  // 获取用户管理 省份列表
+  GetProvinceList(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/sys/user/province/list",
+        params,
+        method: "post",
+      })
+    );
+  },
 };
