@@ -2,6 +2,7 @@ import Vue from "vue";
 import "echarts/lib/component/markPoint";
 import "echarts/lib/component/markLine";
 import * as echarts from "echarts/core";
+// import * as echarts from "echarts";
 
 // 按需引入
 import {
