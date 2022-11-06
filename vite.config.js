@@ -81,6 +81,10 @@ export default defineConfig(({ mode }) => {
           drop_debugger: true,
         },
       }, //去除 console debugger
+      commonjsOptions: {
+        include: /node_modules|libs/,
+        defaultIsModuleExports: false,
+      },
     },
     // 本地运行配置，及反向代理配置
     server: {
