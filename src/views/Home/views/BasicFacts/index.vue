@@ -1,32 +1,31 @@
 <template>
   <div class="view-container">
     <div>home</div>
-    <!-- <EchartLine
+    <EchartLine
       ref="EchartLine"
       chartTitle="折线图"
       :chartsData="chartsData"
       :chartsXAxisData="chartsXAxisData"
-    /> -->
+    />
   </div>
 </template>
 
 <script>
-// import EchartLine from "components/EchartLine";
+import EchartLine from "components/EchartLine";
 export default {
-  // components: { EchartLine },
+  components: { EchartLine },
   data() {
     return {
       chartsData: [
         {
           data: [80, 550, 100, 256, 720, 499],
           name: "测试一",
-          showXMarkPoint: false, // 组件默认 true
-          showYMarkLine: false, // 组件默认 true
-          isSmooth: false, // 组件默认 false
+          isSmooth: true,
         },
         {
           data: [150, 240, 200, 856, 800, 599],
           name: "测试二",
+          isSmooth: true,
         },
       ],
       // x轴数据
