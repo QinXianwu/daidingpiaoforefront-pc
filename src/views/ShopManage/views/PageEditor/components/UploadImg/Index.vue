@@ -20,7 +20,7 @@ export default {
   name: "UploadImg",
   props: {
     img: {
-      type: String,
+      type: [String, Object],
       default() {
         return "";
       },

@@ -1,5 +1,5 @@
 import axios from "axios";
-import ELEMENT from "element-ui";
+import * as ELEMENT from "element-ui";
 const { Loading, Message } = ELEMENT;
 import CONST from "@/constants/index";
 import store from "@/store/index";

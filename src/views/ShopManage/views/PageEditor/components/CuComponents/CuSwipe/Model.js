@@ -1,7 +1,7 @@
 import { NAVIGATOR_TYPE } from "@@/components/CuComponents/utils/constant.js";
 import Com from "./Index.vue";
 export default {
-  cName: Com.name,
+  cName: Com?.name,
   label: "轮播图",
   list: [
     {

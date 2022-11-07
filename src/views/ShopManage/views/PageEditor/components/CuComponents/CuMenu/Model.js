@@ -1,16 +1,17 @@
 import { NAVIGATOR_TYPE } from "@@/components/CuComponents/utils/constant.js";
 import Com from "./Index.vue";
+console.log(Com);
 export default {
   cName: Com.name,
   label: "图文导航",
   tips: "",
-  color: Com.props.color.default,
-  paddingTB: Com.props.paddingTB.default,
-  paddingLR: Com.props.paddingLR.default,
-  backgroundImage: Com.props.backgroundImage.default,
-  height: Com.props.height.default,
-  itemWidth: Com.props.itemWidth.default,
-  itemHeight: Com.props.itemHeight.default,
+  color: Com.props?.color.default,
+  paddingTB: Com.props?.paddingTB.default,
+  paddingLR: Com.props?.paddingLR.default,
+  backgroundImage: Com?.props.backgroundImage.default,
+  height: Com?.props.height.default,
+  itemWidth: Com?.props.itemWidth.default,
+  itemHeight: Com?.props.itemHeight.default,
   list: [
     {
       image: "",

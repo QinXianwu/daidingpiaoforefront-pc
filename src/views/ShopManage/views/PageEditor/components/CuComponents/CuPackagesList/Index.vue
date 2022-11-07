@@ -70,9 +70,7 @@ export default {
     // 背景图片
     backgroundImage: {
       type: Object,
-      default() {
-        return {};
-      },
+      default: () => ({}),
     },
     // 整个组件的高度
     height: {

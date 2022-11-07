@@ -1,5 +1,6 @@
 import { NAVIGATOR_TYPE } from "@@/components/CuComponents/utils/constant.js";
 import Com from "./Index.vue";
+console.log(Com, Com.props.backgroundImage === "function");
 export default {
   cName: Com.name,
   label: "列表(横)",
@@ -14,7 +15,10 @@ export default {
   borderWidth: Com.props.borderWidth.default,
   boxPaddingB: Com.props.boxPaddingB.default,
   boxPaddingL: Com.props.boxPaddingL.default,
-  backgroundImage: Com.props.backgroundImage.default,
+  backgroundImage:
+    typeof Com.props.backgroundImage.default === "function"
+      ? Com.props.backgroundImage.default()
+      : Com.props.backgroundImage.default,
   list: [
     {
       image: "",

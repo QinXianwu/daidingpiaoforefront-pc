@@ -4,7 +4,7 @@
     <div class="live_block-item-main">
       <!-- 主图 -->
       <div class="live_block-item-main-left">
-        <MTImage
+        <ImageView
           class="live_block-item-main-main_image"
           :src="item.FeedsImg"
           isSplicingDemainUrl
@@ -25,7 +25,7 @@
           {{ liveTimeText }}
         </div>
         <div class="live_block-item-head">
-          <MTImage
+          <ImageView
             v-if="item.AnchorHead"
             class="live_block-item-head-image"
             :src="item.AnchorHead"
@@ -37,7 +37,7 @@
         <div class="live_block-item-sub">
           <template v-for="(good, i) in item.Goods">
             <div class="live_block-item-sub-image" :key="i" v-if="i < 3">
-              <MTImage
+              <ImageView
                 :class="['sub_image']"
                 :src="good.Cover_Img"
                 isSplicingDemainUrl

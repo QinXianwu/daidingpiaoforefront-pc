@@ -68,7 +68,7 @@
         <div class="edit-upload-content">
           <UploadImg
             @handleImgChange="OnHandleBgImgChange"
-            :img="formModel.backgroundImage"
+            :img="formModel.backgroundImage || ''"
           />
         </div>
       </ElFormItem>

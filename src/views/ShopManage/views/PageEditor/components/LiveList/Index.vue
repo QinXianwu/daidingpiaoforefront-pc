@@ -20,7 +20,7 @@
             <i v-show="!IsChecked(item)" class="empty-check"></i>
           </div>
           <div class="edit-goodlist-list-good">
-            <MTImage class="itemImg" :src="item.CoverImg" alt="" srcset="" />
+            <ImageView class="itemImg" :src="item.CoverImg" alt="" srcset="" />
             <div class="edit-goodlist-list-good_right">
               <div>{{ item.LiveRoomName }}</div>
               <div>ID：{{ item.LiveRoomId }}</div>

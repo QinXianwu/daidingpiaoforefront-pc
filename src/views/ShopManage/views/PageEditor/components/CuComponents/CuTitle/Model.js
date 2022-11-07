@@ -1,6 +1,6 @@
 import Com from "./Index.vue";
 export default {
-  cName: Com.name,
+  cName: Com?.name,
   label: "文本标题",
   title: "文本标题",
   styleObj: {

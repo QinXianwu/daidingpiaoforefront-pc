@@ -4,7 +4,7 @@
     <template v-if="teplateType === 1">
       <div class="effect_box_1">
         <div v-for="(item, index) in newList" :key="index">
-          <MTImage
+          <ImageView
             class="effect_box_img"
             :src="item.image | imgFormat"
             :style="imgStyle"
@@ -15,7 +15,7 @@
     <template v-if="teplateType === 2">
       <div class="effect_box_2">
         <div v-for="(item, index) in newList" :key="index">
-          <MTImage
+          <ImageView
             class="effect_box_img"
             :src="item.image | imgFormat"
             :style="imgStyle"
@@ -26,19 +26,19 @@
     <template v-if="teplateType === 3">
       <div class="effect_box_3">
         <div class="effect_box_3-maxBox">
-          <MTImage
+          <ImageView
             class="effect_box_img"
             :src="newList[0].image | imgFormat"
             :style="imgStyle"
           />
         </div>
         <div class="effect_box_3-minBox">
-          <MTImage
+          <ImageView
             class="effect_box_img"
             :src="newList[1].image | imgFormat"
             :style="imgStyle"
           />
-          <MTImage
+          <ImageView
             class="effect_box_img"
             :src="newList[2].image | imgFormat"
             :style="imgStyle"
@@ -49,7 +49,7 @@
     <template v-if="teplateType === 4 || teplateType === 5">
       <div class="effect_box_4">
         <div v-for="(item, index) in newList" :key="index">
-          <MTImage
+          <ImageView
             class="effect_box_img"
             :src="item.image | imgFormat"
             :style="imgStyle"

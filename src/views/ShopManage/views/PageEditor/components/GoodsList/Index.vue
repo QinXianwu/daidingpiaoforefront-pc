@@ -16,7 +16,7 @@
             <i v-show="!IsChecked(item)" class="empty-check"></i>
           </div>
           <div class="edit-goodlist-list-good">
-            <MTImage
+            <ImageView
               class="itemImg"
               :src="item.image | formatImage"
               alt=""
