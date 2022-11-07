@@ -184,7 +184,6 @@ export default {
       console.log("onUnableBuyTickets");
     },
     handleAction(item) {
-      if (!item?.id) return this.$message.error("获取该订单ID异常");
       this.showReviewRefundTicket = true;
       this.revireInfo = { ...item };
     },

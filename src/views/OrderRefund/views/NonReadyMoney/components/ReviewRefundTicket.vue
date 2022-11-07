@@ -25,11 +25,18 @@
         prop="failReason"
         v-if="formData.refundResult !== $CONST.REFUND_ACTION_TYPE.SUCCESS"
       >
-        <el-input
+        <el-select
           class="input-medium"
           v-model="formData.failReason"
           placeholder="请输入退票失败原因"
-        />
+        >
+          <el-option
+            v-for="item in FAIL_REASON_TYPE_OPTIONS"
+            :key="item.label"
+            :label="item.label"
+            :value="item.label"
+          />
+        </el-select>
       </el-form-item>
     </el-form>
     <span slot="footer">
@@ -41,6 +48,26 @@
   </el-dialog>
 </template>
 <script>
+const FAIL_REASON_TYPE_OPTIONS = [
+  {
+    label: "查无信息",
+  },
+  {
+    label: "已退票",
+  },
+  {
+    label: "已改签",
+  },
+  {
+    label: "已取出车票",
+  },
+  {
+    label: "车次已停运",
+  },
+  {
+    label: "其他",
+  },
+];
 import dialogMixin from "@/mixins/dialogMixin";
 export default {
   name: "UpdatePayAccountDiaog",
@@ -72,6 +99,7 @@ export default {
   },
   data() {
     return {
+      FAIL_REASON_TYPE_OPTIONS,
       formData: {
         failReason: "",
         refundPrice: 0, // 后端规定 非现金为0
