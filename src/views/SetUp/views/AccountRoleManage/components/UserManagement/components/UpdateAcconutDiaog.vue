@@ -126,7 +126,7 @@ export default {
         }
         if (this.formData?.receiveOrderProvince) {
           const arr = JSON.parse(this.formData?.receiveOrderProvince || "`[]`");
-          this.formData.receiveOrderProvince = arr?.length ? arr : "";
+          this.formData.receiveOrderProvince = arr?.length ? arr : ["全部"];
         }
       }
     },
@@ -200,6 +200,10 @@ export default {
         ? [Number(this.formData.pointSaleId)]
         : [];
       const receiveOrderProvince = this.formData.receiveOrderProvince;
+      const allIndex = receiveOrderProvince.findIndex(
+        (item) => item === "全部"
+      );
+      if (allIndex >= 0) receiveOrderProvince.splice(allIndex, 1);
       query.pointSaleId = JSON.stringify(pointSaleId);
       query.receiveOrderProvince = JSON.stringify(receiveOrderProvince);
       if (pid) query.id = pid;
