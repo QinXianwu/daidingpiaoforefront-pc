@@ -114,6 +114,7 @@ export default {
           password: "",
           eOrderNumberPrefix: "",
           parentAccount: this.editInfo?.parentAccount || "",
+          receiveOrderProvince: ["全部"],
         };
       } else {
         // 修改

@@ -29,11 +29,16 @@ const getters = {
   // 省份options
   provinceOptions(state) {
     if (!state.provinceList?.length) return [];
-    return state.provinceList.map((item) => ({
+    const options = state.provinceList.map((item) => ({
       label: item.province,
       value: item.id,
       // children: [],
     }));
+    options.unshift({
+      label: "全部",
+      value: "0",
+    });
+    return options;
   },
 };
 
