@@ -74,9 +74,6 @@ export default defineConfig(({ mode }) => {
           chunkFileNames: "js/[name]-[hash].js",
           entryFileNames: "js/[name]-[hash].js",
           assetFileNames: "[ext]/[name]-[hash].[ext]",
-          manualChunks: {
-            echarts: ["echarts"],
-          },
         },
       },
       terserOptions: {

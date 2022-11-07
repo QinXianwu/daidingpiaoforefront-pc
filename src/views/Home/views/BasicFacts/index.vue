@@ -1,19 +1,19 @@
 <template>
   <div class="view-container">
     <div>home</div>
-    <EchartLine
+    <!-- <EchartLine
       ref="EchartLine"
       chartTitle="折线图"
       :chartsData="chartsData"
       :chartsXAxisData="chartsXAxisData"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
-import EchartLine from "components/EchartLine";
+// import EchartLine from "components/EchartLine";
 export default {
-  components: { EchartLine },
+  // components: { EchartLine },
   data() {
     return {
       chartsData: [
