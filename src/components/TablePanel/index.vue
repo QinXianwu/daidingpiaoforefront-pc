@@ -153,8 +153,7 @@ export default {
   props: {
     defaultSort: {
       type: Object,
-      // eslint-disable-next-line no-empty-function
-      default: () => {},
+      default: () => ({}),
     },
     border: {
       type: Boolean,
