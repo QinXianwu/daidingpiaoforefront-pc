@@ -1,6 +1,6 @@
 // 时间相关过滤器
 export default {
-  // 格式化日期  "yyyy-MM-dd" "yyyy-MM-dd hh:mm:ss"
+  // 格式化日期  "yyyy-MM-dd" "yyyy-MM-dd HH:mm:ss"
   formatDate(time, fmt = "yyyy-MM-dd") {
     if (typeof time === "string") time = time.replace(/-/g, "/"); // 处理ios浏览器时间显示
     const date = new Date(time);
