@@ -15,7 +15,7 @@
         <el-button type="primary" @click="onOneImport">一键导入</el-button>
         <span class="ml-10">
           <el-button type="primary" @click="onUnableBuyTickets"
-            >无法购票</el-button
+            >无法退票</el-button
           >
           <el-tooltip
             effect="dark"
