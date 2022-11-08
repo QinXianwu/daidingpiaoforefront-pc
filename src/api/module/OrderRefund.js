@@ -34,6 +34,18 @@ export default {
         url: apiPrefix + "/refund/non-cash/refund_ticket",
         params,
         method: "post",
+        isReturnAll: true,
+      })
+    );
+  },
+  // 退票操作 批量
+  TicketingRefundBatchAction(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/refund/non-cash/refund_ticket/not",
+        params,
+        method: "post",
+        isReturnAll: true,
       })
     );
   },

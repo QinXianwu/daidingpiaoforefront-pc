@@ -13,7 +13,7 @@
           placeholder="请选择退票类型"
         >
           <el-option
-            v-for="item in $CONST.REFUND_ACTION_TYPE_OPTIONS()"
+            v-for="item in refundTypeOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -77,17 +77,31 @@ export default {
       type: [Object, String],
       default: () => ({}),
     },
+    // 批量ids
+    ids: {
+      type: Array,
+      default: () => [],
+    },
+    // 是否批量
+    isBatch: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     visible(val) {
-      if (val && this.editInfo?.id) {
+      if (val && (this.isBatch || this.editInfo?.id)) {
         this.formData = {
-          id: this.editInfo.id,
-          agentCode: this.editInfo?.refundAgentCode || "",
           failReason: "",
           refundPrice: 0, // 后端规定 非现金为0
           refundResult: "",
         };
+        if (this.isBatch) {
+          this.formData.ids = this.ids;
+        } else {
+          this.formData.id = this.editInfo.id;
+          this.formData.agentCode = this.editInfo?.refundAgentCode || "";
+        }
       } else {
         this.formData = {
           failReason: "",
@@ -124,6 +138,17 @@ export default {
       },
     };
   },
+  computed: {
+    refundTypeOptions({ isBatch }) {
+      const options = this.$CONST.REFUND_ACTION_TYPE_OPTIONS();
+      if (!isBatch) return options;
+      const index = options.findIndex(
+        (item) => item.value === this.$CONST.REFUND_ACTION_TYPE.SUCCESS
+      );
+      if (index >= 0) options.splice(index, 1);
+      return options;
+    },
+  },
   mounted() {
     //
   },
@@ -140,14 +165,18 @@ export default {
         return;
       }
       this.isLoading = true;
-      const [, res] = await this.$http.OrderRefund.TicketingRefundAction({
+      const [, res] = await this.$http.OrderRefund[
+        this.isBatch ? "TicketingRefundBatchAction" : "TicketingRefundAction"
+      ]({
         ...this.formData,
       });
+      const isResult = Number(res?.code) === this.AJAX_CODE.SUCCESS;
       this.isLoading = false;
-      this.$message[res ? "success" : "error"](
-        res?.message || `审核${res ? "成功" : "失败"}`
+      this.$message[isResult ? "success" : "error"](
+        res?.message ||
+          `${this.isBatch ? "批量操作" : "审核"}${isResult ? "成功" : "失败"}`
       );
-      if (res) this.handleClose(true);
+      if (isResult) this.handleClose(true);
     },
   },
 };

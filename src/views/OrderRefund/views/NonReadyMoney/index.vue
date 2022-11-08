@@ -14,7 +14,7 @@
       <div class="bulk-operations">
         <el-button type="primary" @click="onOneImport">一键导入</el-button>
         <span class="ml-10">
-          <el-button type="primary" @click="onUnableBuyTickets"
+          <el-button type="primary" @click="onUnableBeTickets"
             >无法退票</el-button
           >
           <el-tooltip
@@ -32,8 +32,27 @@
         ref="TablePanel"
         :tableData="list"
         :tableHead="column"
-        :checkbox="false"
+        :checkbox="true"
+        :isShowTopCheck="false"
+        @selection-change="handleSelectionChange"
       >
+        <template #identityImage="{ scope }">
+          <div class="flex flex-center flex-wrap">
+            <ImageView
+              v-for="(img, i) in [
+                scope.identityFirstImage || '',
+                scope.identitySecondImage || '',
+              ]"
+              :key="i"
+              :src="img"
+              class="table-img img_many"
+              :srcList="[
+                scope.identityFirstImage || '',
+                scope.identitySecondImage || '',
+              ]"
+            />
+          </div>
+        </template>
         <!-- 操作 -->
         <template #action="{ scope }">
           <div class="action-groud">
@@ -54,8 +73,10 @@
     </div>
     <!-- 审核退票 -->
     <ReviewRefundTicket
+      :isBatch="isBatch"
       :editInfo="revireInfo"
       :show.sync="showReviewRefundTicket"
+      :ids="Object.keys({ ...selectDataMap })"
       @close="close"
     />
   </div>
@@ -86,6 +107,8 @@ export default {
       isExportingPass: false,
       revireInfo: {},
       showReviewRefundTicket: false,
+      selectDataMap: {},
+      isBatch: false,
     };
   },
   computed: {},
@@ -108,6 +131,48 @@ export default {
       }
       delete this.query.trainDate;
       this.getList(true);
+    },
+    initSelection() {
+      if (!this.list?.length) return;
+      this.list.forEach((item) => {
+        if (this.selectDataMap[item?.id]) {
+          this.$nextTick(() => {
+            this.$refs.TablePanel.setSelection(item, true);
+          });
+        }
+      });
+    },
+    handleSelectionChange(val) {
+      this.list.forEach((item) => {
+        // 存在于当前页以及map 但不存在 val -> 去掉
+        const index = val.findIndex((vItem) => vItem?.id === item.id);
+        if (this.selectDataMap[item.id] && index < 0)
+          delete this.selectDataMap[item.id];
+      });
+      val.forEach((item) => (this.selectDataMap[item.id] = { ...item }));
+    },
+    handleAction(item) {
+      this.isBatch = false;
+      this.showReviewRefundTicket = true;
+      this.revireInfo = { ...item };
+    },
+    close() {
+      this.showReviewRefundTicket = false;
+      this.revireInfo = {};
+    },
+    async getList(isClear) {
+      if (this.isLoading) return;
+      if (isClear) this.page.current = 1;
+      this.isLoading = true;
+      const [, res] =
+        await this.$http.OrderRefund.GetTicketingRefundNoNwCashList({
+          ...this.page,
+          paramData: { ...this.query },
+        });
+      this.isLoading = false;
+      this.list = res?.list || [];
+      this.total = res?.total || 0;
+      this.initSelection();
     },
     // 导出
     async onExport(data) {
@@ -179,30 +244,12 @@ export default {
     onOneImport() {
       console.log("onOneImport");
     },
-    // 无法购票
-    onUnableBuyTickets() {
-      console.log("onUnableBuyTickets");
-    },
-    handleAction(item) {
+    // 无法退票
+    onUnableBeTickets() {
+      if (!Object.keys({ ...this.selectDataMap })?.length)
+        return this.$message.error("请选择车票后再试");
+      this.isBatch = true;
       this.showReviewRefundTicket = true;
-      this.revireInfo = { ...item };
-    },
-    close() {
-      this.showReviewRefundTicket = false;
-      this.revireInfo = {};
-    },
-    async getList(isClear) {
-      if (this.isLoading) return;
-      if (isClear) this.page.current = 1;
-      this.isLoading = true;
-      const [, res] =
-        await this.$http.OrderRefund.GetTicketingRefundNoNwCashList({
-          ...this.page,
-          paramData: { ...this.query },
-        });
-      this.isLoading = false;
-      this.list = res?.list || [];
-      this.total = res?.total || 0;
     },
   },
   mounted() {

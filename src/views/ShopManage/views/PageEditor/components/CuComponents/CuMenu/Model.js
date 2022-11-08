@@ -1,6 +1,5 @@
 import { NAVIGATOR_TYPE } from "@@/components/CuComponents/utils/constant.js";
 import Com from "./Index.vue";
-console.log(Com);
 export default {
   cName: Com.name,
   label: "图文导航",

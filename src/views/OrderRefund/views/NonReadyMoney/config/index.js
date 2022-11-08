@@ -91,8 +91,9 @@ export const column = [
   },
   {
     label: "证件照",
-    prop: "identityFirstImage",
-    type: "image",
+    prop: "identityImage",
+    // type: "image",
+    type: "custom",
   },
   {
     label: "票价",

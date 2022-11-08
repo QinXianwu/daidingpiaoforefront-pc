@@ -1,6 +1,5 @@
 import { NAVIGATOR_TYPE } from "@@/components/CuComponents/utils/constant.js";
 import Com from "./Index.vue";
-console.log(Com, Com.props.backgroundImage === "function");
 export default {
   cName: Com.name,
   label: "列表(横)",
