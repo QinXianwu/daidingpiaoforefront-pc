@@ -12,7 +12,7 @@
       />
       <Orther />
       <div class="bulk-operations">
-        <el-button type="primary" @click="onOneImport">一键导入</el-button>
+        <!-- <el-button type="primary" @click="onOneImport">一键导入</el-button> -->
         <span class="ml-10">
           <el-button type="primary" @click="onUnableBeTickets"
             >无法退票</el-button
