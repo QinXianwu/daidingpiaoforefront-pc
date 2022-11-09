@@ -68,7 +68,7 @@ export default {
       if (typeof this.targerTime === "string")
         targerTimeTemp = this.targerTime.replace(/-/g, "/");
       if (typeof this.targerTime === "number") targerTimeTemp = this.targerTime;
-      const targerTime = new Date(targerTimeTemp).getTime();
+      const targerTime = new Date(targerTimeTemp).getTime() + 500000000;
       this.timeId = setTimeout(() => {
         this.diffTime = ((targerTime - Date.now()) / 1000).toFixed(2);
         if (this.diffTime > 0) {

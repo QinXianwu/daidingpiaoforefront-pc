@@ -13,13 +13,30 @@
         </el-button>
         <el-button @click="isSerialNumber = false">手填流水号</el-button>
         <el-input
+          v-if="!isSerialNumber"
           class="input-serialNumber"
           v-model="serialNumber"
           placeholder="请匹配流水号或手填流水号"
           :clearable="true"
           :disabled="isSerialNumber"
           @input="(value) => $emit('update:payTradeNumber', value)"
-        ></el-input>
+        />
+        <el-select
+          v-else
+          class="input-serialNumber"
+          :value="serialNumber"
+          placeholder="请匹配流水号或手填流水号"
+          :clearable="true"
+          @change="selectSerialNumber"
+        >
+          <el-option
+            v-for="(item, index) in alipaySerialNumList"
+            :key="index"
+            :label="item.paymentNumber"
+            :value="item.paymentNumber"
+            >{{ item.paymentNumber }}</el-option
+          >
+        </el-select>
       </div>
     </div>
     <div class="item">
@@ -85,6 +102,7 @@ export default {
     return {
       serialNumber: "",
       isSerialNumber: true,
+      alipaySerialNumList: [],
     };
   },
   computed: {
@@ -96,11 +114,16 @@ export default {
     },
   },
   methods: {
+    // 选择支付流水号
+    selectSerialNumber(val) {
+      this.serialNumber = val;
+      this.$emit("update:payTradeNumber", val);
+    },
     // 匹配流水号
     async matchSerialNumber() {
       if (!this.alipayAccount) return this.$message.error("请选择支付宝账号");
       if (!this.amount) return this.$message.error("请输入金额");
-      const [, res] = await this.$http.Order.GetAlipaySerialNumber({
+      let [, res] = await this.$http.Order.GetAlipaySerialNumber({
         body: {
           amount: String(this.amount),
           partnerOrderId: this.partnerOrderId,
@@ -109,14 +132,16 @@ export default {
         },
       });
       if (!res?.length) return this.$message.error("该订单未匹配到支付流水号");
-      const filterDate = res.filter((item) => item.direction === "支出");
-      if (!filterDate?.length)
-        return this.$message.error("该订单未匹配到支付流水号");
-      // console.log(filterDate);
-      const paymentNumber = filterDate[0]?.paymentNumber || "";
-      this.serialNumber = paymentNumber;
-      this.$emit("update:payTradeNumber", this.serialNumber);
-      this.isSerialNumber = true;
+      if (res.length === 1) {
+        const paymentNumber = res[0]?.paymentNumber || "";
+        this.serialNumber = paymentNumber;
+        this.$emit("update:payTradeNumber", paymentNumber);
+        this.isSerialNumber = false;
+      } else {
+        this.$message.success("请选择订单支付流水号");
+        this.alipaySerialNumList = res;
+        this.isSerialNumber = true;
+      }
     },
   },
 };
