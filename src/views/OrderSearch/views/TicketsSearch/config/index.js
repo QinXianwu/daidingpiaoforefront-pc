@@ -110,7 +110,7 @@ export const column = [
     label: "订单时间",
     prop: "orderDate",
     type: "custom",
-    width: 160,
+    width: 200,
   },
   {
     label: "处理账号名",

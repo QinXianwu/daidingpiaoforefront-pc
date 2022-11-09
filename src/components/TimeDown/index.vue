@@ -123,7 +123,8 @@ export default {
     display: flex;
     line-height: 18px;
     div {
-      width: 20px;
+      padding: 0 5px;
+      min-width: 20px;
       height: 20px;
       line-height: 20px;
       display: flex;

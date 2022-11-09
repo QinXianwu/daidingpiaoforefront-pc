@@ -35,8 +35,8 @@ export default {
           value: ticketInfo?.refundTicketAmount || 0,
         },
         {
-          label: "票款",
-          value: ticketInfo?.fare || 0,
+          label: "票数",
+          value: ticketInfo?.ticketNumber || 0,
           isDazzling: true, // 是否高亮
         },
         // {

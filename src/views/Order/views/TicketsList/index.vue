@@ -39,7 +39,6 @@
           <!-- 处理时间倒计时 -->
           <template #process_countdown="{ scope }">
             <TimeDown
-              :showH="false"
               :reminderTime="120"
               :targerTime="scope.expireTime"
               @on-reminder="onReminder"

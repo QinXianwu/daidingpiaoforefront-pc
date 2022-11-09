@@ -131,8 +131,7 @@ export default {
       const [, res] = await this.$http.OrderQuery.GetTicketRefundDetail({
         code,
       });
-      console.log(res);
-      // this.ticketInfo = res ? res : {};
+      this.ticketInfo = res ? res : {};
     },
   },
   mounted() {

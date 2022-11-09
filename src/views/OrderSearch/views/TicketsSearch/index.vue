@@ -9,7 +9,7 @@
         @on-export="onExport"
       />
       <TicketDetails :ticketInfo="ticketInfo" />
-      <TablePanel :tableData="list" :tableHead="column">
+      <TablePanel :tableData="list" :tableHead="column" expand>
         <template #departTime="{ scope }">
           <span class="text-html">{{ scope.departTime }}</span>
         </template>
@@ -24,6 +24,10 @@
         </template>
         <template #orderDate="{ scope }">
           <span class="text-html">{{ scope.handleTime }}</span>
+        </template>
+        <!-- 展开行-订单详情 -->
+        <template #expand="{ scope }">
+          <ExpandTicketDetails :ticketingId="scope.id" />
         </template>
         <!-- 操作 -->
         <template #action="{}">
@@ -49,9 +53,10 @@ import { mapGetters } from "vuex";
 import { column, formData } from "./config";
 import { DownloadFile } from "@/utils/index";
 import TicketDetails from "./components/TicketDetails.vue";
+import ExpandTicketDetails from "./components/ExpandTicketDetails";
 export default {
   name: "TicketsSearch",
-  components: { TicketDetails },
+  components: { TicketDetails, ExpandTicketDetails },
   data() {
     return {
       formData,
