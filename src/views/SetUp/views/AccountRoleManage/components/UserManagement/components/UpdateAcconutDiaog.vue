@@ -39,49 +39,65 @@
           placeholder="请输入登录密码"
         />
       </el-form-item>
-      <el-form-item label="电子订单号前缀:" prop="eOrderNumberPrefix">
-        <el-input
-          class="input-medium"
-          v-model="formData.eOrderNumberPrefix"
-          placeholder="请输入电子订单号前缀"
-        />
-      </el-form-item>
-      <el-form-item label="代售点:" prop="pointSaleId">
-        <el-select
-          v-model="formData.pointSaleId"
-          v-loading="isLoadingSiteList"
-          placeholder="请选择代售点"
-          class="input-medium"
-        >
-          <el-option
-            :key="index"
-            :label="item.name"
-            :value="Number(item.id)"
-            v-for="(item, index) in pointSaleOptions"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="接单省份限制:" prop="receiveOrderProvince">
-        <el-cascader
-          class="input-medium"
-          :options="provinceOptions"
-          placeholder="请选择接单省份限制"
-          :props="{ value: 'label' }"
-          v-model="formData.receiveOrderProvince"
-        />
-      </el-form-item>
-      <el-form-item label="进单量上限:" prop="receiveOrderLimit">
-        <el-input-number
-          class="input-medium"
-          v-model="formData.receiveOrderLimit"
-          :precision="0"
-          :step="1"
-          :min="0"
-          :max="9999"
-          placeholder="请输入进单量上限"
-        />
-      </el-form-item>
+      <el-collapse
+        class="more-config"
+        accordion
+        @change="(val) => (collapseName = val)"
+      >
+        <el-collapse-item name="moreConfig">
+          <template slot="title">
+            <div class="collapse-title">
+              <span>{{ collapseName === "moreConfig" ? "收起" : "展开" }}</span>
+              <span>更多配置...</span>
+            </div>
+          </template>
+          <div class="more-config-content">
+            <el-form-item label="电子订单号前缀:" prop="eOrderNumberPrefix">
+              <el-input
+                class="input-medium"
+                v-model="formData.eOrderNumberPrefix"
+                placeholder="请输入电子订单号前缀"
+              />
+            </el-form-item>
+            <el-form-item label="代售点:" prop="pointSaleId">
+              <el-select
+                v-model="formData.pointSaleId"
+                v-loading="isLoadingSiteList"
+                placeholder="请选择代售点"
+                class="input-medium"
+              >
+                <el-option
+                  :key="index"
+                  :label="item.name"
+                  :value="Number(item.id)"
+                  v-for="(item, index) in pointSaleOptions"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="接单省份限制:" prop="receiveOrderProvince">
+              <el-cascader
+                class="input-medium"
+                :options="provinceOptions"
+                placeholder="请选择接单省份限制"
+                :props="{ value: 'label' }"
+                v-model="formData.receiveOrderProvince"
+              />
+            </el-form-item>
+            <el-form-item label="进单量上限:" prop="receiveOrderLimit">
+              <el-input-number
+                class="input-medium"
+                v-model="formData.receiveOrderLimit"
+                :precision="0"
+                :step="1"
+                :min="0"
+                :max="9999"
+                placeholder="请输入进单量上限"
+              />
+            </el-form-item>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
     </el-form>
     <span slot="footer">
       <el-button type="primary" :loading="isLoading" @click="handleSubmit">
@@ -140,6 +156,7 @@ export default {
         eOrderNumberPrefix: "",
       },
       pointSaleOptions: [],
+      collapseName: "",
       isLoading: false,
       isLoadingSiteList: false,
       rules: {
@@ -226,4 +243,21 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.more-config {
+  border: none;
+
+  ::v-deep {
+    .el-collapse-item__wrap,
+    .el-collapse-item__header,
+    .el-collapse-item__content {
+      border: none;
+    }
+  }
+  .collapse-title {
+    width: 100%;
+    text-align: center;
+    color: $--color-info;
+  }
+}
+</style>
