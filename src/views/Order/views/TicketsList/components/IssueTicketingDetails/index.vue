@@ -121,20 +121,20 @@ export default {
     formTicketList({ ticketingList, formPassengerMap }) {
       if (!ticketingList?.length) return [];
       return ticketingList.map((item) => {
-        const passengerList = item?.passengerList?.map((item) => {
+        const passengerList = item?.passengerList?.map((pItem) => {
           return {
-            id: item.id,
-            passengerId: item.passengerId,
-            passengerName: item.passengerName,
-            passengerType: item.passengerType,
-            passportNumber: item.passportNumber,
-            passportType: item.passportType,
-            passportTypeName: item.passportTypeName,
-            ticketName: formPassengerMap[item.id].ticketName,
-            realTicketPrice: formPassengerMap[item.id].realTicketPrice,
-            carriageNo: formPassengerMap[item.id].carriageNo,
-            seatName: formPassengerMap[item.id].seatName,
-            seatNo: formPassengerMap[item.id].seatNo,
+            id: pItem.id,
+            passengerId: pItem.passengerId,
+            passengerName: pItem.passengerName,
+            passengerType: pItem.passengerType,
+            passportNumber: pItem.passportNumber,
+            passportType: pItem.passportType,
+            passportTypeName: pItem.passportTypeName,
+            ticketName: formPassengerMap[pItem.id].ticketName,
+            realTicketPrice: formPassengerMap[pItem.id].realTicketPrice,
+            carriageNo: formPassengerMap[pItem.id].carriageNo,
+            seatName: formPassengerMap[pItem.id].seatName,
+            seatNo: formPassengerMap[pItem.id].seatNo,
           };
         });
         return {
@@ -145,6 +145,7 @@ export default {
           fromStationName: item.fromStationName,
           toStationName: item.toStationName,
           trainNumber: item.trainNumber,
+          ticketType: item.ticketType,
           ticketCount: item.ticketCount,
           passengerList: passengerList || [],
         };
