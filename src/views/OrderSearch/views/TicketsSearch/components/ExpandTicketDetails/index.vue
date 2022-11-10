@@ -88,14 +88,12 @@ export default {
     .item-title {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       height: 32px;
       font-size: 18px;
       font-weight: 400;
       color: $main-font-color;
       line-height: 32px;
-    }
-    .eorderNumber {
-      margin: 0 20px 0 0;
     }
     .eorderNumber-update {
       display: flex;
@@ -107,7 +105,7 @@ export default {
     flex-wrap: wrap;
   }
   .ticketing-item {
-    padding: 18px 50px;
+    padding: 20px;
     margin: 0 12px 12px;
     background-color: #f7f8fa;
   }

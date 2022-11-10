@@ -30,12 +30,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .PassengerInfo {
-  padding: 16px 24px 10px;
   margin: 10px 0 0;
+  background: #fff;
+  padding: 16px 24px 10px;
 }
 .content {
   display: flex;
   flex-direction: column;
+  margin: 0 0 20px;
 
   .ticketInfo,
   .userInfo {
@@ -45,7 +47,7 @@ export default {
     margin: 0 0 10px;
     font-size: 15px;
     span {
-      margin-right: 40px;
+      margin-right: 70px;
     }
   }
   .userInfo {

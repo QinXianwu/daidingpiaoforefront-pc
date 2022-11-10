@@ -1,30 +1,32 @@
 <template>
-  <div class="head-info">
-    <span class="date">
-      {{ info.departTime | formatDate }}
-    </span>
-    <span class="car-num">{{ info.trainNumber || "-" }} </span>
-    <span class="start-end">
-      <span class="start">
-        <span>{{ info.fromStationName }}</span>
-        <span class="startDate"
-          >({{ info.departTime | formatDate("hh:mm") }})</span
-        >
+  <div class="head">
+    <div class="head-info">
+      <span class="date">
+        {{ info.departTime | formatDate }}
       </span>
-      <span class="end">
-        <span>{{ info.toStationName }}</span>
-        <span class="endDate">
-          <span
-            :data-attr="afterDay"
-            class="time"
-            :class="{ 'after-day': isShowAfterDay }"
-            >{{ info.arriveTime | formatDate("hh:mm") }}</span
+      <span class="car-num">{{ info.trainNumber || "-" }} </span>
+      <span class="start-end">
+        <span class="start">
+          <span>{{ info.fromStationName }}</span>
+          <span class="startDate"
+            >({{ info.departTime | formatDate("hh:mm") }})</span
           >
         </span>
+        <span class="end">
+          <span>{{ info.toStationName }}</span>
+          <span class="endDate">
+            <span
+              :data-attr="afterDay"
+              class="time"
+              :class="{ 'after-day': isShowAfterDay }"
+              >{{ info.arriveTime | formatDate("hh:mm") }}</span
+            >
+          </span>
+        </span>
       </span>
-    </span>
-    <!-- <span class="seat-class ml-10">{{ info.seatName || "-" }}</span> -->
-    <span class="ticketing-num ml-10">{{ info.ticketCount || "-" }}张</span>
+      <!-- <span class="seat-class ml-10">{{ info.seatName || "-" }}</span> -->
+      <span class="ticketing-num ml-10">{{ info.ticketCount || "-" }}张</span>
+    </div>
   </div>
 </template>
 
@@ -63,7 +65,7 @@ export default {
 .head-info {
   display: flex;
   flex-wrap: wrap;
-  padding: 16px 24px;
+  padding: 16px 30px;
   background: #f7f8fa;
   font-size: 18px;
   color: $main-font-color;
