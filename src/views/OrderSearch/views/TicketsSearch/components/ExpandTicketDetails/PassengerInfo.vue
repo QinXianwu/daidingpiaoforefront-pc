@@ -1,17 +1,23 @@
 <template>
-  <div class="PassengerInfo">
-    <div class="content" v-for="(item, index) in [1, 2]" :key="index">
+  <div class="PassengerInfo" v-if="passengerList && passengerList.length">
+    <div class="content" v-for="(item, index) in passengerList" :key="index">
       <div class="ticketInfo">
-        <span class="passengerType">{{ "成人票" }}</span>
-        <span class="seatName">{{ "二等座" }}</span>
-        <span class="carriageNo">{{ "5车厢" }}</span>
-        <span class="seatNo">{{ "7D号 座号" }}</span>
-        <span class="realTicketPrice">{{ "" | formatCurrency }}</span>
+        <span class="passengerType">{{
+          item.passengerType
+            ? $CONST.PASSENGER_TYPE_TEXT[item.passengerType]
+            : "-"
+        }}</span>
+        <span class="seatName">{{ item.seatName || "-" }}</span>
+        <span class="carriageNo">{{ item.carriageNo || "-" }} 车厢</span>
+        <span class="seatNo">{{ item.seatNo || "-" }} 座号</span>
+        <span class="realTicketPrice">{{
+          item.realTicketPrice | formatCurrency
+        }}</span>
       </div>
       <div class="userInfo">
-        <span>{{ index + 1 }}.{{ "身份证" }}</span>
-        <span class="name">{{ "张三" }}</span>
-        <span class="passportNumber">{{ "440882198912125555" }}</span>
+        <span>{{ index + 1 }}.{{ item.passportTypeName || "" }}</span>
+        <span class="name">{{ item.passengerName || "-" }}</span>
+        <span class="passportNumber">{{ item.passportNumber || "-" }}</span>
       </div>
     </div>
   </div>
@@ -20,6 +26,12 @@
 <script>
 export default {
   name: "PassengerInfo",
+  props: {
+    passengerList: {
+      type: Array,
+      default: () => [],
+    },
+  },
   components: {},
   data() {
     return {};

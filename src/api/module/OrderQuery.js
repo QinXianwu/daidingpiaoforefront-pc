@@ -17,11 +17,33 @@ export default {
       })
     );
   },
-  // 获取订单统计信息
+  // 获取票务统计信息
   GetTicketingStatistics(params) {
     return catchAsyncFun(
       apiFetch({
         url: apiPrefix + "/query/ticketing/order-statistics",
+        params,
+        method: "post",
+        isLoading: false,
+      })
+    );
+  },
+  // 获取票务详情
+  GetTicketingDetail(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + `/query/ticketing/detail/${params.id}`,
+        params,
+        method: "post",
+        isLoading: false,
+      })
+    );
+  },
+  // 修改订单取票号
+  UpdateTicketingEorderNumber(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/query/ticketing/e-number/update",
         params,
         method: "post",
         isLoading: false,

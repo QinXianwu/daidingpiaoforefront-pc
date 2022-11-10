@@ -89,12 +89,7 @@ export default {
     background-color: $main-font-color;
     margin: 0 15px;
   }
-  .startDate {
-    color: $--color-danger;
-  }
   .endDate {
-    color: $--color-danger;
-
     &::before {
       content: "(";
     }

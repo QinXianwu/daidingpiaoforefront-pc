@@ -3,16 +3,20 @@
     <div class="main-title">
       <span>订单查询</span>
     </div>
-    <div class="content">
+    <div class="content" v-loading="isLoading">
       <div class="ticketing-list">
         <div
           class="ticketing-item"
-          v-for="(ticketing, key) in [{}, {}]"
+          v-for="(ticketing, key) in ticketList"
           :key="key"
         >
           <div class="item-title">
-            <!-- {{ $CONST.TICKET_TYPE_TEXT[ticketing.ticketType] }} -->
-            <div class="eorderNumber">去程：{{ "EGW28000555" }}</div>
+            <div class="eorderNumber">
+              <span>
+                {{ $CONST.TICKET_TYPE_TEXT[ticketing.ticketType] }}
+              </span>
+              <span> ：{{ ticketing.eOrderNumber || "-" }} </span>
+            </div>
             <div class="eorderNumber-update">
               <span class="mr-10">{{ eorderCode }}</span>
               <el-input
@@ -20,18 +24,22 @@
                 class="mr-10"
                 placeholder="请输入取票号"
               />
-              <el-button type="primary">修改取票号</el-button>
+              <el-button type="primary" @click="UpdateEorderNumber(ticketing)"
+                >修改取票号</el-button
+              >
             </div>
           </div>
           <div class="ticketing-item-content">
             <!-- 车次信息 -->
-            <HeadView />
+            <HeadView :info="ticketing" />
             <!-- 乘客信息 -->
-            <PassengerInfo />
+            <PassengerInfo
+              :passengerList="ticketing.orderPassengerHandleList"
+            />
           </div>
         </div>
       </div>
-      <FooterView />
+      <FooterView :payTradeNumber="orderDetail.payTradeNumber" />
     </div>
   </div>
 </template>
@@ -52,7 +60,10 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       eorderNumber: "",
+      orderDetail: {},
+      ticketList: [],
     };
   },
   computed: {
@@ -63,9 +74,37 @@ export default {
       return userInfo?.eOrderNumberPrefix || "";
     },
   },
-  methods: {},
+  methods: {
+    // 修改取票号
+    async UpdateEorderNumber({ orderHandleId }) {
+      if (this.isLoading) return;
+      if (!this.eorderNumber) return this.$message.error("请输入取票号后再试");
+      this.isLoading = true;
+      const [, res] = await this.$http.OrderQuery.UpdateTicketingEorderNumber({
+        id: orderHandleId,
+        enumber: this.eorderCode + this.eorderNumber,
+      });
+      this.isLoading = false;
+      this.$message[res ? "success" : "error"](`修改${res ? "成功" : "失败"}`);
+      if (res) {
+        this.eorderNumber = "";
+        this.getTicketDetail();
+      }
+    },
+    async getTicketDetail() {
+      if (this.isLoading) return;
+      this.isLoading = true;
+      const [, res] = await this.$http.OrderQuery.GetTicketingDetail({
+        id: this.ticketingId || "",
+      });
+      this.isLoading = false;
+      this.orderDetail = res || {};
+      this.ticketList = res?.orderTicketHandleVo || [];
+      console.log(res);
+    },
+  },
   mounted() {
-    //
+    this.getTicketDetail();
   },
 };
 </script>

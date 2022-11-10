@@ -1,8 +1,8 @@
 <template>
   <div class="FooterView">
     <div class="content">
-      <span class="paySerialNumber">流水号：{{ "-" }}</span>
       <div class="item">
+        <span class="paySerialNumber">流水号：{{ payTradeNumber || "-" }}</span>
         <el-form
           ref="form"
           :rules="rules"
@@ -38,29 +38,31 @@
           >
         </el-form>
       </div>
-      <el-form
-        ref="interceptForm"
-        :rules="rules"
-        :model="formData"
-        inline
-        hide-required-asterisk
-      >
-        <el-form-item label="拦截用户退款：" prop="refundAmount">
-          <el-input-number
-            class="amount input-mini"
-            :min="0"
-            :max="9999999999"
-            :step="0.01"
-            :precision="2"
-            :controls="false"
-            placeholder="拦截金额"
-            v-model="formData.refundAmount"
-          />
-        </el-form-item>
-        <el-button type="danger" class="ml-10" @click="interceptRefundAmount"
-          >提交拦截</el-button
+      <div class="item">
+        <el-form
+          ref="interceptForm"
+          :rules="rules"
+          :model="formData"
+          inline
+          hide-required-asterisk
         >
-      </el-form>
+          <el-form-item label="拦截用户退款：" prop="refundAmount">
+            <el-input-number
+              class="amount input-mini"
+              :min="0"
+              :max="9999999999"
+              :step="0.01"
+              :precision="2"
+              :controls="false"
+              placeholder="拦截金额"
+              v-model="formData.refundAmount"
+            />
+          </el-form-item>
+          <el-button type="danger" class="ml-10" @click="interceptRefundAmount"
+            >提交拦截</el-button
+          >
+        </el-form>
+      </div>
       <div class="item">
         <el-form
           ref="additionalForm"
@@ -106,6 +108,12 @@
 
 <script>
 export default {
+  props: {
+    payTradeNumber: {
+      type: String,
+      default: "",
+    },
+  },
   components: {},
   data() {
     return {
@@ -147,6 +155,7 @@ export default {
       } catch (error) {
         return;
       }
+      this.$message.info("开发中...");
       console.log(this.formData);
     },
     // 补充额外流水号
@@ -158,6 +167,7 @@ export default {
         return;
       }
       console.log(this.formData);
+      this.$message.info("开发中...");
     },
     // 拦截用户退款金额
     async interceptRefundAmount() {
@@ -168,6 +178,7 @@ export default {
         return;
       }
       console.log(this.formData);
+      this.$message.info("开发中...");
     },
   },
 };
