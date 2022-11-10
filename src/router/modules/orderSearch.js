@@ -14,6 +14,7 @@ export default {
   path: "/OrderSearch",
   component: MainLayout,
   redirect: "/OrderSearch/TicketsSearch",
+  alwaysShow: true,
   meta: {
     title: "订单查询",
     icon: "order_search",

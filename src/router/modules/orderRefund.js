@@ -8,6 +8,7 @@ export default {
   path: "/OrderRefund",
   component: MainLayout,
   redirect: "/OrderRefund/ReadyMoney",
+  alwaysShow: true,
   meta: {
     title: "订单退票",
     icon: "refund",
