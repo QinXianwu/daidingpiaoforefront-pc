@@ -25,7 +25,10 @@
           v-else
           class="input-serialNumber"
           :value="serialNumber"
-          placeholder="请匹配流水号或手填流水号"
+          :disabled="!alipaySerialNumList.length"
+          :placeholder="`请${
+            alipaySerialNumList.length ? '选择' : '匹配'
+          }流水号或手填流水号`"
           :clearable="true"
           @change="selectSerialNumber"
         >
@@ -131,7 +134,10 @@ export default {
           agentCode: this.$router.currentRoute.meta.agentCode,
         },
       });
-      if (!res?.length) return this.$message.error("该订单未匹配到支付流水号");
+      if (!res?.length) {
+        this.isSerialNumber = true;
+        return this.$message.error("该订单未匹配到支付流水号");
+      }
       if (res.length === 1) {
         const paymentNumber = res[0]?.paymentNumber || "";
         this.serialNumber = paymentNumber;
