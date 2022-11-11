@@ -34,10 +34,6 @@ const getters = {
       value: item.id,
       // children: [],
     }));
-    options.unshift({
-      label: "全部",
-      value: "0",
-    });
     return options;
   },
 };

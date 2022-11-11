@@ -51,11 +51,21 @@
       </el-form-item>
       <el-form-item label="代售点:" prop="pointSaleId">
         <el-select
-          v-model="formData.pointSaleId"
-          v-loading="isLoadingSiteList"
-          placeholder="请选择代售点"
+          multiple
+          collapse-tags
+          value-key="label"
           class="input-medium"
+          placeholder="请选择代售点"
+          v-loading="isLoadingSiteList"
+          v-model="formData.pointSaleId"
         >
+          <div class="select-all">
+            <el-checkbox
+              :value="formData.pointSaleId.length === pointSaleOptions.length"
+              @change="selectAll('pointSaleId')"
+              >全选</el-checkbox
+            >
+          </div>
           <el-option
             :key="index"
             :label="item.name"
@@ -98,137 +108,54 @@
             </div>
           </template>
           <div class="more-config-content">
-            <el-form-item label="接单省份限制:" prop="receiveOrderProvince">
-              <el-cascader
-                class="input-medium"
-                :options="provinceOptions"
-                placeholder="请选择接单省份限制"
-                :props="{ value: 'label' }"
-                v-model="formData.receiveOrderProvince"
-              />
-            </el-form-item>
-            <el-form-item label="接单证件类型:" prop="documentType">
+            <el-form-item
+              v-for="item in selectFormDataArr"
+              :key="item.prop"
+              :prop="item.prop"
+              :label="item.label"
+            >
               <el-select
                 multiple
                 collapse-tags
-                value-key="label"
+                :value-key="item.valueKey"
                 class="input-medium"
-                placeholder="请选择接单证件类型"
-                v-model="formData.documentType"
+                :placeholder="item.placeholder"
+                v-model="formData[item.prop]"
               >
                 <div class="select-all">
                   <el-checkbox
-                    :value="
-                      formData.documentType.length ===
-                      $CONST.PASSPORT_TYPE_OPTIONS().length
-                    "
-                    @change="selectAll('documentType')"
+                    :value="formData[item.prop].length === item.options.length"
+                    @change="selectAll(item.prop)"
                     >全选</el-checkbox
                   >
                 </div>
                 <el-option
                   :key="index"
-                  :label="item.label"
-                  :value="item.label"
-                  v-for="(item, index) in $CONST.PASSPORT_TYPE_OPTIONS()"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="接单指定的坐席:" prop="designatedSeats">
-              <el-select
-                multiple
-                collapse-tags
-                class="input-medium"
-                placeholder="请选择接单指定的坐席"
-                v-model="formData.designatedSeats"
-              >
-                <div class="select-all">
-                  <el-checkbox
-                    :value="
-                      formData.designatedSeats.length ===
-                      $CONST.SEAT_OPTIONS().length
-                    "
-                    @change="selectAll('designatedSeats')"
-                    >全选</el-checkbox
-                  >
-                </div>
-                <el-option
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                  v-for="(item, index) in $CONST.SEAT_OPTIONS()"
+                  :label="ele.label"
+                  :value="ele.label"
+                  v-for="(ele, index) in item.options"
                 >
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item
-              label="接单距离发车时间之内:"
-              prop="withinDepartureTime"
+              v-for="item in numberFormDateArr"
+              :key="item.prop"
+              :prop="item.prop"
+              :label="item.label"
             >
               <el-input-number
                 class="input-medium"
-                v-model="formData.withinDepartureTime"
-                :precision="0"
-                :step="1"
-                :min="-1"
-                :max="9999999999"
-                placeholder="请输入接单距离发车时间"
+                v-model="formData[item.prop]"
+                :precision="item.precision"
+                :step="item.step"
+                :min="item.min"
+                :max="item.max"
+                :placeholder="item.placeholder"
               />
-              <div class="form-tip">
-                <span>
-                  进单距离发车时间,限制多少小时内 如24小时内 值为24,无限制为-1
-                </span>
+              <div class="form-tip" v-if="item.tipText">
+                <span> {{ item.tipText }} </span>
               </div>
-            </el-form-item>
-            <el-form-item
-              label="接单距离发车时间之后:"
-              prop="afterDepartureTime"
-            >
-              <el-input-number
-                class="input-medium"
-                v-model="formData.afterDepartureTime"
-                :precision="0"
-                :step="1"
-                :min="-1"
-                :max="9999999999"
-                placeholder="请输入接单距离发车时间"
-              />
-              <div class="form-tip">
-                <span>
-                  进单距离发车时间,限制多少小时后 如24小时后 值为24,无限制为-1
-                </span>
-              </div>
-            </el-form-item>
-            <el-form-item
-              label="接单订单金额上限:"
-              prop="orderAmountUpperLimit"
-            >
-              <el-input-number
-                class="input-medium"
-                v-model="formData.orderAmountUpperLimit"
-                :precision="2"
-                :step="1"
-                :min="-1"
-                :max="9999999999"
-                placeholder="请输入接单订单金额上限"
-              />
-              <div class="form-tip">接单订单金额上限,无限制为-1</div>
-            </el-form-item>
-            <el-form-item
-              label="接单订单金额下限:"
-              prop="lowerLimitOfOrderAmount"
-            >
-              <el-input-number
-                class="input-medium"
-                v-model="formData.lowerLimitOfOrderAmount"
-                :precision="2"
-                :step="1"
-                :min="-1"
-                :max="9999999999"
-                placeholder="请输入接单订单金额下限"
-              />
-              <div class="form-tip">接单订单金额下限,无限制为-1</div>
             </el-form-item>
             <el-form-item
               label="接单有无特殊要求限制:"
@@ -251,206 +178,6 @@
           </div>
         </el-collapse-item>
       </el-collapse>
-      <!-- <el-collapse
-        accordion
-        class="more-config"
-        @change="(val) => (collapseName = val)"
-      >
-        <el-collapse-item name="moreConfig">
-          <template slot="title">
-            <div class="collapse-title">
-              <span>{{ collapseName === "moreConfig" ? "收起" : "展开" }}</span>
-              <span>更多配置</span>
-            </div>
-          </template>
-          <div class="more-config-content">
-            <el-form-item label="代售点:" prop="pointSaleId">
-              <el-select
-                v-model="formData.pointSaleId"
-                v-loading="isLoadingSiteList"
-                placeholder="请选择代售点"
-                class="input-medium"
-              >
-                <el-option
-                  :key="index"
-                  :label="item.name"
-                  :value="Number(item.id)"
-                  v-for="(item, index) in pointSaleOptions"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="电子订单号前缀:" prop="eOrderNumberPrefix">
-              <el-input
-                class="input-medium"
-                v-model="formData.eOrderNumberPrefix"
-                placeholder="请输入电子订单号前缀"
-              />
-            </el-form-item>
-            <el-form-item label="接单证件类型:" prop="documentType">
-              <el-select
-                multiple
-                collapse-tags
-                value-key="label"
-                class="input-medium"
-                placeholder="请选择接单证件类型"
-                v-model="formData.documentType"
-              >
-                <div class="select-all">
-                  <el-checkbox
-                    :value="
-                      formData.documentType.length ===
-                      $CONST.PASSPORT_TYPE_OPTIONS().length
-                    "
-                    @change="selectAll('documentType')"
-                    >全选</el-checkbox
-                  >
-                </div>
-                <el-option
-                  :key="index"
-                  :label="item.label"
-                  :value="item.label"
-                  v-for="(item, index) in $CONST.PASSPORT_TYPE_OPTIONS()"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="接单省份限制:" prop="receiveOrderProvince">
-              <el-cascader
-                class="input-medium"
-                :options="provinceOptions"
-                placeholder="请选择接单省份限制"
-                :props="{ value: 'label' }"
-                v-model="formData.receiveOrderProvince"
-              />
-            </el-form-item>
-            <el-form-item
-              label="接单有无特殊要求限制:"
-              prop="specialRequirements"
-            >
-              <el-select
-                v-model="formData.specialRequirements"
-                placeholder="请选择接单有无特殊要求限制"
-                class="input-medium"
-              >
-                <el-option
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                  v-for="(item, index) in $CONST.SPECIAL_REQUIREMENTS_OPTIONS()"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="接单指定的坐席:" prop="designatedSeats">
-              <el-select
-                multiple
-                collapse-tags
-                class="input-medium"
-                placeholder="请选择接单指定的坐席"
-                v-model="formData.designatedSeats"
-              >
-                <div class="select-all">
-                  <el-checkbox
-                    :value="
-                      formData.designatedSeats.length ===
-                      $CONST.SEAT_OPTIONS().length
-                    "
-                    @change="selectAll('designatedSeats')"
-                    >全选</el-checkbox
-                  >
-                </div>
-                <el-option
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                  v-for="(item, index) in $CONST.SEAT_OPTIONS()"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="接单量上限:" prop="receiveOrderLimit">
-              <el-input-number
-                class="input-medium"
-                v-model="formData.receiveOrderLimit"
-                :precision="0"
-                :step="1"
-                :min="0"
-                :max="9999"
-                placeholder="请输入接单量上限"
-              />
-            </el-form-item>
-            <el-form-item
-              label="接单订单金额上限:"
-              prop="orderAmountUpperLimit"
-            >
-              <el-input-number
-                class="input-medium"
-                v-model="formData.orderAmountUpperLimit"
-                :precision="2"
-                :step="1"
-                :min="-1"
-                :max="9999999999"
-                placeholder="请输入接单订单金额上限"
-              />
-              <div class="form-tip">接单订单金额上限,无限制为-1</div>
-            </el-form-item>
-            <el-form-item
-              label="接单订单金额下限:"
-              prop="lowerLimitOfOrderAmount"
-            >
-              <el-input-number
-                class="input-medium"
-                v-model="formData.lowerLimitOfOrderAmount"
-                :precision="2"
-                :step="1"
-                :min="-1"
-                :max="9999999999"
-                placeholder="请输入接单订单金额下限"
-              />
-              <div class="form-tip">接单订单金额下限,无限制为-1</div>
-            </el-form-item>
-            <el-form-item
-              label="接单距离发车时间之内:"
-              prop="withinDepartureTime"
-            >
-              <el-input-number
-                class="input-medium"
-                v-model="formData.withinDepartureTime"
-                :precision="0"
-                :step="1"
-                :min="-1"
-                :max="9999999999"
-                placeholder="请输入接单距离发车时间"
-              />
-              <div class="form-tip">
-                <span>
-                  进单距离发车时间,限制多少小时内 如24小时内 值为24,无限制为-1
-                </span>
-              </div>
-            </el-form-item>
-            <el-form-item
-              label="接单距离发车时间之后:"
-              prop="afterDepartureTime"
-            >
-              <el-input-number
-                class="input-medium"
-                v-model="formData.afterDepartureTime"
-                :precision="0"
-                :step="1"
-                :min="-1"
-                :max="9999999999"
-                placeholder="请输入接单距离发车时间"
-              />
-              <div class="form-tip">
-                <span>
-                  进单距离发车时间,限制多少小时后 如24小时后 值为24,无限制为-1
-                </span>
-              </div>
-            </el-form-item>
-          </div>
-        </el-collapse-item>
-      </el-collapse> -->
     </el-form>
     <span slot="footer">
       <el-button type="primary" :loading="isLoading" @click="handleSubmit">
@@ -481,12 +208,13 @@ export default {
   data() {
     return {
       formData: {
-        receiveOrderProvince: ["全部"],
+        pointSaleId: [],
+        receiveOrderProvince: [],
+        receiveOrderArriveProvince: [],
         documentType: [],
         designatedSeats: [],
       },
-      pointSaleOptions: [],
-      collapseName: "",
+      pointSaleOptions: [], // 代售点列表
       allocationName: "",
       isLoading: false,
       isLoadingSiteList: false,
@@ -517,7 +245,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      provinceOptions: "user/provinceOptions",
+      provinceOptions: "user/provinceOptions", // 省份列表
     }),
     dialogTitle({ editInfo }) {
       const title = editInfo?.id
@@ -529,6 +257,84 @@ export default {
         : "新增";
       return `${title}账号`;
     },
+    selectFormDataArr({ provinceOptions }) {
+      return [
+        {
+          prop: "receiveOrderProvince",
+          label: "接单出发省份限制:",
+          valueKey: "label",
+          placeholder: "请选择接单出发省份限制",
+          options: provinceOptions,
+        },
+        {
+          prop: "receiveOrderArriveProvince",
+          label: "接单到达省份限制:",
+          valueKey: "label",
+          placeholder: "请选择接单到达省份限制",
+          options: provinceOptions,
+        },
+        {
+          prop: "documentType",
+          label: "接单证件类型:",
+          valueKey: "label",
+          placeholder: "请选择接单证件类型",
+          options: this.$CONST.PASSPORT_TYPE_OPTIONS(),
+        },
+        {
+          prop: "designatedSeats",
+          label: "接单指定的坐席:",
+          valueKey: "label",
+          placeholder: "请选择接单指定的坐席",
+          options: this.$CONST.SEAT_OPTIONS(),
+        },
+      ];
+    },
+    numberFormDateArr() {
+      return [
+        {
+          label: "接单距离发车时间之内:",
+          prop: "withinDepartureTime",
+          precision: 0,
+          step: 1,
+          min: -1,
+          max: 9999999999,
+          placeholder: "请输入接单距离发车时间",
+          tipText:
+            "进单距离发车时间,限制多少小时内 如24小时内 值为24,无限制为-1",
+        },
+        {
+          label: "接单距离发车时间之后:",
+          prop: "afterDepartureTime",
+          precision: 0,
+          step: 1,
+          min: -1,
+          max: 9999999999,
+          placeholder: "请输入接单距离发车时间",
+          tipText:
+            "进单距离发车时间,限制多少小时后 如24小时后 值为24,无限制为-1",
+        },
+        {
+          label: "接单订单金额上限:",
+          prop: "orderAmountUpperLimit",
+          precision: 2,
+          step: 1,
+          min: -1,
+          max: 9999999999,
+          placeholder: "请输入接单订单金额上限",
+          tipText: "接单订单金额上限,无限制为-1",
+        },
+        {
+          label: "接单订单金额下限:",
+          prop: "lowerLimitOfOrderAmount",
+          precision: 2,
+          step: 1,
+          min: -1,
+          max: 9999999999,
+          placeholder: "请输入接单订单金额下限",
+          tipText: "接单订单金额下限,无限制为-1",
+        },
+      ];
+    },
   },
   methods: {
     init() {
@@ -539,7 +345,9 @@ export default {
         administration: false,
         parentAccount: this.editInfo?.parentAccount || "",
         specialRequirements: this.$CONST.SPECIAL_REQUIREMENTS.UNLIMITED,
-        receiveOrderProvince: ["全部"],
+        pointSaleId: [],
+        receiveOrderProvince: [],
+        receiveOrderArriveProvince: [],
         documentType: [],
         designatedSeats: [],
       };
@@ -547,21 +355,18 @@ export default {
       if (!this.editInfo?.id) return;
       this.formData = { ...this.formData, ...this.editInfo };
       if (this.formData?.pointSaleId) {
-        const arr = JSON.parse(this.formData?.pointSaleId || "`[]`");
-        this.formData.pointSaleId = arr?.length ? arr[0] : "";
+        const arr = JSON.parse(this.formData?.pointSaleId || "[]");
+        this.formData.pointSaleId = arr?.length ? arr : "";
       }
-      if (this.formData?.receiveOrderProvince) {
-        const arr = JSON.parse(this.formData?.receiveOrderProvince || "`[]`");
-        this.formData.receiveOrderProvince = arr?.length ? arr : ["全部"];
-      }
-      if (this.formData?.documentType) {
-        const arr = JSON.parse(this.formData?.documentType || "`[]`");
-        this.formData.documentType = arr?.length ? arr : [];
-      }
-      if (this.formData?.designatedSeats) {
-        const arr = JSON.parse(this.formData?.designatedSeats || "`[]`");
-        this.formData.designatedSeats = arr?.length ? arr : [];
-      }
+      const str2arr = [
+        "receiveOrderProvince",
+        "receiveOrderArriveProvince",
+        "documentType",
+        "designatedSeats",
+      ];
+      str2arr.map((formKey) => {
+        this.formData[formKey] = JSON.parse(this.formData[formKey] || "[]");
+      });
     },
     // 获取代售点列表
     async getPointSaleOptions() {
@@ -574,11 +379,26 @@ export default {
     // 全选select
     selectAll(formKey) {
       const optionMap = {
+        pointSaleId: true,
         documentType: "PASSPORT_TYPE_OPTIONS",
         designatedSeats: "SEAT_OPTIONS",
+        receiveOrderProvince: true,
+        receiveOrderArriveProvince: true,
       };
       if (!optionMap[formKey]) return;
-      const options = this.$CONST[optionMap[formKey]]();
+      let options = [];
+      if (formKey === "pointSaleId") {
+        options = this.pointSaleOptions.map((item) => ({
+          label: Number(item.id),
+        }));
+      } else if (
+        formKey === "receiveOrderProvince" ||
+        formKey === "receiveOrderArriveProvince"
+      ) {
+        options = this.provinceOptions;
+      } else {
+        options = this.$CONST[optionMap[formKey]]();
+      }
       if (this.formData[formKey]?.length === options.length) {
         this.formData[formKey] = [];
         return;
@@ -600,20 +420,19 @@ export default {
       const id = this.editInfo?.id || "";
       const pid = this.editInfo?.pid || "";
       const query = { ...this.formData };
-      const pointSaleId = this.formData.pointSaleId
-        ? [Number(this.formData.pointSaleId)]
-        : [];
+      const pointSaleId = this.formData.pointSaleId;
       const receiveOrderProvince = this.formData.receiveOrderProvince;
+      const receiveOrderArriveProvince =
+        this.formData.receiveOrderArriveProvince;
       const documentType = this.formData.documentType;
       const designatedSeats = this.formData.designatedSeats;
-      const allIndex = receiveOrderProvince.findIndex(
-        (item) => item === "全部"
-      );
-      if (allIndex >= 0) receiveOrderProvince.splice(allIndex, 1);
       query.pointSaleId = JSON.stringify(pointSaleId);
       query.documentType = JSON.stringify(documentType);
       query.designatedSeats = JSON.stringify(designatedSeats);
       query.receiveOrderProvince = JSON.stringify(receiveOrderProvince);
+      query.receiveOrderArriveProvince = JSON.stringify(
+        receiveOrderArriveProvince
+      );
       if (pid) query.id = pid;
       delete query.pid;
       delete query.parentAccount;
