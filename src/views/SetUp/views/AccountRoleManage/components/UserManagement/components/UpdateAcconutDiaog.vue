@@ -1,8 +1,6 @@
 <template>
   <el-dialog
-    :title="`${
-      editInfo && editInfo.id ? '编辑' : editInfo.pid ? '新增子' : '新增'
-    }账号`"
+    :title="dialogTitle"
     :visible.sync="visible"
     width="700px"
     v-loading="isLoading"
@@ -521,6 +519,17 @@ export default {
     ...mapGetters({
       provinceOptions: "user/provinceOptions",
     }),
+    dialogTitle({ editInfo }) {
+      return `${
+        editInfo?.id
+          ? editInfo?.parentAccount
+            ? "编辑子"
+            : "编辑"
+          : editInfo && editInfo.pid
+          ? "新增子"
+          : "新增"
+      }账号`;
+    },
   },
   methods: {
     init() {
