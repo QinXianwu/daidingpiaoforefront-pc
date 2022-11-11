@@ -14,11 +14,13 @@ export default {
   components: {},
   data() {
     return {
+      timeoutId: "",
       neworderAudio: new Audio(neworder), // // 新订单提示
     };
   },
   computed: {
     ...mapState({
+      token: (state) => state.authorization.state,
       isAudio: (state) => state.app.isAudio, // 是否开启声音
       userInfo: (state) => state.user.userInfo,
       pointSaleAction: (state) => state.agent.pointSaleAction,
@@ -60,8 +62,9 @@ export default {
         this.neworderAudio.play();
       }
       this.$nextTick(() => {
-        setTimeout(() => {
-          this.handleNewOrderTip(tempArr);
+        this.timeoutId = setTimeout(() => {
+          if (this.token) this.handleNewOrderTip(tempArr);
+          else if (this.timeoutId) clearInterval(this.timeoutId);
         }, 5000);
       });
     },

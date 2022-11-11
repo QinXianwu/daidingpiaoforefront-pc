@@ -39,9 +39,211 @@
           placeholder="请输入登录密码"
         />
       </el-form-item>
+      <el-form-item label="代售点:" prop="pointSaleId">
+        <el-select
+          v-model="formData.pointSaleId"
+          v-loading="isLoadingSiteList"
+          placeholder="请选择代售点"
+          class="input-medium"
+        >
+          <el-option
+            :key="index"
+            :label="item.name"
+            :value="Number(item.id)"
+            v-for="(item, index) in pointSaleOptions"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="电子订单号前缀:" prop="eOrderNumberPrefix">
+        <el-input
+          class="input-medium"
+          v-model="formData.eOrderNumberPrefix"
+          placeholder="请输入电子订单号前缀"
+        />
+      </el-form-item>
+      <el-form-item label="接单量上限:" prop="receiveOrderLimit">
+        <el-input-number
+          class="input-medium"
+          v-model="formData.receiveOrderLimit"
+          :precision="0"
+          :step="1"
+          :min="0"
+          :max="9999"
+          placeholder="请输入接单量上限"
+        />
+      </el-form-item>
       <el-collapse
-        class="more-config"
         accordion
+        class="more-config"
+        @change="(val) => (allocationName = val)"
+      >
+        <el-collapse-item name="allocationConfig">
+          <template slot="title">
+            <div class="collapse-title">
+              <span>{{
+                allocationName === "allocationConfig" ? "收起" : "展开"
+              }}</span>
+              <span>订单分配限制配置</span>
+            </div>
+          </template>
+          <div class="more-config-content">
+            <el-form-item label="接单省份限制:" prop="receiveOrderProvince">
+              <el-cascader
+                class="input-medium"
+                :options="provinceOptions"
+                placeholder="请选择接单省份限制"
+                :props="{ value: 'label' }"
+                v-model="formData.receiveOrderProvince"
+              />
+            </el-form-item>
+            <el-form-item label="接单证件类型:" prop="documentType">
+              <el-select
+                multiple
+                collapse-tags
+                value-key="label"
+                class="input-medium"
+                placeholder="请选择接单证件类型"
+                v-model="formData.documentType"
+              >
+                <div class="select-all">
+                  <el-checkbox
+                    :value="
+                      formData.documentType.length ===
+                      $CONST.PASSPORT_TYPE_OPTIONS().length
+                    "
+                    @change="selectAll('documentType')"
+                    >全选</el-checkbox
+                  >
+                </div>
+                <el-option
+                  :key="index"
+                  :label="item.label"
+                  :value="item.label"
+                  v-for="(item, index) in $CONST.PASSPORT_TYPE_OPTIONS()"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="接单指定的坐席:" prop="designatedSeats">
+              <el-select
+                multiple
+                collapse-tags
+                class="input-medium"
+                placeholder="请选择接单指定的坐席"
+                v-model="formData.designatedSeats"
+              >
+                <div class="select-all">
+                  <el-checkbox
+                    :value="
+                      formData.designatedSeats.length ===
+                      $CONST.SEAT_OPTIONS().length
+                    "
+                    @change="selectAll('designatedSeats')"
+                    >全选</el-checkbox
+                  >
+                </div>
+                <el-option
+                  :key="index"
+                  :label="item.label"
+                  :value="item.value"
+                  v-for="(item, index) in $CONST.SEAT_OPTIONS()"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              label="接单距离发车时间之内:"
+              prop="withinDepartureTime"
+            >
+              <el-input-number
+                class="input-medium"
+                v-model="formData.withinDepartureTime"
+                :precision="0"
+                :step="1"
+                :min="-1"
+                :max="9999999999"
+                placeholder="请输入接单距离发车时间"
+              />
+              <div class="form-tip">
+                <span>
+                  进单距离发车时间,限制多少小时内 如24小时内 值为24,无限制为-1
+                </span>
+              </div>
+            </el-form-item>
+            <el-form-item
+              label="接单距离发车时间之后:"
+              prop="afterDepartureTime"
+            >
+              <el-input-number
+                class="input-medium"
+                v-model="formData.afterDepartureTime"
+                :precision="0"
+                :step="1"
+                :min="-1"
+                :max="9999999999"
+                placeholder="请输入接单距离发车时间"
+              />
+              <div class="form-tip">
+                <span>
+                  进单距离发车时间,限制多少小时后 如24小时后 值为24,无限制为-1
+                </span>
+              </div>
+            </el-form-item>
+            <el-form-item
+              label="接单订单金额上限:"
+              prop="orderAmountUpperLimit"
+            >
+              <el-input-number
+                class="input-medium"
+                v-model="formData.orderAmountUpperLimit"
+                :precision="2"
+                :step="1"
+                :min="-1"
+                :max="9999999999"
+                placeholder="请输入接单订单金额上限"
+              />
+              <div class="form-tip">接单订单金额上限,无限制为-1</div>
+            </el-form-item>
+            <el-form-item
+              label="接单订单金额下限:"
+              prop="lowerLimitOfOrderAmount"
+            >
+              <el-input-number
+                class="input-medium"
+                v-model="formData.lowerLimitOfOrderAmount"
+                :precision="2"
+                :step="1"
+                :min="-1"
+                :max="9999999999"
+                placeholder="请输入接单订单金额下限"
+              />
+              <div class="form-tip">接单订单金额下限,无限制为-1</div>
+            </el-form-item>
+            <el-form-item
+              label="接单有无特殊要求限制:"
+              prop="specialRequirements"
+            >
+              <el-select
+                v-model="formData.specialRequirements"
+                placeholder="请选择接单有无特殊要求限制"
+                class="input-medium"
+              >
+                <el-option
+                  :key="index"
+                  :label="item.label"
+                  :value="item.value"
+                  v-for="(item, index) in $CONST.SPECIAL_REQUIREMENTS_OPTIONS()"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
+      <!-- <el-collapse
+        accordion
+        class="more-config"
         @change="(val) => (collapseName = val)"
       >
         <el-collapse-item name="moreConfig">
@@ -238,7 +440,7 @@
             </el-form-item>
           </div>
         </el-collapse-item>
-      </el-collapse>
+      </el-collapse> -->
     </el-form>
     <span slot="footer">
       <el-button type="primary" :loading="isLoading" @click="handleSubmit">
@@ -275,6 +477,7 @@ export default {
       },
       pointSaleOptions: [],
       collapseName: "",
+      allocationName: "",
       isLoading: false,
       isLoadingSiteList: false,
       rules: {

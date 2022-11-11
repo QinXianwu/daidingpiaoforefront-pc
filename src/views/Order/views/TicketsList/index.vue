@@ -82,7 +82,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { mapState } from "vuex";
 import { column } from "./config";
@@ -116,6 +115,7 @@ export default {
   },
   computed: {
     ...mapState({
+      token: (state) => state.authorization.state,
       isAudio: (state) => state.app.isAudio, // 是否开启声音
       userInfo: (state) => state.user.userInfo,
       pointSaleList: (state) => state.agent.pointSaleList,
@@ -184,7 +184,8 @@ export default {
       this.total = res?.total || 0;
       this.$nextTick(() => {
         this.timeId = setTimeout(() => {
-          this.getList(true);
+          if (this.token) this.getList(true);
+          else if (this.timeId) clearInterval(this.timeId);
         }, 5000);
       });
     },
