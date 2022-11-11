@@ -190,6 +190,7 @@
 <script>
 import { mapGetters } from "vuex";
 import dialogMixin from "@/mixins/dialogMixin";
+import { selectFormData, numberFormDate } from "../config/index";
 export default {
   name: "UpdateAcconutDiaog",
   mixins: [dialogMixin],
@@ -207,6 +208,8 @@ export default {
   },
   data() {
     return {
+      selectFormData,
+      numberFormDate,
       formData: {
         pointSaleId: [],
         receiveOrderProvince: [],
@@ -257,83 +260,20 @@ export default {
         : "新增";
       return `${title}账号`;
     },
-    selectFormDataArr({ provinceOptions }) {
-      return [
-        {
-          prop: "receiveOrderProvince",
-          label: "接单出发省份限制:",
-          valueKey: "label",
-          placeholder: "请选择接单出发省份限制",
-          options: provinceOptions,
-        },
-        {
-          prop: "receiveOrderArriveProvince",
-          label: "接单到达省份限制:",
-          valueKey: "label",
-          placeholder: "请选择接单到达省份限制",
-          options: provinceOptions,
-        },
-        {
-          prop: "documentType",
-          label: "接单证件类型:",
-          valueKey: "label",
-          placeholder: "请选择接单证件类型",
-          options: this.$CONST.PASSPORT_TYPE_OPTIONS(),
-        },
-        {
-          prop: "designatedSeats",
-          label: "接单指定的坐席:",
-          valueKey: "label",
-          placeholder: "请选择接单指定的坐席",
-          options: this.$CONST.SEAT_OPTIONS(),
-        },
-      ];
+    selectFormDataArr({ provinceOptions, selectFormData }) {
+      return selectFormData.map((item) => {
+        const temObj = {};
+        if (
+          item?.prop === "receiveOrderProvince" ||
+          item?.prop === "receiveOrderArriveProvince"
+        ) {
+          item.options = provinceOptions;
+        }
+        return { ...item, ...temObj };
+      });
     },
-    numberFormDateArr() {
-      return [
-        {
-          label: "接单距离发车时间之内:",
-          prop: "withinDepartureTime",
-          precision: 0,
-          step: 1,
-          min: -1,
-          max: 9999999999,
-          placeholder: "请输入接单距离发车时间",
-          tipText:
-            "进单距离发车时间,限制多少小时内 如24小时内 值为24,无限制为-1",
-        },
-        {
-          label: "接单距离发车时间之后:",
-          prop: "afterDepartureTime",
-          precision: 0,
-          step: 1,
-          min: -1,
-          max: 9999999999,
-          placeholder: "请输入接单距离发车时间",
-          tipText:
-            "进单距离发车时间,限制多少小时后 如24小时后 值为24,无限制为-1",
-        },
-        {
-          label: "接单订单金额上限:",
-          prop: "orderAmountUpperLimit",
-          precision: 2,
-          step: 1,
-          min: -1,
-          max: 9999999999,
-          placeholder: "请输入接单订单金额上限",
-          tipText: "接单订单金额上限,无限制为-1",
-        },
-        {
-          label: "接单订单金额下限:",
-          prop: "lowerLimitOfOrderAmount",
-          precision: 2,
-          step: 1,
-          min: -1,
-          max: 9999999999,
-          placeholder: "请输入接单订单金额下限",
-          tipText: "接单订单金额下限,无限制为-1",
-        },
-      ];
+    numberFormDateArr({ numberFormDate }) {
+      return numberFormDate;
     },
   },
   methods: {
