@@ -20,7 +20,7 @@ export default {
       path: "AccountRoleManage",
       component: AccountRoleManage,
       name: "AccountRoleManage",
-      meta: { title: "账号角色管理" },
+      meta: { title: "账号角色管理", notPassPermissionVerify: true },
     },
     {
       path: "PayConfig",

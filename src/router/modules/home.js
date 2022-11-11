@@ -11,6 +11,7 @@ export default {
     icon: "data_panel",
     affix: true,
     // PermissionId: PERMISSION_ID.Home,
+    notPassPermissionVerify: true,
   },
   children: [
     {
@@ -20,6 +21,7 @@ export default {
       meta: {
         title: "概况",
         // PermissionId: PERMISSION_ID.Home,
+        notPassPermissionVerify: true,
       },
     },
   ],
