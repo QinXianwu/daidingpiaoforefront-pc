@@ -520,15 +520,14 @@ export default {
       provinceOptions: "user/provinceOptions",
     }),
     dialogTitle({ editInfo }) {
-      return `${
-        editInfo?.id
-          ? editInfo?.parentAccount
-            ? "编辑子"
-            : "编辑"
-          : editInfo && editInfo.pid
-          ? "新增子"
-          : "新增"
-      }账号`;
+      const title = editInfo?.id
+        ? editInfo?.parentAccount
+          ? "编辑子"
+          : "编辑"
+        : editInfo && editInfo.pid
+        ? "新增子"
+        : "新增";
+      return `${title}账号`;
     },
   },
   methods: {
