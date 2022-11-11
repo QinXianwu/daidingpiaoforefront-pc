@@ -138,7 +138,7 @@ export default {
         {
           type: "number",
           min: 0,
-          max: 999999999,
+          max: 9999999999,
           prop: "realTicketPrice",
           label: formData?.realTicketPrice || 0,
           tipLabel: "金额",
