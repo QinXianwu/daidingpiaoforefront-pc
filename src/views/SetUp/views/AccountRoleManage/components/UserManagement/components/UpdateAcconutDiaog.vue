@@ -39,6 +39,18 @@
           placeholder="请输入登录密码"
         />
       </el-form-item>
+      <el-form-item
+        label="是否设置为管理员:"
+        prop="administration"
+        v-if="!editInfo.parentAccount"
+      >
+        <el-switch
+          v-model="formData.administration"
+          active-text="是"
+          inactive-text="否"
+        >
+        </el-switch>
+      </el-form-item>
       <el-form-item label="代售点:" prop="pointSaleId">
         <el-select
           v-model="formData.pointSaleId"
@@ -516,6 +528,7 @@ export default {
         userName: "",
         account: "",
         password: "",
+        administration: false,
         parentAccount: this.editInfo?.parentAccount || "",
         specialRequirements: this.$CONST.SPECIAL_REQUIREMENTS.UNLIMITED,
         receiveOrderProvince: ["全部"],
