@@ -224,7 +224,7 @@
               <el-input-number
                 class="input-medium"
                 v-model="formData.afterDepartureTime"
-                :precision="2"
+                :precision="0"
                 :step="1"
                 :min="-1"
                 :max="9999999999"
