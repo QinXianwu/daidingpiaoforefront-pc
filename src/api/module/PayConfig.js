@@ -17,6 +17,16 @@ export default {
       })
     );
   },
+  // 获取支付宝账号详情
+  GetAlipayAccountDetail(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + `/sys/alipay/detail/${params.id}`,
+        params,
+        method: "post",
+      })
+    );
+  },
   // 新增支付宝账号
   AddAlipayAccount(params) {
     return catchAsyncFun(
@@ -42,6 +52,16 @@ export default {
     return catchAsyncFun(
       apiFetch({
         url: apiPrefix + `/sys/alipay/delete/${params.id}`,
+        params,
+        method: "post",
+      })
+    );
+  },
+  // 支付记录统计
+  GetAlipayAccountRecordList(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/sys/alipay/record",
         params,
         method: "post",
       })

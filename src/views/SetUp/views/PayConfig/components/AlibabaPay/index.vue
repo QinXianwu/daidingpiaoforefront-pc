@@ -7,6 +7,9 @@
       <!-- 操作 -->
       <template #action="{ scope }">
         <div class="action-groud">
+          <el-button type="text" @click="handleLookRecord(scope)">
+            <span>查看统计数据</span>
+          </el-button>
           <el-button type="text" @click="handleEdit(scope)"> 编辑 </el-button>
           <el-button type="text" @click="handleDelete(scope)"> 删除 </el-button>
         </div>
@@ -26,20 +29,31 @@
       :show.sync="showUpdatePayAccount"
       @close="close"
     />
+    <DrawerPopup v-model="showDrawerPopup">
+      <AlibabaPayRecord
+        :accountDetail="accountDetail"
+        @close="handleDrawerPopupClose"
+      />
+    </DrawerPopup>
   </div>
 </template>
 
 <script>
 import { column } from "./config";
+import vModelMixin from "@/mixins/vModelMixin";
+import AlibabaPayRecord from "./components/AlibabaPayRecord.vue";
 import UpdatePayAccountDiaog from "./components/UpdatePayAccountDiaog.vue";
 export default {
   name: "AlibabaPay",
-  components: { UpdatePayAccountDiaog },
+  mixins: [vModelMixin],
+  components: { AlibabaPayRecord, UpdatePayAccountDiaog },
   data() {
     return {
       column, //表格头
       list: [],
       editInfo: "",
+      accountDetail: "",
+      showDrawerPopup: false,
       showUpdatePayAccount: false,
       page: {
         size: 10,
@@ -69,10 +83,18 @@ export default {
       this.editInfo = "";
       this.showUpdatePayAccount = true;
     },
+    handleLookRecord(item) {
+      this.accountDetail = item;
+      this.showDrawerPopup = true;
+    },
     handleEdit(item) {
-      console.log(item);
       this.editInfo = item;
       this.showUpdatePayAccount = true;
+    },
+    // 关闭抽屉事件
+    handleDrawerPopupClose() {
+      this.accountDetail = "";
+      this.showDrawerPopup = false;
     },
     async handleDelete({ id }) {
       if (!id) return this.$message.error("获取该账户ID异常");
