@@ -68,18 +68,9 @@ export const column = [
     prop: "totalOrderAmount",
     type: "money",
   },
-  // {
-  //   label: "异常订单总金额",
-  //   prop: "license_number",
-  //   type: "money",
-  // },
   {
     label: "结算总金额",
     prop: "totalSettlementAmount",
     type: "money",
-  },
-  {
-    label: "状态",
-    prop: "status",
   },
 ];
