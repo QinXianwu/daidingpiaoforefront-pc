@@ -19,7 +19,7 @@
           placeholder="请匹配流水号或手填流水号"
           :clearable="true"
           :disabled="isSerialNumber"
-          @input="(value) => $emit('update:payTradeNumber', value)"
+          @input="onInputSerialNum"
         />
         <el-select
           v-else
@@ -94,6 +94,11 @@ export default {
       type: String,
       default: "",
     },
+    // 订单支付流水号信息
+    payTradeInfo: {
+      type: Object,
+      default: () => ({}),
+    },
     // 电子订单号
     eorderNumber: {
       type: String,
@@ -104,6 +109,15 @@ export default {
   data() {
     return {
       serialNumber: "",
+      serialInfo: {
+        amount: "",
+        bizOrigNo: "",
+        direction: "",
+        merchantOrderNo: "",
+        payAccount: "",
+        paymentNumber: "",
+        transDt: "",
+      },
       isSerialNumber: true,
       alipaySerialNumList: [],
     };
@@ -121,6 +135,19 @@ export default {
     selectSerialNumber(val) {
       this.serialNumber = val;
       this.$emit("update:payTradeNumber", val);
+      const item = this.alipaySerialNumList.find(
+        (ele) => ele.paymentNumber === val
+      );
+      this.$emit("update:payTradeInfo", { ...item });
+    },
+    // 手填流水号
+    onInputSerialNum(val) {
+      this.$emit("update:payTradeNumber", val);
+      this.$emit("update:payTradeInfo", {
+        ...this.serialInfo,
+        amount: this.amount,
+        paymentNumber: val,
+      });
     },
     // 匹配流水号
     async matchSerialNumber() {
@@ -128,7 +155,7 @@ export default {
       if (!this.amount) return this.$message.error("请输入金额");
       let [, res] = await this.$http.Order.GetAlipaySerialNumber({
         body: {
-          amount: String(this.amount),
+          amount: String(0.1 || this.amount),
           partnerOrderId: this.partnerOrderId,
           payAccountName: this.alipayAccount,
           agentCode: this.$router.currentRoute.meta.agentCode,
@@ -139,9 +166,11 @@ export default {
         return this.$message.error("该订单未匹配到支付流水号");
       }
       if (res.length === 1) {
-        const paymentNumber = res[0]?.paymentNumber || "";
+        const tempObj = res[0] || {};
+        const paymentNumber = tempObj?.paymentNumber || "";
         this.serialNumber = paymentNumber;
         this.$emit("update:payTradeNumber", paymentNumber);
+        this.$emit("update:payTradeInfo", { ...tempObj });
         this.isSerialNumber = false;
       } else {
         this.$message.success("请选择订单支付流水号");

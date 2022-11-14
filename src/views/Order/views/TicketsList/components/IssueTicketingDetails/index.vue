@@ -47,6 +47,7 @@
         :alipayAccount="alipayAccount"
         :eorderNumber.sync="eorderNumber"
         :payTradeNumber.sync="payTradeNumber"
+        :payTradeInfo.sync="payTradeInfo"
         :mobilePhone="orderInfo.contactMobile"
         :partnerOrderId="orderInfo.partnerOrderId"
         @onSubmit="onSubmit"
@@ -89,6 +90,7 @@ export default {
     return {
       eorderNumber: "", // 电子订单号
       payTradeNumber: "", // 支付流水号
+      payTradeInfo: {}, // 支付流水号信息
       formPassengerMap: {}, // 乘客表单map
       noTicketResult: {}, // 无票原因
       validationMethodsList: [], // 校验方法列表
@@ -230,7 +232,7 @@ export default {
     // 有票/无票
     async ticketingAction(type) {
       const fmt = "yyyy-MM-dd hh:mm:ss";
-      const query = { ...this.formOrderData };
+      const query = { ...this.formOrderData, ...this.payTradeInfo };
       query.orderPrice = String(this.getTicketTotalAmount()); // 获取实际出票总金额
       const state = type // 出票状态
         ? CONST.ORDER_RESULT_CODE.SUCCESS
