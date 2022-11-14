@@ -22,12 +22,18 @@ export const column = [
 ];
 
 // 支付宝账号详情 - 搜索选项
+const curDate = `${filters.formatDate(new Date())} 00:00:00`;
+const startDate = curDate;
+const endDateTemp = new Date(curDate);
+endDateTemp.setFullYear(endDateTemp.getFullYear() + 1);
+const endDate = `${filters.formatDate(new Date(endDateTemp))} 00:00:00`;
 export const AlibabaPayFormData = [
   {
     label: "支付日期",
     prop: "payDate",
-    type: "daterange",
-    value: [`${filters.formatDate(new Date())} 00:00:00`, ""],
+    type: "datetimerange",
+    value: [startDate, endDate],
+    defaultValue: [],
   },
 ];
 

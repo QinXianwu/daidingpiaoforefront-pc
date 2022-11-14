@@ -1,14 +1,16 @@
 <template>
   <div class="AlibabaPayRecord">
     <div class="footer">
-      <el-button type="primary" @click="$emit('close')"> 返回 </el-button>
+      <el-button type="primary" @click="$emit('close')"> 返回上一级 </el-button>
     </div>
     <div class="content">
       <SearchForm
+        ref="SearchForm"
         isReturnFormData
         :formData="AlibabaPayFormData"
         @on-search="onSearch"
       />
+      <StatisticsDetails :info="statisticsInfo" />
       <TablePanel :tableData="list" :tableHead="AlibabaPayColumn">
         <!-- 操作 -->
       </TablePanel>
@@ -25,10 +27,12 @@
 </template>
 
 <script>
+import filters from "@/filters/index";
+import StatisticsDetails from "./StatisticsDetails.vue";
 import { AlibabaPayFormData, AlibabaPayColumn } from "../config/index";
 export default {
   name: "AlibabaPayRecord",
-  components: {},
+  components: { StatisticsDetails },
   props: {
     accountDetail: {
       type: [Object, String],
@@ -46,14 +50,20 @@ export default {
       },
       query: {},
       total: 0,
+      statisticsInfo: {},
     };
   },
   computed: {},
   methods: {
     init() {
-      const curDate = this.$options.filters.formatDate(new Date());
+      const curDate = `${filters.formatDate(new Date())} 00:00:00`;
+      const startDate = curDate;
+      const endDateTemp = new Date(curDate);
+      endDateTemp.setFullYear(endDateTemp.getFullYear() + 1);
+      const endDate = `${filters.formatDate(new Date(endDateTemp))} 00:00:00`;
       this.query = {
-        startTime: `${curDate} 00:00:00`,
+        startTime: startDate,
+        endTime: endDate,
       };
       this.getList();
     },
@@ -83,6 +93,7 @@ export default {
         ...this.query,
       });
       this.list = res?.alipayRecordList || [];
+      this.statisticsInfo = res || {};
     },
   },
   mounted() {

@@ -430,7 +430,12 @@ export default {
     handlerFormData(isReset = false) {
       this.form = simpleCloneDeep(this.formData);
       this.form.forEach((element) => {
-        if (element.type === "textrange" || element.type === "datetimerange") {
+        if (element.type === "datetimerange" && element?.value?.length) {
+          this.$set(element, "value", element.value);
+        } else if (
+          element.type === "textrange" ||
+          element.type === "datetimerange"
+        ) {
           this.$set(element, "value", []);
         }
         // 如果存在 defaultValue 默认值，使用默认值
