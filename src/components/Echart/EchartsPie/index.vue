@@ -70,8 +70,8 @@ export default {
   },
   methods: {
     initEcharts() {
-      this.charts =
-        this.$echarts && this.$echarts.init(this.$refs[this.refName]);
+      if (!this.$echarts) return;
+      this.charts = this.$echarts.init(this.$refs[this.refName]);
     },
     drawCharts() {
       const { series } = this.getChartsData();

@@ -27,4 +27,14 @@ export default {
       })
     );
   },
+  // 获取首页数据
+  GetHomeOverview(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/home/overview",
+        params,
+        method: "post",
+      })
+    );
+  },
 };

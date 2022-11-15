@@ -9,7 +9,7 @@
     <Breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
     <div class="right-menu">
       <!-- 系统消息 -->
-      <SystemMessage />
+      <!-- <SystemMessage /> -->
 
       <Screenfull id="screenfull" class="right-menu-item hover-effect" />
 
@@ -72,14 +72,14 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 import Screenfull from "@/components/Screenfull";
 import CopyButton from "@/components/CopyButton/index";
-import SystemMessage from "@/components/SystemMessage/index";
+// import SystemMessage from "@/components/SystemMessage/index";
 export default {
   components: {
     Breadcrumb,
     Hamburger,
     Screenfull,
     CopyButton,
-    SystemMessage,
+    // SystemMessage,
   },
   computed: {
     ...mapState({
