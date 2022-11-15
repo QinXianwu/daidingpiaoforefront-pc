@@ -115,6 +115,7 @@ export default {
         resultMsg: orderInfo.resultMsg || "出票失败",
         eorderNumber: eorderCode + eorderNumber,
         payTradeNumber: payTradeInfo?.paymentNumber,
+        ...payTradeInfo,
       };
     },
     // 出票行程数据
@@ -230,7 +231,7 @@ export default {
     // 有票/无票
     async ticketingAction(type) {
       const fmt = "yyyy-MM-dd hh:mm:ss";
-      const query = { ...this.formOrderData, ...this.payTradeInfo };
+      const query = { ...this.formOrderData };
       query.orderPrice = String(this.getTicketTotalAmount()); // 获取实际出票总金额
       const state = type // 出票状态
         ? CONST.ORDER_RESULT_CODE.SUCCESS
