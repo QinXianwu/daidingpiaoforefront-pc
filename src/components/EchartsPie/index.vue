@@ -70,10 +70,12 @@ export default {
   },
   methods: {
     initEcharts() {
-      this.charts = this.$echarts.init(this.$refs[this.refName]);
+      this.charts =
+        this.$echarts && this.$echarts.init(this.$refs[this.refName]);
     },
     drawCharts() {
       const { series } = this.getChartsData();
+      if (!this.charts) return;
       this.charts.setOption({
         tooltip: {
           trigger: "item", // 数据项图形触发
