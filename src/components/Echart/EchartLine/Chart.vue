@@ -57,7 +57,9 @@ export default {
   methods: {
     initEcharts() {
       if (!this.$echarts) return;
-      this.charts = this.$echarts.init(this.$refs[this.refName]);
+      this.charts = this.$echarts.init(this.$refs[this.refName], null, {
+        renderer: "svg",
+      });
     },
     drawCharts() {
       const { series } = this.getChartsData();
