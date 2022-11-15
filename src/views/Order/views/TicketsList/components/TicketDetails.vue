@@ -2,16 +2,24 @@
   <div class="ticketDetails" v-if="ticketInfoArr && ticketInfoArr.length">
     <div class="title">票款明细</div>
     <div class="content">
-      <div class="item" v-for="(item, index) in ticketInfoArr" :key="index">
+      <div
+        class="item mr-10"
+        v-for="(item, index) in ticketInfoArr"
+        :key="index"
+      >
         <span class="item-label mr-10">{{ item && item.label }}:</span>
         <span
-          class="item-value mr-10"
+          class="item-value"
           :class="{
             is: item && item.value,
             dazzling: item && item.isDazzling && item.value,
           }"
           >{{ item.value }}</span
         >
+        <ElPopover trigger="hover" placement="right-start" v-if="item.tipText">
+          <i class="el-icon-question ml-10" slot="reference"></i>
+          <p>{{ item.tipText }}</p>
+        </ElPopover>
       </div>
     </div>
   </div>
@@ -43,21 +51,17 @@ export default {
           value: ticketInfo?.fare || 0,
           isDazzling: true, // 是否高亮
         },
-        // {
-        //   label: "代购费",
-        //   value: "",
-        //   isDazzling: true,
-        // },
-        // {
-        //   label: "服务费",
-        //   value: "",
-        //   isDazzling: true,
-        // },
-        // {
-        //   label: "订单总金额",
-        //   value: "",
-        //   isDazzling: true,
-        // },
+        {
+          label: "出票时效",
+          value: ticketInfo?.prescription || 0,
+          isDazzling: false, // 是否高亮
+          tipText: "平均每单花费的时间 单位:分钟",
+        },
+        {
+          label: "出票成功率",
+          value: ticketInfo?.successRate || 0,
+          isDazzling: false, // 是否高亮
+        },
       ];
     },
   },
