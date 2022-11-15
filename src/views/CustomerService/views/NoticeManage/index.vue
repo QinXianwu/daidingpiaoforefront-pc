@@ -50,12 +50,16 @@ export default {
   },
   methods: {},
   mounted() {
-    const item = this.tabPaneList.find((item) =>
-      this.$hasPermission(item.permission)
-    );
-    if (item) {
-      this.isPermission = true;
-      this.activeName = item.name;
+    try {
+      this.tabPaneList.forEach((item) => {
+        if (this.$hasPermission(item.permission)) {
+          this.isPermission = true;
+          this.activeName = item.name;
+          throw new Error();
+        }
+      });
+    } catch (error) {
+      //
     }
   },
 };
