@@ -46,7 +46,6 @@
         :amount="getTicketTotalAmount()"
         :alipayAccount="alipayAccount"
         :eorderNumber.sync="eorderNumber"
-        :payTradeNumber.sync="payTradeNumber"
         :payTradeInfo.sync="payTradeInfo"
         :mobilePhone="orderInfo.contactMobile"
         :partnerOrderId="orderInfo.partnerOrderId"
@@ -89,7 +88,6 @@ export default {
   data() {
     return {
       eorderNumber: "", // 电子订单号
-      payTradeNumber: "", // 支付流水号
       payTradeInfo: {}, // 支付流水号信息
       formPassengerMap: {}, // 乘客表单map
       noTicketResult: {}, // 无票原因
@@ -105,7 +103,7 @@ export default {
       return userInfo?.eOrderNumberPrefix || "";
     },
     // 订单表单数据
-    formOrderData({ orderInfo, payTradeNumber, eorderCode, eorderNumber }) {
+    formOrderData({ orderInfo, payTradeInfo, eorderCode, eorderNumber }) {
       return {
         id: orderInfo.id,
         agentCode: orderInfo.agentCode,
@@ -116,7 +114,7 @@ export default {
         partnerOrderId: orderInfo.partnerOrderId,
         resultMsg: orderInfo.resultMsg || "出票失败",
         eorderNumber: eorderCode + eorderNumber,
-        payTradeNumber,
+        payTradeNumber: payTradeInfo?.paymentNumber,
       };
     },
     // 出票行程数据
@@ -224,7 +222,7 @@ export default {
       });
       if (isSeatNoExist) return;
       if (!this.alipayAccount) return this.$message.error("请选择支付宝账号");
-      if (!this.payTradeNumber)
+      if (!this.payTradeInfo?.paymentNumber)
         return this.$message.error("请匹配或手填支付流水号");
       if (!result) return (this.showSelectNoTicketType = true);
       this.ticketingAction(result);

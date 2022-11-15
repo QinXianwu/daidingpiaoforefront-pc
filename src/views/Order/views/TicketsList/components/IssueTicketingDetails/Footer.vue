@@ -89,11 +89,6 @@ export default {
       type: String,
       default: "",
     },
-    // 订单支付流水号
-    payTradeNumber: {
-      type: String,
-      default: "",
-    },
     // 订单支付流水号信息
     payTradeInfo: {
       type: Object,
@@ -134,7 +129,6 @@ export default {
     // 选择支付流水号
     selectSerialNumber(val) {
       this.serialNumber = val;
-      this.$emit("update:payTradeNumber", val);
       const item = this.alipaySerialNumList.find(
         (ele) => ele.paymentNumber === val
       );
@@ -142,10 +136,9 @@ export default {
     },
     // 手填流水号
     onInputSerialNum(val) {
-      this.$emit("update:payTradeNumber", val);
       this.$emit("update:payTradeInfo", {
         ...this.serialInfo,
-        amount: this.amount,
+        amount: String(this.amount),
         paymentNumber: val,
       });
     },
@@ -155,7 +148,7 @@ export default {
       if (!this.amount) return this.$message.error("请输入金额");
       let [, res] = await this.$http.Order.GetAlipaySerialNumber({
         body: {
-          amount: String(0.1 || this.amount),
+          amount: String(this.amount),
           partnerOrderId: this.partnerOrderId,
           payAccountName: this.alipayAccount,
           agentCode: this.$router.currentRoute.meta.agentCode,
@@ -169,7 +162,6 @@ export default {
         const tempObj = res[0] || {};
         const paymentNumber = tempObj?.paymentNumber || "";
         this.serialNumber = paymentNumber;
-        this.$emit("update:payTradeNumber", paymentNumber);
         this.$emit("update:payTradeInfo", { ...tempObj });
         this.isSerialNumber = false;
       } else {
