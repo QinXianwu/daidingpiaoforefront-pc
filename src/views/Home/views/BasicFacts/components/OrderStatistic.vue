@@ -7,8 +7,6 @@
       <div class="content-l">
         <EchartLine
           chartTitle=""
-          :width="1200"
-          :height="600"
           :chartsData="chartsData"
           :chartsXAxisData="chartsXAxisData"
           v-if="chartsXAxisData && chartsXAxisData.length"
@@ -29,13 +27,11 @@
       </div>
     </div>
     <div class="title">
-      <span>订单数据比率</span>
+      <span>订单数据统计</span>
     </div>
     <div class="content-ratio">
       <EchartLine
         chartTitle=""
-        :width="1200"
-        :height="600"
         :chartsData="chartsRatioData"
         :chartsXAxisData="chartsXAxisData"
         yAxisFormatter="{value} %"
@@ -84,7 +80,7 @@ export default {
           value: statisticInfo?.failOrderCountEveryDay || 0,
         },
         {
-          label: "异常订单数",
+          label: "超时订单数",
           prop: "overtimeOrderCount",
           value: statisticInfo?.overtimeOrderCountEveryDay || 0,
         },

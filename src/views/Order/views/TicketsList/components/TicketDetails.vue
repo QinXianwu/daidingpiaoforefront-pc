@@ -62,6 +62,11 @@ export default {
           value: ticketInfo?.successRate || 0,
           isDazzling: false, // 是否高亮
         },
+        {
+          label: "超时订单数",
+          value: ticketInfo?.overtimeOrderCount || 0,
+          isDazzling: true, // 是否高亮
+        },
       ];
     },
   },
