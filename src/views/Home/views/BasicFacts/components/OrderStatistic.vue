@@ -7,6 +7,8 @@
       <div class="content-l">
         <EchartLine
           chartTitle=""
+          :width="1200"
+          :height="600"
           :chartsData="chartsData"
           :chartsXAxisData="chartsXAxisData"
           v-if="chartsXAxisData && chartsXAxisData.length"
@@ -32,6 +34,8 @@
     <div class="content-ratio">
       <EchartLine
         chartTitle=""
+        :width="1200"
+        :height="600"
         :chartsData="chartsRatioData"
         :chartsXAxisData="chartsXAxisData"
         yAxisFormatter="{value} %"

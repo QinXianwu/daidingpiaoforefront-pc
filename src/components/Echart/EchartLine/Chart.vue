@@ -118,7 +118,7 @@ export default {
           emphasis: {
             focus: "series",
             itemStyle: {
-              borderWidth: 2,
+              borderWidth: 3,
             },
           },
           showSymbol: false,
