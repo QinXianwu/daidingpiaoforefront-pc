@@ -125,7 +125,7 @@ export default {
       };
       const [, res] = await this.$http.AccountRoleManage.GetRoleList(query);
       this.list = res?.list?.length ? res.list : [];
-      this.total = res.total;
+      this.total = res?.total || 0;
     },
   },
   mounted() {
