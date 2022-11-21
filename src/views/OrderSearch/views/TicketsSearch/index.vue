@@ -51,12 +51,13 @@
 <script>
 import { mapGetters } from "vuex";
 import { column, formData } from "./config";
-import { DownloadFile } from "@/utils/index";
 import TicketDetails from "./components/TicketDetails.vue";
+import downloadFilelMixin from "@/mixins/downloadFilelMixin";
 import ExpandTicketDetails from "./components/ExpandTicketDetails";
 export default {
   name: "TicketsSearch",
   components: { TicketDetails, ExpandTicketDetails },
+  mixins: [downloadFilelMixin],
   data() {
     return {
       formData,
@@ -122,24 +123,11 @@ export default {
       });
       this.isExporting = false;
       if (!res) return this.$message.error("导出失败");
-      try {
-        await this.$confirm("导出成功，是否进行下载？", "导出提示", {
-          confirmButtonText: "去下载",
-          cancelButtonText: "取消",
-          type: "success",
-        });
-        const fileName = this.$options.filters.formatDate(
-          Date.now(),
-          "yyyy-MM-dd hh:mm:ss"
-        );
-        DownloadFile({
-          data: res,
-          FileName: "出票_" + fileName,
-          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8 ",
-        });
-      } catch (e) {
-        // e;
-      }
+      this.onExportDownloadFile({
+        data: res,
+        tipText: "导出成功，是否进行下载?",
+        fileName: "出票",
+      });
     },
     sendMessage() {
       console.log("发送通知");

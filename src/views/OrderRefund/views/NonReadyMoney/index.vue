@@ -85,10 +85,11 @@
 <script>
 import { column, formData } from "./config";
 import Orther from "./components/Orther.vue";
-import { DownloadFile } from "@/utils/index";
+import downloadFilelMixin from "@/mixins/downloadFilelMixin";
 import ReviewRefundTicket from "./components/ReviewRefundTicket.vue";
 export default {
   name: "NonReadyMoney",
+  mixins: [downloadFilelMixin],
   components: { Orther, ReviewRefundTicket },
   data() {
     return {
@@ -191,7 +192,11 @@ export default {
       });
       this.isExporting = false;
       if (!res) return this.$message.error("导出失败");
-      this.onExportDownloadFile({ data: res, fileName: "非现金退票" });
+      this.onExportDownloadFile({
+        data: res,
+        tipText: "导出成功，是否进行下载?",
+        fileName: "非现金退票",
+      });
     },
     // 导出证件
     async onExportPass(data) {
@@ -213,32 +218,10 @@ export default {
       if (!res) return this.$message.error("导出失败");
       this.onExportDownloadFile({
         data: res,
+        tipText: "导出成功，是否进行下载?",
         fileName: "非现金退票_导出证件",
         fileType: "application/zip;charset=UTF-8",
       });
-    },
-    async onExportDownloadFile({ data, fileName, fileType }) {
-      if (!data) return;
-      try {
-        await this.$confirm("导出成功，是否进行下载？", "导出提示", {
-          confirmButtonText: "去下载",
-          cancelButtonText: "取消",
-          type: "success",
-        });
-        const date = this.$options.filters.formatDate(
-          Date.now(),
-          "yyyy-MM-dd hh:mm:ss"
-        );
-        const dateType =
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8";
-        DownloadFile({
-          data: data,
-          FileName: `${fileName || ""}_${date}`,
-          type: fileType || dateType,
-        });
-      } catch (e) {
-        // e;
-      }
     },
     // 导入
     onOneImport() {
