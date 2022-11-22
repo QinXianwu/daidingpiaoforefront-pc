@@ -44,7 +44,7 @@
 
 <script>
 import ScrollPane from "./ScrollPane";
-// import { constantRoutes } from "@/router";
+import { constantRoutes } from "@/router";
 
 import path from "path";
 export default {
@@ -63,8 +63,8 @@ export default {
       return this.$store.state.tagsView.visitedViews;
     },
     routes() {
-      // return constantRoutes;
-      return this.$store.state.permission.routes; // 计算权限后的路由
+      return constantRoutes;
+      // return this.$store.state.permission.routes; // 计算权限后的路由
     },
   },
   watch: {
