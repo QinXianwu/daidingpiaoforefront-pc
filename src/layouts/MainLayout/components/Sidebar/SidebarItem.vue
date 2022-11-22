@@ -13,19 +13,21 @@
         :query="onlyOneChild.query"
       >
         <ElMenuItem
+          class="submenu-title"
           :index="resolvePath(onlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
-          <!-- <Item
-            :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
-            :title="onlyOneChild.meta.title"
-          /> -->
           <i
             :class="`${icon} sub-el-icon`"
             v-if="icon && icon.includes('el-icon')"
           />
           <svg-icon :icon-class="icon" v-else-if="icon" />
           <span slot="title">{{ onlyOneChild.meta.title }}</span>
+          <el-badge
+            class="badge"
+            v-if="getBadgeValue(item)"
+            :value="getBadgeValue(item)"
+          />
         </ElMenuItem>
       </AppLink>
     </template>
@@ -37,17 +39,26 @@
       popper-append-to-body
     >
       <template slot="title">
-        <!-- <Item
-          v-if="item.meta"
-          :icon="item.meta && item.meta.icon"
-          :title="item.meta.title"
-        /> -->
         <i
           :class="`${icon} sub-el-icon`"
           v-if="item.meta && icon && icon.includes('el-icon')"
         />
         <svg-icon :icon-class="icon" v-else-if="item.meta && icon" />
-        <span slot="title" v-if="item.meta">{{ item.meta.title }}</span>
+        <span slot="title" v-if="item.meta">
+          <el-badge is-dot class="item-badge" v-if="isShowDot(item)">
+            {{ item.meta.title }}
+          </el-badge>
+          <el-badge
+            class="item-badge"
+            v-else-if="ticketsNnotHandOrderMap[item.meta.agentCode]"
+            :value="ticketsNnotHandOrderMap[item.meta.agentCode]"
+          >
+            {{ item.meta.title }}
+          </el-badge>
+          <span v-else>
+            {{ item.meta.title }}
+          </span>
+        </span>
       </template>
       <SidebarItem
         v-for="child in item.children"
@@ -64,14 +75,13 @@
 <script>
 import path from "path";
 import { isExternal } from "@/utils/validate";
-// import Item from "./Item";
 import AppLink from "./Link";
 import FixiOSBug from "./FixiOSBug";
+import { mapGetters } from "vuex";
 
 export default {
   name: "SidebarItem",
   components: {
-    // Item,
     AppLink,
   },
   mixins: [FixiOSBug],
@@ -130,8 +140,27 @@ export default {
       }
       return path.resolve(this.basePath, routePath);
     },
+    isShowDot(item) {
+      const ticketsKeys = Object.keys(this.ticketsNnotHandOrderMap);
+      return (
+        (item?.name === "Order" && ticketsKeys.length) ||
+        (item?.name === "OrderRefund" && this.refundNnotHandOrderMap)
+      );
+    },
+    getBadgeValue(item) {
+      const ticketValue = this.ticketsNnotHandOrderMap[item.meta.agentCode];
+      if (!item.meta.isShowNotHandleCount) return 0;
+      else if (item.meta.agentCode && ticketValue) return ticketValue;
+      else if (item.name === "NonReadyMoney" && this.refundNnotHandOrderMap)
+        return this.refundNnotHandOrderMap;
+      return 0;
+    },
   },
   computed: {
+    ...mapGetters({
+      ticketsNnotHandOrderMap: "agent/ticketsNnotHandOrderMap",
+      refundNnotHandOrderMap: "agent/refundNnotHandOrderMap",
+    }),
     icon({ onlyOneChild, item }) {
       return onlyOneChild.meta.icon || (item.meta && item.meta.icon);
     },
@@ -144,5 +173,13 @@ export default {
   color: currentColor;
   width: 1em;
   height: 1em;
+}
+
+.badge {
+  margin-right: 5px;
+  line-height: 16px;
+}
+::v-deep .item-badge .el-badge__content.is-fixed {
+  top: 10px;
 }
 </style>

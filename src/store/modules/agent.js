@@ -7,6 +7,7 @@ const state = {
   pointSaleList: [], // 代售点列表
   pointSaleAction: [], // 代售点Action 新订单通知
   alipayAccountList: [], // 支付宝账号列表
+  notHandleOrderCountMap: {}, // 未处理订单数量map
 };
 
 const mutations = {
@@ -27,6 +28,9 @@ const mutations = {
   },
   SET_ALIPAY_ACCOUNT_LIST(state, data) {
     state.alipayAccountList = data;
+  },
+  SET_NOT_HANDLE_ORDER_COUNT_MAP(state, data) {
+    state.notHandleOrderCountMap = data || {};
   },
 };
 
@@ -65,6 +69,22 @@ const getters = {
       label: item.alipayAccount,
       value: item.id,
     }));
+  },
+  // 订单出票未处理数量map
+  ticketsNnotHandOrderMap(state) {
+    const map = {};
+    const options = state.notHandleOrderCountMap?.notHandOrderList || [];
+    if (!options?.length) return map;
+    options.map((item) => {
+      if (item?.code) {
+        map[item.code] = Number(item.count);
+      }
+    });
+    return map;
+  },
+  // 订单退票未处理数量map
+  refundNnotHandOrderMap(state) {
+    return state.notHandleOrderCountMap?.refundCount || 0;
   },
 };
 

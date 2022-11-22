@@ -9,6 +9,7 @@ export default {
   component: MainLayout,
   redirect: "/OrderRefund/ReadyMoney",
   alwaysShow: true,
+  name: "OrderRefund",
   meta: {
     title: "订单退票",
     icon: "refund",
@@ -31,6 +32,7 @@ export default {
       name: "NonReadyMoney",
       meta: {
         title: "非现金退票",
+        isShowNotHandleCount: true,
         PermissionId: PERMISSION_ID.Order_Ticket_Return_NotCash,
       },
     },

@@ -14,6 +14,7 @@ export default {
   components: {},
   data() {
     return {
+      timeId: "",
       timeoutId: "",
       neworderAudio: new Audio(neworder), // // 新订单提示
     };
@@ -23,6 +24,7 @@ export default {
       token: (state) => state.authorization.state,
       isAudio: (state) => state.app.isAudio, // 是否开启声音
       userInfo: (state) => state.user.userInfo,
+      pointSaleList: (state) => state.agent.pointSaleList,
       pointSaleAction: (state) => state.agent.pointSaleAction,
     }),
     receiveOrderLimit({ userInfo }) {
@@ -37,6 +39,10 @@ export default {
         code: item.code,
         lastId: 0,
       }));
+    },
+    pointSaleIds({ pointSaleList }) {
+      if (!pointSaleList?.length) return [];
+      return pointSaleList.map((item) => item.code);
     },
   },
   methods: {
@@ -68,9 +74,25 @@ export default {
         }, 5000);
       });
     },
+    // 获取未处理订单并处理菜单栏显示数量
+    async handleNotOrder() {
+      const [, res] = await this.$http.Base.GetOrderNotHandleInfo({
+        codeList: this.pointSaleIds,
+      });
+      if (Number(res?.code) === this.AJAX_CODE.SUCCESS) {
+        this.$store.commit("agent/SET_NOT_HANDLE_ORDER_COUNT_MAP", res?.data);
+      }
+      this.$nextTick(() => {
+        this.timeId = setTimeout(() => {
+          if (this.token) this.handleNotOrder();
+          else if (this.timeId) clearInterval(this.timeId);
+        }, 5500);
+      });
+    },
   },
   mounted() {
     this.handleNewOrderTip(this.pointSaleInit);
+    this.handleNotOrder();
   },
 };
 </script>

@@ -13,6 +13,7 @@ export const generateOrderSiteList = (arr) => {
     redirect: "/404",
     meta: {
       title: item?.title || `站点-${index}`,
+      agentCode: item.id,
     },
     children: [
       {
@@ -23,6 +24,7 @@ export const generateOrderSiteList = (arr) => {
           title: "打票及回填",
           agentCode: item.id,
           PermissionId: PERMISSION_ID.Order_Ticketing,
+          isShowNotHandleCount: true,
         },
       },
       {
@@ -32,6 +34,7 @@ export const generateOrderSiteList = (arr) => {
         meta: {
           title: "取车票报销凭证",
           agentCode: item.id,
+          isShowNotHandleCount: false,
         },
       },
       {
@@ -41,6 +44,7 @@ export const generateOrderSiteList = (arr) => {
         meta: {
           title: "取报销凭证快递",
           agentCode: item.id,
+          isShowNotHandleCount: false,
         },
       },
     ],

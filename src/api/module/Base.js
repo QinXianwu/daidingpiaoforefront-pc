@@ -37,4 +37,16 @@ export default {
       })
     );
   },
+  // 获取订单未处理信息
+  GetOrderNotHandleInfo(params) {
+    return catchAsyncFun(
+      apiFetch({
+        url: apiPrefix + "/common/list/order/not-handle",
+        params,
+        method: "post",
+        isLoading: false,
+        isReturnAll: true,
+      })
+    );
+  },
 };

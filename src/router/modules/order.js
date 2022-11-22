@@ -6,6 +6,7 @@ export default {
   path: "/Order",
   component: MainLayout,
   redirect: "/404",
+  name: "Order",
   meta: {
     title: "订单出票",
     icon: "order",
