@@ -73,6 +73,12 @@ export const formData = [
     type: "datetimerange",
     value: [],
   },
+  {
+    label: "出票日期",
+    prop: "ticketIssueDate",
+    type: "datetimerange",
+    value: [],
+  },
 ];
 // 表格头
 export const column = [

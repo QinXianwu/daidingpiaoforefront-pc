@@ -103,7 +103,12 @@ export default {
         this.query.departStartTime = data.ticketDate[0];
         this.query.departEndTime = data.ticketDate[1];
       }
+      if (data?.ticketIssueDate?.length) {
+        this.query.ticketingStartTime = data.ticketIssueDate[0];
+        this.query.ticketingEndTime = data.ticketIssueDate[1];
+      }
       delete this.query.ticketDate;
+      delete this.query.ticketIssueDate;
       this.getList(true);
     },
     // 导出
@@ -114,7 +119,12 @@ export default {
         query.departStartTime = data.ticketDate[0];
         query.departEndTime = data.ticketDate[1];
       }
+      if (data?.ticketIssueDate?.length) {
+        this.query.ticketingStartTime = data.ticketIssueDate[0];
+        this.query.ticketingEndTime = data.ticketIssueDate[1];
+      }
       delete query.ticketDate;
+      delete this.query.ticketIssueDate;
       this.isExporting = true;
       const [, res] = await this.$http.ExportImport.ExportTicketing({
         size: -1,
