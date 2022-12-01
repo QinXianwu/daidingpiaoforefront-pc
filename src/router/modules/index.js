@@ -4,7 +4,6 @@ import order from "./order"; // 订单模块
 import orderRefund from "./orderRefund"; // 订单退票模块
 import orderSearch from "./orderSearch"; // 订单查询模块
 import customerService from "./customerService"; // 联系客服模块
-// import shopManage from "./shopManage"; // 店铺
 import setUp from "./setUp"; // 系统设置模块
 import error from "./error"; // 异常页面模块
 
@@ -15,7 +14,6 @@ const routerList = [
   orderRefund,
   orderSearch,
   customerService,
-  // shopManage,
   setUp,
   error,
 ];

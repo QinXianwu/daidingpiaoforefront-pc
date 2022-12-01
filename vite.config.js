@@ -39,7 +39,6 @@ export default defineConfig(({ mode }) => {
         components: resolve(__dirname, "./src/components"),
         assets: resolve(__dirname, "./src/assets"),
         utils: resolve(__dirname, "./src/utils"),
-        "@@": resolve(__dirname, "./src/views/ShopManage/views/PageEditor"), //自定义页面的路径 组件层级太多 写相对路径会很长
       },
       extensions: [".js", ".ts", ".jsx", ".tsx", ".json", ".vue"],
     },
