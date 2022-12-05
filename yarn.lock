@@ -3616,6 +3616,11 @@ postcss-prefix-selector@^1.6.0:
   resolved "https://registry.npmmirror.com/postcss-prefix-selector/-/postcss-prefix-selector-1.16.0.tgz#ad5b56f9a73a2c090ca7161049632c9d89bcb404"
   integrity sha512-rdVMIi7Q4B0XbXqNUEI+Z4E+pueiu/CS5E6vRCQommzdQ/sgsS4dK42U7GX8oJR+TJOtT+Qv3GkNo6iijUMp3Q==
 
+postcss-pxtorpx-pro@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmmirror.com/postcss-pxtorpx-pro/-/postcss-pxtorpx-pro-2.0.0.tgz#38cbd836e06d1acb7fe01cf7e4e82172cf2b66c4"
+  integrity sha512-nahD/qIqv9N+zs2hxFq/QzyeiHOEryP9fxavsb7ZFSpvcm5oOf74ueE/R6Uj19x1bJ1m2ZeJWxCHbv/d5ST2aQ==
+
 postcss-safe-parser@^6.0.0:
   version "6.0.0"
   resolved "https://registry.npmmirror.com/postcss-safe-parser/-/postcss-safe-parser-6.0.0.tgz#bb4c29894171a94bc5c996b9a30317ef402adaa1"

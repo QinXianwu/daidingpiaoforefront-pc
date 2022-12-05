@@ -200,3 +200,10 @@ export function DownloadFile({ data, FileName, type }) {
   // 移除a标签
   ele.remove();
 }
+
+// 是否为移动端
+export function isMobile() {
+  return navigator.userAgent.match(
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+  );
+}

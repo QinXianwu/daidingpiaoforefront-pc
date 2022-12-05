@@ -54,6 +54,12 @@ export const constantRoutes = [
     component: () => import("@/views/ErrorPage/401"),
     hidden: true,
   },
+  {
+    path: "/AppletOrder",
+    meta: {},
+    component: () => import("@/views/Applet/view/AppletOrder"),
+    hidden: true,
+  },
   // { path: "*", redirect: "/404", hidden: true },
   // ...routerList,
 ];
