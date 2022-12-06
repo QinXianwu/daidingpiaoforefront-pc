@@ -5,6 +5,7 @@ import { generateOrderSiteList } from "@/router/config/order";
 import { generateServiceSiteList } from "@/router/config/customerService";
 import store from "@/store";
 import hasPermission from "./hasPermission";
+import { isMobile } from "@/utils";
 
 import { clearNum } from "@/api/request";
 router.beforeEach(async (to, from, next) => {
@@ -33,6 +34,15 @@ router.beforeEach(async (to, from, next) => {
     });
     accessRoutes.forEach((r) => router.addRoute(r));
     next({ ...to, replace: true });
+  } else if (
+    !!isMobile() &&
+    isLogin &&
+    to.path !== "/401" &&
+    to.path !== "/AppletOrder"
+  ) {
+    // next();
+    console.log(111);
+    return next({ path: "/AppletOrder" });
   } else {
     // 如果已经有hash表了，直接跳转
     next();

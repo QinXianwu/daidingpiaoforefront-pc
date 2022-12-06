@@ -6,7 +6,10 @@
     />
     <div class="loginCollections">
       <div class="main">
-        <div class="el-card box-card is-always-shadow">
+        <div
+          class="el-card box-card is-always-shadow"
+          :class="{ mobile: isMobile }"
+        >
           <div class="el-card__body">
             <div class="head">
               <span class="title">密码登录</span>
@@ -43,6 +46,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import backgroundImage from "./images/backgroundImage.jpg";
 export default {
   name: "Login",
@@ -61,9 +65,14 @@ export default {
     ...mapState({
       token: (state) => state.authorization.state,
     }),
+    ...mapGetters({
+      isMobile: "isMobile",
+    }),
   },
   created() {
-    if (this.token) {
+    if (this.token && this.isMobile) {
+      this.$router.push("/AppletOrder");
+    } else if (this.token) {
       this.$router.push("/Home/BasicFacts");
     }
   },
@@ -110,6 +119,9 @@ export default {
   }
   .box-card {
     width: 480px;
+    &.mobile {
+      width: 310px;
+    }
     height: 410px;
     text-align: center;
     margin: 0 auto;

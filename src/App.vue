@@ -1,12 +1,19 @@
 <template>
-  <div id="app">
+  <div id="app" :class="isMobile ? 'applet-content' : ''">
     <router-view />
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
+  computed: {
+    ...mapGetters({
+      isMobile: "isMobile",
+    }),
+  },
   mounted() {
+    console.log(`-------isMobile:${this.isMobile}-------`);
     // 设置应用title
     document.title = this.$store.state.app.McatGlobal?.AppInfo?.AppTitle || "";
     // console.log(import.meta.env);
@@ -19,6 +26,10 @@ export default {
 #app {
   min-width: 1300px;
   color: $main-font-color;
+  &.applet-content {
+    width: 100vw;
+    min-width: auto;
+  }
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
