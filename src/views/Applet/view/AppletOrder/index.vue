@@ -76,6 +76,7 @@ export default {
   .content {
     position: relative;
     top: -20px;
+    // top: 130px;
     background: #fff;
     padding-left: 0;
     padding-right: 0;

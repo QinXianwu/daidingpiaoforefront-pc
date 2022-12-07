@@ -9,8 +9,8 @@
 <script>
 import { mapState } from "vuex";
 import ActionView from "./Action.vue";
-import TicketList from "./TicketList.vue";
-import TicketDetails from "./TicketDetails.vue";
+import TicketList from "./Ticket/index.vue";
+import TicketDetails from "./Ticket/TicketDetails.vue";
 import neworder from "assets/media/neworder.wav";
 import timeout from "assets/media/timeout.wav";
 
