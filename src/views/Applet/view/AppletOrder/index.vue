@@ -11,7 +11,7 @@
         />
         <div class="nothing" v-else>
           <div class="nothing-img">
-            <img src="./images/something.png" alt="" />
+            <img :src="something" alt="" />
           </div>
           <span class="nothing-text">空空如也</span>
         </div>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import something from "./images/something.png";
 import { mapState, mapGetters } from "vuex";
 import HeaderView from "./components/Header.vue";
 import ContentView from "./components/Content.vue";
@@ -29,6 +30,7 @@ export default {
   components: { HeaderView, ContentView },
   data() {
     return {
+      something,
       agentCode: "",
       agentInfo: {},
     };

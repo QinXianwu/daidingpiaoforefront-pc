@@ -1,8 +1,20 @@
 <template>
   <div class="ContentView">
-    <ActionView :agentCode="agentCode" :alipayAccount="alipayAccount" />
+    <ActionView :agentCode="agentCode" :alipayAccount.sync="alipayAccount" />
     <TicketDetails :ticketInfo="ticketInfo" />
-    <TicketList :list="list" />
+    <TicketList
+      :list="list"
+      :isRefresh="isRefresh"
+      :alipayAccount="alipayAccount"
+      @onReminder="onReminder"
+      @onCountdownOver="onCountdownOver"
+      @success="
+        (val) => {
+          getStatistics();
+          onCountdownOver(val);
+        }
+      "
+    />
   </div>
 </template>
 
@@ -36,6 +48,7 @@ export default {
   },
   data() {
     return {
+      isRefresh: true,
       neworderAudio: new Audio(neworder), // 新订单提示
       timeoutAudio: new Audio(timeout), // 即将超时提示
       alipayAccount: "",
@@ -59,45 +72,6 @@ export default {
     },
   },
   methods: {
-    // 获取代售点数据
-    async getStatistics() {
-      if (!this.agentCode) return;
-      const [, res] = await this.$http.Order.GetOrderStatistics({
-        agentCode: this.agentCode,
-      });
-      this.ticketInfo = res ? res : {};
-    },
-    async getList(isClear) {
-      if (isClear) this.page.current = 1;
-      const query = {
-        ...this.page,
-        size: this.receiveOrderLimit,
-        paramData: { agentCode: this.agentCode },
-      };
-      const [, res] = await this.$http.Order.GetOrderWaitList(query);
-      const idsStr = this.list.map((item) => item.id).join(",");
-      const tempList = res?.list?.length ? res?.list : [];
-      const joinList = tempList.filter((item) => !idsStr.includes(item.id));
-      const tempArr = [].concat(this.list, joinList);
-      if (tempArr?.length > this.list?.length) {
-        // this.$message.success("你有一个新订单，请及时处理");
-        this.$notify({
-          title: "新订单",
-          message: "你有一个新订单，请及时处理",
-          type: "success",
-          offset: 50,
-        });
-        if (this.isAudio) this.neworderAudio.play();
-      }
-      this.list = [...tempArr];
-      this.total = res?.total || 0;
-      this.$nextTick(() => {
-        this.timeId = setTimeout(() => {
-          if (this.token) this.getList(true);
-          else if (this.timeId) clearInterval(this.timeId);
-        }, 5000);
-      });
-    },
     // 过期删除
     onCountdownOver(val) {
       this.$nextTick(() => {
@@ -117,6 +91,56 @@ export default {
         offset: 50,
       });
       if (this.isAudio) this.timeoutAudio.play();
+    },
+    async getList(isClear) {
+      this.isRefresh = true;
+      if (isClear) this.page.current = 1;
+      const query = {
+        ...this.page,
+        size: this.receiveOrderLimit,
+        paramData: { agentCode: this.agentCode },
+      };
+      const [, res] = await this.$http.Order.GetOrderWaitList(query);
+      const idsStr = this.list.map((item) => item.id).join(",");
+      const tempList = res?.list?.length ? res?.list : [];
+      const joinList = tempList.filter(
+        (item) =>
+          !idsStr.includes(item.id) &&
+          new Date(item.expireTime).getTime() > Date.now()
+      );
+      const tempArr = [].concat(this.list, joinList);
+      if (tempArr?.length > this.list?.length) {
+        // this.$message.success("你有一个新订单，请及时处理");
+        this.$notify({
+          title: "新订单",
+          message: "你有一个新订单，请及时处理",
+          type: "success",
+          offset: 50,
+        });
+        if (this.isAudio) this.neworderAudio.play();
+      }
+      if (joinList?.length) {
+        this.isRefresh = false;
+        this.$nextTick(() => {
+          this.isRefresh = true;
+        });
+      }
+      this.list = [...tempArr];
+      this.total = res?.total || 0;
+      this.$nextTick(() => {
+        this.timeId = setTimeout(() => {
+          if (this.token) this.getList(true);
+          else if (this.timeId) clearInterval(this.timeId);
+        }, 5000);
+      });
+    },
+    // 获取代售点数据
+    async getStatistics() {
+      if (!this.agentCode) return;
+      const [, res] = await this.$http.Order.GetOrderStatistics({
+        agentCode: this.agentCode,
+      });
+      this.ticketInfo = res ? res : {};
     },
   },
   beforeDestroy() {

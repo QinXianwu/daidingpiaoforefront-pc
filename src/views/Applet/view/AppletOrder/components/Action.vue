@@ -40,7 +40,6 @@
       </span>
       <span class="action-item-r value">
         <ElSelect
-          clearable
           v-model="account"
           placeholder="请选择支付宝账号"
           @change="onSelectAlipayAccount"
@@ -50,6 +49,7 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
+            @click.stop.native="() => {}"
           >
           </ElOption>
         </ElSelect>
@@ -137,6 +137,9 @@ export default {
 
   .receiveOrders-tip {
     color: $--color-warning;
+  }
+  ::v-deep .el-scrollbar .el-scrollbar__bar {
+    opacity: 1 !important;
   }
   &-item {
     display: flex;

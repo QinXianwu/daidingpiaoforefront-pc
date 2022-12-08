@@ -4,7 +4,10 @@
       <span>订票列表</span>
     </div>
     <div class="content">
-      <el-collapse v-if="list && list.length" v-model="activeNames">
+      <el-collapse
+        v-if="isRefresh && list && list.length"
+        v-model="activeNames"
+      >
         <el-collapse-item
           v-for="(item, index) in list"
           :key="index"
@@ -30,29 +33,64 @@
               </div>
               <div class="ticket-info-list">
                 <!-- 出票头部信息 -->
-                <TicketInfoList :ticketList="item.ticketList" />
+                <TicketInfoList
+                  :ticketList="item.ticketList"
+                  v-if="item.ticketList && item.ticketList.length"
+                />
               </div>
             </div>
             <transition name="plus-icon">
               <div class="action-bottom" v-if="!activeNames.includes(index)">
-                <el-button class="error-btn">无票</el-button>
-                <el-button type="primary">有票</el-button>
+                <el-button
+                  class="error-btn"
+                  @click.stop.native="onSubmit({ index, action: true })"
+                  >无票</el-button
+                >
+                <el-button
+                  type="primary"
+                  @click.stop.native="onSubmit({ index, action: true })"
+                  >有票</el-button
+                >
               </div>
             </transition>
+            <div class="dividing-line" v-if="!activeNames.includes(index)" />
           </template>
           <div class="form-data">
-            <TicketFormList :ticketList="item.ticketList" />
-            <OrderInfo />
+            <TicketFormList
+              :ref="`TicketFormList`"
+              :orderInfo="item"
+              :alipayAccount="alipayAccount"
+              :ticketList="item.ticketList"
+              :eorderNumber="eorderNumber"
+              :payTradeInfo="payTradeInfo"
+              @success="(val) => $emit('success', val)"
+            />
+            <OrderInfo
+              :orderInfo="item"
+              :amount="getTicketTotalAmount(index)"
+              :alipayAccount="alipayAccount"
+              :eorderNumber.sync="eorderNumber"
+              :payTradeInfo.sync="payTradeInfo"
+            />
             <div class="action-bottom">
-              <el-button class="error-btn">无票</el-button>
-              <el-button type="primary">有票</el-button>
+              <el-button
+                class="error-btn"
+                @click.stop.native="onSubmit({ index, action: false })"
+                >无票</el-button
+              >
+              <el-button
+                type="primary"
+                @click.stop.native="onSubmit({ index, action: true })"
+                >有票</el-button
+              >
             </div>
+            <div class="dividing-line" />
           </div>
         </el-collapse-item>
       </el-collapse>
       <div class="nothing" v-else>
         <div class="nothing-img">
-          <img src="../../images/something.png" alt="" />
+          <img :src="something" alt="" />
         </div>
         <span class="nothing-text">空空如也</span>
       </div>
@@ -61,6 +99,7 @@
 </template>
 
 <script>
+import something from "../../images/something.png";
 import OrderInfo from "./OrderInfo.vue";
 import TicketInfoList from "./TicketInfoList.vue";
 import TicketFormList from "./TicketFormList.vue";
@@ -74,16 +113,41 @@ export default {
       type: Array,
       default: () => [],
     },
+    alipayAccount: {
+      type: String,
+      default: "",
+    },
+    isRefresh: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
+      something,
       activeNames: [],
+      eorderNumber: "", // 电子订单号
+      payTradeInfo: {}, // 支付流水号信息
     };
   },
+  watch: {
+    isRefresh(val) {
+      console.log(val);
+    },
+  },
   computed: {},
-  methods: {},
+  methods: {
+    onSubmit(data) {
+      // console.log(data, this.$refs[`TicketFormList`]);
+      this.$refs[`TicketFormList`][data.index].onSubmit(data.action);
+    },
+    getTicketTotalAmount(index) {
+      return this.list?.length && this.$refs[`TicketFormList`]?.length
+        ? this.$refs[`TicketFormList`][index].getTicketTotalAmount()
+        : 0;
+    },
+  },
   mounted() {
-    //
     console.log("TicketList");
   },
 };
@@ -164,6 +228,12 @@ export default {
       border: none;
     }
   }
+  .dividing-line {
+    width: 100%;
+    height: 10px;
+    background: #f5f5f5;
+    margin: 10px 0;
+  }
   ::v-deep .el-collapse-item__header {
     border: none;
     height: auto;
@@ -174,9 +244,16 @@ export default {
     opacity: 0;
     display: none;
   }
+  ::v-deep .el-collapse-item__content {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
   ::v-deep .el-collapse,
   ::v-deep .el-collapse-item__wrap {
     border: none;
+  }
+  ::v-deep .el-collapse-item {
+    padding-bottom: 10px;
   }
   .plus-icon-enter-active {
     transition: opacity 0.3s;

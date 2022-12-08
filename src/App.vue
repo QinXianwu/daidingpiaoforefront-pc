@@ -29,6 +29,27 @@ export default {
   &.applet-content {
     width: 100vw;
     min-width: auto;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    i:focus,
+    a:focus,
+    input:focus,
+    p:focus,
+    div:focus {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+    ::v-deep .el-scrollbar {
+      > .el-scrollbar__bar {
+        opacity: 1 !important;
+      }
+    }
+    .el-scrollbar {
+      > .el-scrollbar__bar {
+        opacity: 1 !important;
+      }
+    }
+    ::v-deep .el-scrollbar .el-scrollbar__bar {
+      opacity: 1 !important;
+    }
   }
 }
 input::-webkit-outer-spin-button,

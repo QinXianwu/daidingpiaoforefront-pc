@@ -41,8 +41,9 @@
         />
       </el-form-item>
       <el-form-item label="票价" prop="realTicketPrice">
-        <el-input-number
-          type="number"
+        <el-input
+          type="text"
+          inputmode="decimal"
           :min="0"
           :max="99999999"
           :precision="2"
@@ -120,12 +121,19 @@ export default {
       try {
         const valid = await this.$refs.form.validate();
         if (!valid) {
-          return false;
+          return { validation: false };
         }
       } catch (error) {
-        return false;
+        // console.log(Object.values(error || {}));
+        const rules = Object.values(error || {})?.length
+          ? Object.values(error || {})[0][0]
+          : {};
+        const typeText =
+          this.$CONST.TICKET_TYPE_TEXT[this.ticketInfo.ticketType];
+        this.$message.error(`${typeText}：${rules.message}`);
+        return { validation: false, error: rules.message };
       }
-      return this.formData;
+      return { ...this.formData, validation: true };
     },
   },
   mounted() {

@@ -1,6 +1,6 @@
 <template>
   <div class="TicketInfoList">
-    <div class="ticket-list" v-if="list && list.length">
+    <div class="ticket-list">
       <div
         class="ticket-item"
         v-for="(item, index) in [shiftItem]"

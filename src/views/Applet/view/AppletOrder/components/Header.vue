@@ -3,7 +3,7 @@
     <div class="content-top">
       <div class="title">打票及回填</div>
       <div class="icon" @click="$store.dispatch('authorization/LogoutAsync')">
-        <img src="/src/assets/images/exit.png" alt="" />
+        <img :src="exit" alt="" />
       </div>
     </div>
     <div class="content-main">
@@ -24,6 +24,8 @@
 
 <script>
 import { mapState } from "vuex";
+import exit from "assets/images/exit.png";
+
 export default {
   name: "HeaderView",
   props: {
@@ -34,7 +36,9 @@ export default {
   },
   components: {},
   data() {
-    return {};
+    return {
+      exit,
+    };
   },
   computed: {
     ...mapState({

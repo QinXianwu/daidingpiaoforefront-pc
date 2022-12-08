@@ -46,7 +46,7 @@
       <div class="emit">
         <span class="label mr-10">电子订单号：{{ eOrderNumberPrefix }}</span>
         <el-input
-          type="emit"
+          type="text"
           :value="eorderNumber"
           class="min-input"
           placeholder="选填"
