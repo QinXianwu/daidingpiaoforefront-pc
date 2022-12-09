@@ -35,6 +35,7 @@
             :key="key"
           >
             <TicketFromData
+              v-if="isRefresh"
               :ticketInfo="item"
               :passengerInfo="passenger"
               :ref="`TicketFromData-${passenger.id}`"
@@ -89,6 +90,7 @@ export default {
   },
   data() {
     return {
+      isRefresh: true,
       activeNames: [],
       formDataMap: {}, // 乘客表单map
       noTicketResult: {}, // 无票原因
@@ -277,7 +279,13 @@ export default {
         bodyInfo: query,
       });
       this.$message[res ? "success" : "error"](`操作${res ? "成功" : "失败"}`);
-      if (res) this.$emit("success", this.orderInfo);
+      if (res) {
+        this.isRefresh = false;
+        this.$emit("success", this.orderInfo);
+        this.$nextTick(() => {
+          this.isRefresh = true;
+        });
+      }
     },
   },
   mounted() {
