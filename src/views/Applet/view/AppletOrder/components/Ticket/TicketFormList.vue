@@ -116,7 +116,7 @@ export default {
         orderPrice: orderInfo.orderPrice,
         partnerOrderId: orderInfo.partnerOrderId,
         resultMsg: orderInfo.resultMsg || "出票失败",
-        eorderNumber: eorderCode + eorderNumber,
+        eorderNumber: eorderNumber ? eorderCode + eorderNumber : "",
         payTradeNumber: payTradeInfo?.paymentNumber,
         ...payTradeInfo,
       };
