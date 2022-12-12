@@ -7,7 +7,6 @@ export default {
   name: "AppletOrder",
   hidden: true,
   meta: {
-    // PermissionId: PERMISSION_ID.Home,
     notPassPermissionVerify: true,
   },
 };

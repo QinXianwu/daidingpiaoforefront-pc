@@ -84,6 +84,7 @@ export default {
     padding-right: 0;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
+    -webkit-overflow-scrolling: touch;
   }
   .nothing {
     display: flex;

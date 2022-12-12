@@ -40,8 +40,6 @@ router.beforeEach(async (to, from, next) => {
     to.path !== "/401" &&
     to.path !== "/AppletOrder"
   ) {
-    // next();
-    console.log(111);
     return next({ path: "/AppletOrder" });
   } else {
     // 如果已经有hash表了，直接跳转
