@@ -107,7 +107,9 @@ export default {
       const joinList = tempList.filter(
         (item) =>
           !idsStr.includes(item.id) &&
-          new Date(filters.formatDate(item.expireTime)).getTime() > Date.now()
+          new Date(
+            filters.formatDate(item.expireTime, "yyyy-MM-dd hh:mm:ss")
+          ).getTime() > Date.now()
       );
       const tempArr = [].concat(this.list, joinList);
       if (tempArr?.length > this.list?.length) {
