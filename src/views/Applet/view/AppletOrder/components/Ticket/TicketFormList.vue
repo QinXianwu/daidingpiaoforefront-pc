@@ -67,6 +67,10 @@ export default {
   name: "TicketFormList",
   components: { TicketFromData, SelectNoTicketType },
   props: {
+    isExpand: {
+      type: Boolean,
+      default: false,
+    },
     ticketList: {
       type: Array,
       default: () => [],
@@ -97,6 +101,15 @@ export default {
       validationMethodsList: [], // 校验方法列表
       showSelectNoTicketType: false, // 显示选择无票类型
     };
+  },
+  watch: {
+    isExpand(val) {
+      if (val) {
+        this.ticketList.forEach((item, index) => {
+          this.activeNames.push(index);
+        });
+      }
+    },
   },
   computed: {
     ...mapState({

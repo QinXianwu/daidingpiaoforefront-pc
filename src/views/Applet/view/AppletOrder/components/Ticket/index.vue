@@ -58,6 +58,7 @@
           <div class="form-data">
             <TicketFormList
               :ref="`TicketFormList`"
+              :isExpand="activeNames.includes(index)"
               :orderInfo="item"
               :alipayAccount="alipayAccount"
               :ticketList="item.ticketList"

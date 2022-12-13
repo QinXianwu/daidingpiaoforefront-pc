@@ -7,6 +7,7 @@
         :key="index"
       >
         <div class="site">
+          <span class="ticket-date">{{ item.departTime | formatDate }}</span>
           <span class="start">
             <div class="name">{{ item.fromStationName }}</div>
             <span class="date"
@@ -42,6 +43,10 @@
           <div class="more-content">
             <div class="ticket-item" v-for="(item, index) in list" :key="index">
               <div class="site">
+                <span class="ticket-date">{{
+                  item.departTime | formatDate
+                }}</span>
+
                 <span class="start">
                   <div class="name">{{ item.fromStationName }}</div>
                   <span class="date"
@@ -90,7 +95,7 @@ export default {
   },
   computed: {},
   methods: {
-    afterDay({ info }) {
+    afterDay(info) {
       if (info?.departTime && info?.arriveTime) {
         const stateDate = this.$options.filters.formatDate(info.departTime);
         const endDate = this.$options.filters.formatDate(info.arriveTime);
@@ -120,13 +125,20 @@ export default {
     margin-bottom: 10px;
     border-radius: 10px;
     background: #f7f8fa;
+    .ticket-date {
+      font-size: 16px;
+      line-height: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #282828;
+    }
     .start,
     .end {
       position: relative;
       display: flex;
       align-items: center;
       margin-bottom: 10px;
-      height: 17px;
+      height: 20px;
       &::before {
         content: "";
         width: 7px;
@@ -140,7 +152,7 @@ export default {
     .start::after {
       content: "";
       width: 0;
-      height: 13px;
+      height: 17px;
       border-left: 1px dashed $tip-font-color;
       position: absolute;
       left: 4px;
