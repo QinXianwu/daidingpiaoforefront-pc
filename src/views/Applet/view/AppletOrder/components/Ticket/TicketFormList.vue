@@ -80,7 +80,7 @@ export default {
       default: () => ({}),
     },
     eorderNumber: {
-      type: String,
+      type: [String, Number],
       default: "",
     },
     alipayAccount: {
@@ -192,7 +192,9 @@ export default {
       });
     },
     async onSubmit(result) {
-      const expireTime = new Date(this.orderInfo?.expireTime).getTime();
+      const expireTime = new Date(
+        filters.formatDate(this.orderInfo?.expireTime)
+      ).getTime();
       if (Date.now() > expireTime) return this.$message.error("订单已超时");
       this.handleTicketFromData();
       if (!this.validationMethodsList?.length) {

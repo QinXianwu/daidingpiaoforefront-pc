@@ -25,6 +25,7 @@ import TicketList from "./Ticket/index.vue";
 import TicketDetails from "./Ticket/TicketDetails.vue";
 import neworder from "assets/media/neworder.wav";
 import timeout from "assets/media/timeout.wav";
+import filters from "@/filters/index";
 
 export default {
   name: "ContentView",
@@ -106,7 +107,7 @@ export default {
       const joinList = tempList.filter(
         (item) =>
           !idsStr.includes(item.id) &&
-          new Date(item.expireTime).getTime() > Date.now()
+          new Date(filters.formatDate(item.expireTime)).getTime() > Date.now()
       );
       const tempArr = [].concat(this.list, joinList);
       if (tempArr?.length > this.list?.length) {

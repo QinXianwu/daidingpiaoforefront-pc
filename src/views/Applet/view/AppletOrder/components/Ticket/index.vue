@@ -61,7 +61,7 @@
               :orderInfo="item"
               :alipayAccount="alipayAccount"
               :ticketList="item.ticketList"
-              :eorderNumber="eorderNumber"
+              :eorderNumber="String(eorderNumber)"
               :payTradeInfo="payTradeInfo"
               @success="(val) => $emit('success', val)"
             />
@@ -130,11 +130,7 @@ export default {
       payTradeInfo: {}, // 支付流水号信息
     };
   },
-  watch: {
-    isRefresh(val) {
-      console.log(val);
-    },
-  },
+  watch: {},
   computed: {},
   methods: {
     onSubmit(data) {

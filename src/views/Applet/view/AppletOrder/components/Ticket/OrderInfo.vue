@@ -57,7 +57,7 @@
           :type="eOrderNumberPrefix ? 'tel' : 'text'"
           placeholder="选填"
           :value="eorderNumber"
-          @input="(val) => $emit('update:eorderNumber', value)"
+          @input="(val) => $emit('update:eorderNumber', val)"
         >
           <template slot="prepend" v-if="eOrderNumberPrefix">{{
             eOrderNumberPrefix
