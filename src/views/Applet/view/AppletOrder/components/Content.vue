@@ -25,7 +25,7 @@ import TicketList from "./Ticket/index.vue";
 import TicketDetails from "./Ticket/TicketDetails.vue";
 import neworder from "assets/media/neworder.wav";
 import timeout from "assets/media/timeout.wav";
-import filters from "@/filters/index";
+// import filters from "@/filters/index";
 
 export default {
   name: "ContentView",
@@ -107,9 +107,7 @@ export default {
       const joinList = tempList.filter(
         (item) =>
           !idsStr.includes(item.id) &&
-          new Date(
-            filters.formatDate(item.expireTime, "yyyy-MM-dd hh:mm:ss")
-          ).getTime() > Date.now()
+          new Date(this.hanldDate(item.expireTime)).getTime() > Date.now()
       );
       const tempArr = [].concat(this.list, joinList);
       if (tempArr?.length > this.list?.length) {
@@ -136,6 +134,11 @@ export default {
           else if (this.timeId) clearInterval(this.timeId);
         }, 5000);
       });
+    },
+    hanldDate(date) {
+      // 处理ios浏览器时间显示
+      if (typeof date === "string") return date.replace(/-/g, "/");
+      return "";
     },
     // 获取代售点数据
     async getStatistics() {
