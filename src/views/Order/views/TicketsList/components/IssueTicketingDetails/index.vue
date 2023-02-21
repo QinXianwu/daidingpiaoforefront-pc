@@ -192,6 +192,7 @@ export default {
         filters.formatDate(this.orderInfo?.expireTime, "yyyy-MM-dd hh:mm:ss")
       ).getTime();
       if (Date.now() > expireTime) return this.$message.error("订单已超时");
+      if (!result) return (this.showSelectNoTicketType = true);
       this.handlePassengerInfo();
       if (!this.validationMethodsList?.length) return;
       // 校验是否全部输入乘客信息
@@ -227,7 +228,6 @@ export default {
       if (!this.alipayAccount) return this.$message.error("请选择支付宝账号");
       if (!this.payTradeInfo?.paymentNumber)
         return this.$message.error("请匹配或手填支付流水号");
-      if (!result) return (this.showSelectNoTicketType = true);
       this.ticketingAction(result);
     },
     // 有票/无票
