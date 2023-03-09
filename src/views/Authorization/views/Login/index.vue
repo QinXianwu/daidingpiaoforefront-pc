@@ -10,7 +10,7 @@
           class="el-card box-card is-always-shadow"
           :class="{ mobile: isMobile }"
         >
-          <div class="el-card__body">
+          <div class="el-card__body" v-if="!isScanCode">
             <div class="head">
               <span class="title">密码登录</span>
             </div>
@@ -38,6 +38,14 @@
               >登录</el-button
             >
           </div>
+          <div class="scan-code" v-else>
+            <ScanCodeLogin :isScanCode.sync="isScanCode" />
+          </div>
+          <!-- <div class="action">
+            <el-button type="text" @click="isScanCode = true" v-if="!isScanCode"
+              >扫码快捷登录</el-button
+            >
+          </div> -->
         </div>
       </div>
     </div>
@@ -47,10 +55,11 @@
 <script>
 import { mapState } from "vuex";
 import { mapGetters } from "vuex";
+import ScanCodeLogin from "./components/ScanCodeLogin.vue";
 import backgroundImage from "./images/backgroundImage.jpg";
 export default {
   name: "Login",
-  components: {},
+  components: { ScanCodeLogin },
   data() {
     return {
       backgroundImage,
@@ -59,6 +68,7 @@ export default {
         username: [{ required: true, message: "请输入账号", trigger: "blur" }],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
       },
+      isScanCode: false,
     };
   },
   computed: {
@@ -122,7 +132,7 @@ export default {
     &.mobile {
       width: 310px;
     }
-    height: 410px;
+    height: 500px;
     text-align: center;
     margin: 0 auto;
     padding: 0 32px;
@@ -144,6 +154,9 @@ export default {
     font-size: 16px;
     padding: 13px 0 14px 0;
     border-radius: 40px;
+  }
+  .action {
+    padding: 27px 0 0;
   }
 }
 </style>
